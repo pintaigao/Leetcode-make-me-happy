@@ -1,20 +1,17 @@
 import java.util.Stack;
 
 class Solution {
-    public boolean find132pattern(int[] nums) {
-        int num = Integer.MIN_VALUE;
-        Stack<Integer> stack = new Stack<>();
-        for (int i = nums.length - 1; i >= 0; i--) {
-            if (nums[i] < num)
-                return true;
-            else
-                while (!stack.isEmpty() && nums[i] > stack.peek()) {
-                    num = stack.pop();
-                }
-            stack.push(nums[i]);
-        }
-        return false;
-    }
+	public boolean find132pattern(int[] nums) {
+		for (int n = nums.length, i = n - 1, top = n, third = Integer.MIN_VALUE; i >= 0; i--) {
+			if (nums[i] < third)
+				return true;
+			while (top < n && nums[i] > nums[top])
+				third = nums[top++];
+			nums[--top] = nums[i];
+		}
+
+		return false;
+	}
 }
 
 // bool find132pattern(vector<int>& nums) {
