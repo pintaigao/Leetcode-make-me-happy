@@ -1,17 +1,17 @@
+import java.util.Set;
+
 public class Solution {
     public int firstUniqChar(String s) {
-        Map<Character, Integer> map = new LinkedHashMap<>();
-        Set<Character> set = new HashSet<>();
+        int[] map = new int[26];
         for (int i = 0; i < s.length(); i++) {
-            if (set.contains(s.charAt(i))) {
-                if (map.get(s.charAt(i)) != null) {
-                    map.remove(s.charAt(i));
-                }
-            } else {
-                map.put(s.charAt(i), i);
-                set.add(s.charAt(i));
+            map[s.charAt(i) - 'a']++;
+        }
+        int minindex = Integer.MAX_VALUE;
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] == 1 && s.indexOf((char) (i + 'a')) < minindex) {
+                minindex = s.indexOf((char) (i + 'a'));
             }
         }
-        return map.size() == 0 ? -1 : map.entrySet().iterator().next().getValue();
+        return minindex == Integer.MAX_VALUE ? -1 : minindex;
     }
 }
