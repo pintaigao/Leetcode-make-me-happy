@@ -7,27 +7,45 @@
  * }
  */
 public class Solution {
-    public ListNode reverseList(ListNode head) {
-        if (head == null)
-            return head;
-        Stack<ListNode> stack = new Stack<ListNode>();
-        while (head != null) {
-            stack.push(head);
-            head = head.next;
-        }
+	/* public ListNode reverseList(ListNode head) {
+		if (head == null)
+			return head;
+		Stack<ListNode> stack = new Stack<ListNode>();
+		while (head != null) {
+			stack.push(head);
+			head = head.next;
+		}
 
-        ListNode temp = stack.pop();//启动因子
-        ListNode head2 = temp;
-        ListNode oldtemp = new ListNode(0);
-        while (!stack.isEmpty()) //添加到队尾
-        {
-            oldtemp = temp;
-            temp = new ListNode(0);
-            temp = stack.pop();
-            temp.next = null;
-            oldtemp.next = temp;
-        }
-        return head2;
-    }
+		ListNode temp = stack.pop();//启动因子
+		ListNode head2 = temp;
+		ListNode oldtemp = new ListNode(0);
+		while (!stack.isEmpty()) //添加到队尾
+		{
+			oldtemp = temp;
+			temp = new ListNode(0);
+			temp = stack.pop();
+			temp.next = null;
+			oldtemp.next = temp;
+		}
+		return head2;
+	} */
+	public ListNode reverseList(ListNode head) {
+
+		if(head == null)
+			return head;
+
+		ListNode prev = null;
+		ListNode curr = head;
+		ListNode next = head.next;
+
+		while(next != null){
+			curr.next = prev;
+			prev = curr;
+			curr = next;
+			next = next.next;
+		}
+		curr.next = prev;
+		return curr;
+	}
 
 }
