@@ -38,11 +38,11 @@ function findIt(s, i, j) {
 longestPalindrome("cbbd");
 
 
-// public class Solution {
+// public class Solution {`
 //   private int lo, maxLen;
 
 //   public String longestPalindrome(String s) {
-//     int len = s.length();
+//     int len = s.length();  `
 //     if (len < 2)
 //       return s;
 
