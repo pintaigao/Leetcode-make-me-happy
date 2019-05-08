@@ -14,5 +14,11 @@ var merge = function (intervals) {
       prev[1] = intervals[index][1];
     }
   }
+
+  console.log(result);
   return result;
 };
+
+
+merge([[1,3],[2,6],[8,10],[15,18]]);
+
