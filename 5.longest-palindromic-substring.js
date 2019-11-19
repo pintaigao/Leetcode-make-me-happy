@@ -12,14 +12,14 @@
 
 /* 我比较认同的方法，奇数和偶数 */
 var longestPalindrome = function (s) {
-    function helper(str, j, k) {
-        while (j >= 0 && k < str.length && s[j] == s[k]) {
-            j--;
-            k++;
+    function helper(str, start, end) {
+        while (start >= 0 && end < str.length && s[start] == s[end]) {
+            start--;
+            end++;
         }
-        if (maxLen < k - j - 1) {
-            lo = j + 1;
-            maxLen = k - j - 1;
+        if (maxLen < end - start - 1) {
+            lo = start + 1;
+            maxLen = end - start - 1;
         }
     }
 
