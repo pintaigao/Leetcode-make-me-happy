@@ -9,34 +9,29 @@
  * @param {string} s
  * @return {string}
  */
+
+/* 我比较认同的方法，奇数和偶数 */
 var longestPalindrome = function (s) {
-    let left = 0, right = 0;
-    for (let i = 0; i < s.length; i++) {
-        let pointer1 = i, pointer2 = i;
-        while (pointer1 >= 0 && pointer2 < s.length && s[pointer1] === s[pointer2]) {
-            pointer1--;
-            pointer2++;
+    function helper(str, j, k) {
+        while (j >= 0 && k < str.length && s[j] == s[k]) {
+            j--;
+            k++;
         }
-        if (right - left < pointer1 - pointer2 - 1) {
-            left = pointer1 + 1;
-            right = pointer2 - 1;
+        if (maxLen < k - j - 1) {
+            lo = j + 1;
+            maxLen = k - j - 1;
         }
-
-        pointer1 = i, pointer2 = i + 1;
-        while (pointer1 >= 0 && pointer2 < s.length && s[pointer1] === s[pointer2]) {
-            pointer1 -= 1;
-            pointer2 += 1;
-        }
-
-        if (right - left < pointer1 - pointer2 - 1) {
-            left = pointer1 + 1;
-            right = pointer2 - 1;
-        }
-
     }
 
-    return s.substring(left, right + 1);
+    let lo = 0, maxLen = 0;
+    let len = s.length;
+    if (len < 2) return s;
+    for (let i = 0; i < len - 1; i++) {
+        helper(s, i, i);
+        helper(s, i, i + 1);
+    }
 
+    return s.substring(lo, lo + maxLen);
 };
 
 
