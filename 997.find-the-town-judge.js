@@ -8,20 +8,15 @@
  * @param {number[][]} trust
  * @return {number}
  */
-var sortedSquares = function(A) {
-  let result = [];
-  let l = 0;
-  let r = A.length - 1;
-  let p = r;
-
-  while (l <= r) {
-      if (A[l] ** 2 > A[r] ** 2) {
-          result[p--] = A[l++] ** 2;
-      } else {
-          result[p--] = A[r--] ** 2;
-      }
+var findJudge = function (N, trust) {
+  let map = new Array(N).fill(0),
+    length = trust.length;
+  for (let i = 0; i < length; i++) {
+    if (map[trust[i][1] - 1] != -1) {
+      map[trust[i][1] - 1]++;
+    }
+    map[trust[i][0] - 1] = -1;
   }
-  
-  return result;
+  let index = map.indexOf(N - 1);
+  return index > -1 ? index + 1 : -1;
 };
-
