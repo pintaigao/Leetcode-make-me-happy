@@ -14,9 +14,11 @@
  * @param {TreeNode} root
  * @return {number}
  */
+
+// 1. DFS
 var diameterOfBinaryTree = function (root) {
   let result = 1;
-  dfs(root)
+  dfs(root);
 
   function dfs(root) {
     if (!root) {
@@ -30,4 +32,3 @@ var diameterOfBinaryTree = function (root) {
 
   return result - 1;
 };
-

@@ -15,21 +15,22 @@
  * @param {TreeNode} t
  * @return {boolean}
  */
-var isSubtree = function(s, t) {
-    
-  return s != null && (isIdentical(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t));
-  
+
+// 1. DFS
+var isSubtree = function (s, t) {
+  return (
+    s != null &&
+    (isIdentical(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t))
+  );
+
   function isIdentical(t1, t2) {
-      if (t1 == null && t2 == null)
-          return true;
-      
-      if (t1 == null || t2 == null)
-          return false;
-      
-      if (t1.val != t2.val)
-          return false;
-      
-      return isIdentical(t1.left, t2.left) && isIdentical(t1.right, t2.right);
+    if (t1 == null && t2 == null) return true;
+
+    if (t1 == null || t2 == null) return false;
+
+    // 这个只能放这里因为t1 or t2有可能是空
+    if (t1.val != t2.val) return false;
+
+    return isIdentical(t1.left, t2.left) && isIdentical(t1.right, t2.right);
   }
 };
-

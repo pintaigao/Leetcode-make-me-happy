@@ -8,7 +8,7 @@
  * @return {number[][]}
  */
 var merge = function (intervals) {
-  intervals.sort((a,b) => a[0] - b[0]);
+  intervals.sort((a, b) => a[0] - b[0]);
   let result = [];
   let prev = null;
   for (let number of intervals) {
@@ -20,6 +20,4 @@ var merge = function (intervals) {
     }
   }
   return result;
-
 };
-
