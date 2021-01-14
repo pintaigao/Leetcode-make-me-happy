@@ -18,20 +18,19 @@ var invertTree = function (root) {
   if (!root) {
     return root;
   }
-  function helper(root) {
-    if(!root) {
-      return;
-    }
-    invertTree(root.left);
-    invertTree(root.right);
-    let left = root.left;
-    let right = root.right;
-    root.left = right;
-    root.right = left;
-  }
 
   helper(root);
   return root;
 };
 
-
+let helper = function (root) {
+  if (!root) {
+    return;
+  }
+  helper(root.left);
+  helper(root.right);
+  let left = root.left;
+  let right = root.right;
+  root.left = right;
+  root.right = left;
+};
