@@ -21,13 +21,13 @@ var copyRandomList = function (head) {
   // 1. 将所有node放进map中
   let cur = head;
   while (cur) {
-    map.set(cur, new Node(cur['val'], null, null))
+    map.set(cur, new Node(cur["val"], null, null));
     cur = cur.next;
   }
 
   cur = head;
   // 2. link random;
-  while(cur) {
+  while (cur) {
     map.get(cur).next = map.get(cur.next);
     if (map.get(cur).random) {
       map.get(cur).random = map.get(cur.random);
@@ -35,7 +35,7 @@ var copyRandomList = function (head) {
     cur = cur.next;
   }
 
-  return map.get(head);  
+  return map.get(head);
 };
 
 // var copyRandomList = function(head) {
@@ -43,16 +43,16 @@ var copyRandomList = function (head) {
 //   var p = dummy
 //   var q = head
 //   var map = new Map();
-  
+
 //   while(q) {
 //       let newNode = new Node(q.val, null, null)
 //       p.next = newNode
 //       map.set(q, newNode)
-      
+
 //       p = p.next
 //       q = q.next
 //   }
-  
+
 //   p = dummy.next
 //   q = head
 //   while(q) {
@@ -62,7 +62,6 @@ var copyRandomList = function (head) {
 //       p = p.next
 //       q = q.next
 //   }
-  
+
 //   return dummy.next
 // };
-
