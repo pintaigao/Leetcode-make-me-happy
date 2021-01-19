@@ -17,11 +17,19 @@
  * @return {number}
  */
 const rangeSumBST = (root, L, R) => {
-  if (root === null) {
+  let sum = 0;
+  if (root == null) {
     return 0;
   }
+  if (root.val >= L && root.val <= R) {
+    sum = root.val;
+  }
 
-  return (root.val >= L && root.val <= R ? root.val : 0) + rangeSumBST(root.left, L, R) + rangeSumBST(root.right, L, R);
-}
-
-
+  if (L <= root.val || R <= root.val) {
+    sum += rangeSumBST(root.left, L, R);
+  }
+  if (root.val <= L || root.val <= R) {
+    sum += rangeSumBST(root.right, L, R);
+  }
+  return sum;
+};
