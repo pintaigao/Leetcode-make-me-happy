@@ -16,32 +16,53 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
+
+// 1. DFS
 var rightSideView = function (root) {
-    let result = [];
+  this.rightside = [];
 
-    if (!root) {
-        return result
-    }
+  if (root == null) return rightside;
 
-    function dfs(root) {
-        if (!root) {
-            return;
-        }
-
-        result.push(root.val);
-        dfs(root.right);
-        dfs(root.left);
-    }
-    result.push(root.val);
-    if (root.right) {
-        dfs(root.right);
-    } else {
-        dfs(root.left);
-    }
-
-    return result;
+  helper(root, 0);
+  return rightside;
 };
 
+let helper = function (node, level) {
+  if (level == rightside.size()) {
+    this.rightside.push(node.val);
+  }
+
+  if (node.right != null) helper(node.right, level + 1);
+  if (node.left != null) helper(node.left, level + 1);
+};
+
+// 2. BFS
+var rightSideView2 = function (root) {
+  if (root == null) return [];
+
+  let nextLevel = [root];
+  let currLevel = [];
+  let rightside = [];
+
+  let node = null;
+  while (nextLevel.length !== 0) {
+    // prepare for the next level
+    currLevel = [...nextLevel];
+    nextLevel = [];
+
+    while (currLevel.length !== 0) {
+      node = currLevel.shift();
+      // add child nodes of the current level
+      // in the queue for the next level
+      if (node.left != null) nextLevel.push(node.left);
+      if (node.right != null) nextLevel.push(node.right);
+    }
+
+    // The current level is finished.
+    // Its last element is the rightmost one.
+    if (currLevel.length == 0) rightside.push(node.val);
+  }
+  return rightside;
+};
 
 // @lc code=end
-
