@@ -24,7 +24,6 @@ var reverseBetween = function (head, m, n) {
     temp = temp.next;
   }
 
-
   let stk = new Array();
   for (let i = m; i <= n; i++) {
     stk.push(temp);
@@ -39,10 +38,7 @@ var reverseBetween = function (head, m, n) {
     if (t2 == null) {
       t2 = stk.pop();
       head = t2;
-    }
-
-    else {
-
+    } else {
       t2.next = stk.pop();
       t2 = t2.next;
     }
@@ -50,4 +46,3 @@ var reverseBetween = function (head, m, n) {
   t2.next = temp;
   return head;
 };
-

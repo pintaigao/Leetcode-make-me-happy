@@ -9,19 +9,24 @@
  */
 function rotate(matrix, map = {}) {
   for (var row = 0; row < matrix.length; row++) {
-      map[ row ] = [];
+    map[row] = [];
 
-      for (var col = matrix.length - 1; col >= 0; col--) {
-          map[ row ].push(matrix[ col ][ row ]);
-      }
+    for (var col = matrix.length - 1; col >= 0; col--) {
+      map[row].push(matrix[col][row]);
+    }
   }
 
+  console.log(map);
+
   for (var newRow in map) {
-      if (map.hasOwnProperty(newRow)) {
-          for (var i = 0; i < map[ newRow ].length; i++) {
-              matrix[ newRow ][ i ] = map[ newRow ][ i ];
-          }
-      }
+    for (var i = 0; i < map[newRow].length; i++) {
+      matrix[newRow][i] = map[newRow][i];
+    }
   }
 }
 
+rotate([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]);
