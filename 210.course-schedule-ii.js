@@ -22,6 +22,9 @@ var findOrder = function (numCourses, prerequisites) {
     deg[curr[0]]++;
   }
 
+  console.log(adj);
+  console.log(deg);
+
   let queue = [];
   for (let i = 0; i < numCourses; i++) {
     if (!deg[i]) queue.push(i);
@@ -42,3 +45,14 @@ var findOrder = function (numCourses, prerequisites) {
   return numCourses ? [] : order;
 };
 
+console.log(
+  findOrder(8, [
+    [1, 0],
+    [2, 6],
+    [1, 7],
+    [0, 7],
+    [6, 4],
+    [7, 0],
+    [0, 5],
+  ])
+);
