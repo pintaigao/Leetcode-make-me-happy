@@ -8,7 +8,44 @@
  * @param {number} target
  * @return {number[][]}
  */
-var combinationSum = function (candidates, target) {
+
+// 1. Back Tracking
+var combinationSum = function (candidates, remain) {
+  let results = [];
+  let comb = [];
+
+  candidates.sort((a, b) => {
+    return a - b;
+  });
+
+  let backtrack = function (remain, start) {
+    if (remain == 0) {
+      // make a deep copy of the current combination
+      results.push(comb.slice());
+      return;
+    }
+
+    for (let i = start; i < candidates.length; ++i) {
+      // add  the number into the combination
+      if (remain - candidates[i] < 0) {
+        break;
+      }
+      comb.push(candidates[i]);
+      backtrack(remain - candidates[i], i);
+      // backtrack, remove the number from the combination
+      comb.pop();
+    }
+  };
+
+  backtrack(remain, 0);
+
+  return results;
+};
+
+combinationSum([2, 3, 5], 8);
+
+// 待研究的方法
+var combinationSum2 = function (candidates, target) {
   let result = [];
 
   function dfs(current, startIndex, currentSum) {
@@ -27,4 +64,3 @@ var combinationSum = function (candidates, target) {
   dfs([], 0, 0);
   return result;
 };
-
