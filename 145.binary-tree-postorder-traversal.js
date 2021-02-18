@@ -37,4 +37,3 @@ var postorderTraversal = function (root) {
 
   return result;
 };
-

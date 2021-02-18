@@ -7,6 +7,8 @@
  * @param {number[]} nums
  * @return {number[]}
  */
+
+// Approach 1: Boyer-Moore Voting Algorithm
 var majorityElement = function (nums) {
   var result = [];
   var oneThird = nums.length / 3;
@@ -54,5 +56,4 @@ var majorityElement = function (nums) {
   return result;
 };
 
-majorityElement([1,1,1,3,3,2,2,2]);
-
+majorityElement([1, 1, 1, 3, 3, 2, 2, 2]);

@@ -15,32 +15,52 @@
  * @param {number} k
  * @return {number}
  */
-// var kthSmallest = function (root, k) {
-//   let stack = [];
-//   // stack.push(root);
-//   // let result = [];
-//   while (root != null || stack.length > 0) {
-//     while (root != null) {
-//       stack.push(root);
-//       root = root.left;
-//     }
-//     k--;
-//     let node = stack.pop();
-//     if (k == 0) {
-//       return node.val;
-//     }
-//     root = node.right;
-//   }
-// };
 
+// Approach 1: Recursive Inorder Traversal
 var kthSmallest = function (root, k) {
-  if (root) {
-    kthSmallest(root.left, k);
-    k -= 1;
-    if (k === 0) {
-      return root;
-    }
-    kthSmallest(root.right, k);
-  }
-}
+  let inorder = function (root, arr) {
+    if (root == null) return arr;
+    inorder(root.left, arr);
+    arr.push(root.val);
+    inorder(root.right, arr);
+    return arr;
+  };
 
+  let nums = inorder(root, []);
+  return nums[k - 1];
+};
+
+// Approach 2: Iterative Inorder Traversal
+var kthSmallest2 = function (root, k) {
+  let stack = [];
+
+  while (true) {
+    while (root != null) {
+      stack.push(root);
+      root = root.left;
+    }
+    root = stack.pop();
+    if (k - 1 == 0) return root.val;
+    k -= 1;
+    root = root.right;
+  }
+};
+
+// Approach 3: 中序不用Stack
+var kthSmallest3 = function (root, k) {
+  let result;
+  let inorder = function (root) {
+    if (root != null) {
+      inorder(root.left);
+      if (--k == 0) {
+        result = root;
+      }
+      if (result == null) {
+        inorder(root.right);
+      }
+    }
+  };
+
+  inorder(root);
+  return result.val;
+};

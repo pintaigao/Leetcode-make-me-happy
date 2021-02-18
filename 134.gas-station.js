@@ -8,7 +8,4 @@
  * @param {number[]} cost
  * @return {number}
  */
-var canCompleteCircuit = function(gas, cost) {
-    
-};
-
+var canCompleteCircuit = function (gas, cost) {};

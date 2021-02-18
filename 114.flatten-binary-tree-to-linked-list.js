@@ -21,10 +21,11 @@ var flatten = function (root) {
   let right = null;
 
   if (root.left) {
-    left = root.left
+    left = root.left;
     root.left = null;
     flatten(left);
   }
+
   if (root.right) {
     right = root.right;
     flatten(right);
@@ -32,11 +33,11 @@ var flatten = function (root) {
 
   if (left) {
     root.right = left;
-    while(root.right) {
+    while (root.right) {
       root = root.right;
     }
     root.right = right;
   }
-  root.lastIndex = root;
 };
 
+// 2. Using Stack

@@ -1,0 +1,61 @@
+/*
+ * @lc app=leetcode id=143 lang=javascript
+ *
+ * [143] Reorder List
+ */
+
+// @lc code=start
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {void} Do not return anything, modify head in-place instead.
+ */
+
+// Approach 1: Reverse the Second Part of the List and Merge Two Sorted Lists O(N) O(1)
+var reorderList = function (head) {
+  if (head == null) return;
+
+  // find the middle of linked list [Problem 876]
+  // in 1->2->3->4->5->6 find 4
+  let slow = head,
+    fast = head;
+  while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  // reverse the second part of the list [Problem 206]
+  // convert 1->2->3->4->5->6 into 1->2->3->4 and 6->5->4
+  // reverse the second half in-place
+  let prev = null,
+    curr = slow,
+    tmp;
+  while (curr != null) {
+    tmp = curr.next;
+
+    curr.next = prev;
+    prev = curr;
+    curr = tmp;
+  }
+
+  // merge two sorted linked lists [Problem 21]
+  // merge 1->2->3->4 and 6->5->4 into 1->6->2->5->3->4
+  let first = head,
+    second = prev;
+  while (second.next != null) {
+    tmp = first.next;
+    first.next = second;
+    first = tmp;
+
+    tmp = second.next;
+    second.next = first;
+    second = tmp;
+  }
+};
+// @lc code=end

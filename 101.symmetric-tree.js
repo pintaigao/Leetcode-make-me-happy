@@ -21,7 +21,6 @@ var isSymmetric = function (root) {
   return isSymmetricHelper(root.left, root.right);
 };
 
-
 isSymmetricHelper = (left, right) => {
   if (!left && !right) {
     return true;
@@ -32,11 +31,11 @@ isSymmetricHelper = (left, right) => {
   }
 
   if (left.val == right.val) {
-    return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left)
+    return (
+      isSymmetricHelper(left.left, right.right) &&
+      isSymmetricHelper(left.right, right.left)
+    );
   } else {
     return false;
   }
-
 };
-
-

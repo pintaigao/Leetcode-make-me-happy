@@ -14,27 +14,26 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
-var preorderTraversal = function(root) {
-    let stack = new Array();
-    let result = new Array();
-    if(!root) {
-      return result;
-    }
-
-    stack.push(root);
-
-    while(stack.length) {
-      let node = stack.pop();
-      result.unshift(node.val);
-      if(node.right){
-        stack.push(node.right);
-      }
-
-      if(node.left){
-        stack.push(node.left);
-      }
-    }
-
+var preorderTraversal = function (root) {
+  let stack = [];
+  let result = [];
+  if (!root) {
     return result;
-};
+  }
 
+  stack.unshift(root);
+
+  while (stack.length) {
+    let node = stack.shift();
+    result.push(node.val);
+    if (node.right) {
+      stack.unshift(node.right);
+    }
+
+    if (node.left) {
+      stack.unshift(node.left);
+    }
+  }
+
+  return result;
+};

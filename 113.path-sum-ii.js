@@ -15,26 +15,29 @@
  * @param {number} sum
  * @return {number[][]}
  */
-const findPath = (ret, temp, root, sum) => {
-  if (root === null) {
-      return;
-  }
-  
-  temp.push(root.val);
-  
-  if (root.left === null && root.right === null && root.val === sum) {
-      ret.push(temp.slice());
-  } else {
-      findPath(ret, temp, root.left, sum - root.val);
-      findPath(ret, temp, root.right, sum - root.val);
-  }
-  
-  temp.pop();
-};
 
+// Depth First Traversal | Recursion (BFS的方法不好)
 const pathSum = (root, sum) => {
   const ret = [];
-  findPath(ret, [], root, sum);
+  const temp = [];
+
+  const findPath = (root, sum) => {
+    if (root === null) {
+      return;
+    }
+
+    temp.push(root.val);
+
+    if (root.left === null && root.right === null && root.val === sum) {
+      ret.push(temp.slice());
+    } else {
+      findPath(root.left, sum - root.val);
+      findPath(root.right, sum - root.val);
+    }
+
+    temp.pop();
+  };
+
+  findPath(root, sum);
   return ret;
 };
-

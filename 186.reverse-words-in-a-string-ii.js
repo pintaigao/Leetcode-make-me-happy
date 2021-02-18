@@ -7,25 +7,36 @@
  * @param {character[]} s
  * @return {void} Do not return anything, modify s in-place instead.
  */
+
+// Approach 1: Reverse the Whole String and Then Reverse Each Word O(n) O(1)
 var reverseWords = function (str) {
-  reverse(str);
-  let start = 0;
-  for (let i = 0; i < str.length; i++) {
-    if (str[i + 1] === ' ' || i + 1 === str.length)
-      reverse(str, start, i);
-    else if (str[i] === ' ')
-      start = i + 1;
-  }
-};
-
-function reverse(arr, start = 0, end = arr.length - 1) {
-  let len = end - start + 1;
-  while (start < end) {
-    let temp = arr[start];
-    arr[start] = arr[end];
-    arr[end] = temp;
-    start += 1;
-    end -= 1;
+  let reverse = function (s, left, right) {
+    while (left < right) {
+      let tmp = s[left];
+      s[left++] = s[right];
+      s[right--] = tmp;
+    }
   };
-}
 
+  let reverseEachWord = function (s) {
+    let n = s.length;
+    let start = 0,
+      end = 0;
+
+    while (start < n) {
+      // go to the end of the word
+      while (end < n && s[end] != " ") end += 1;
+      // reverse the word
+      reverse(s, start, end - 1);
+      // move to the next word
+      start = end + 1;
+      end += 1;
+    }
+  };
+
+  // reverse the whole string
+  reverse(str, 0, str.length - 1);
+
+  // reverse each word
+  reverseEachWord(str);
+};

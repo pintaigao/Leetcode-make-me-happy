@@ -33,12 +33,13 @@ findMidle = (head) => {
     fast = fast.next.next;
   }
 
+  // 这里就把-3和0之间的键断掉了
   if (prev) {
     prev.next = null;
   }
 
   return slow;
-}
+};
 
 var sortedListToBST = function (head) {
   if (head == null) return null;
@@ -54,5 +55,3 @@ var sortedListToBST = function (head) {
 
   return node;
 };
-
-

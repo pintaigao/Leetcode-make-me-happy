@@ -16,48 +16,33 @@
  * @param {Node} root
  * @return {Node}
  */
-// var connect = function (root) {
-//   if(!root) {
-//     return;
-//   }
-//   let queue = [root];
 
-//   while (queue.length) {
-//     let length = queue.length;
-//     for (let i = 0; i < length; i++) {
-//       let node = queue.shift();
-      
-//         queue.push(node.left? node.left:null);
-      
+// 1.传统的做法
+var connect = function (root) {
+  if (!root) return root;
 
-//       if(node.right) {
-//         queue.push(node.right?node.right:null);
-//       }
+  if (root.left) root.left.next = root.right;
+  if (root.right && root.next) root.right.next = root.next.left;
 
-//       if (i === length - 1) {
-//         node.next = null;
-//       } else {
-//         node.next = queue[0];
-//       }
-//     }
-//   }
-//   return root;
-// };
-
-var connect = function(root) {
-  if(!root) return;
-  const queue = [root];
-  
-  while(queue.length) {
-      const size  = queue.length;
-      const level = queue.slice();
-
-      for(let i = 0; i < size; i++) {
-          const currentNode = queue.shift();
-          currentNode.next  = level[i + 1];
-          if(currentNode.left)  queue.push(currentNode.left);
-          if(currentNode.right) queue.push(currentNode.right);
-      }
-  }
+  connect(root.left);
+  connect(root.right);
+  return root;
 };
 
+// 2.BFS的方法
+var connect2 = function (root) {
+  if (!root) return;
+  const queue = [root];
+
+  while (queue.length) {
+    const size = queue.length;
+    const level = queue.slice();
+
+    for (let i = 0; i < size; i++) {
+      const currentNode = queue.shift();
+      currentNode.next = level[i + 1];
+      if (currentNode.left) queue.push(currentNode.left);
+      if (currentNode.right) queue.push(currentNode.right);
+    }
+  }
+};

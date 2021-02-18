@@ -9,36 +9,36 @@
  * Initialize your data structure here.
  */
 var TwoSum = function () {
-    this.map = new Map();
+  this.map = {};
 };
 
 /**
- * Add the number to an internal data structure.. 
+ * Add the number to an internal data structure..
  * @param {number} number
  * @return {void}
  */
 TwoSum.prototype.add = function (number) {
-    this.map.set(number, (this.map.get(number) || 0) + 1);
+  this.map[number] = (this.map[number] || 0) + 1;
 };
 
 /**
- * Find if there exists any pair of numbers which sum is equal to the value. 
+ * Find if there exists any pair of numbers which sum is equal to the value.
  * @param {number} value
  * @return {boolean}
  */
 TwoSum.prototype.find = function (value) {
-    for (const key of this.map.keys()) {
-        const val = parseInt(key);
-        const toFind = value - val;
-        if (this.map.has(toFind)) {
-            if (val !== toFind) {
-                return true;
-            } else if (val === toFind && this.map.get(toFind) > 1) {
-                return true;
-            }
-        }
+  for (const key of Object.keys(this.map)) {
+    const val = parseInt(key);
+    const toFind = value - val;
+    if (this.map.hasOwnProperty(toFind)) {
+      if (val !== toFind) {
+        return true;
+      } else if (val === toFind && this.map[toFind] > 1) {
+        return true;
+      }
     }
-    return false;
+  }
+  return false;
 };
 
 /**
@@ -48,4 +48,3 @@ TwoSum.prototype.find = function (value) {
  * var param_2 = obj.find(value)
  */
 // @lc code=end
-
