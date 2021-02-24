@@ -18,22 +18,21 @@
  * @return {number}
  */
 var closestValue = function (root, target) {
-    if (!root.left && !root.right) {
-        return root.val;
+  if (!root.left && !root.right) {
+    return root.val;
+  }
+  let potential = root;
+  while (root) {
+    if (Math.abs(potential.val - target) > Math.abs(root.val - target)) {
+      potential = root;
     }
-    let potential = root;
-    while (root) {
-        if (Math.abs(potential.val - target) > Math.abs(root.val - target)) {
-            potential = root;
-        }
-        if (target < root.val) {
-            root = root.left;
-        } else {
-            root = root.right;
-        }
+    if (target < root.val) {
+      root = root.left;
+    } else {
+      root = root.right;
     }
+  }
 
-    return potential.val;
+  return potential.val;
 };
 // @lc code=end
-

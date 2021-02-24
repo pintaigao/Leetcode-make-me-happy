@@ -7,32 +7,35 @@
  * @param {string[]} strings
  * @return {string[][]}
  */
-var groupStrings = function(strings) {
+var groupStrings = function (strings) {
   var result = [];
-  var groups = new Map();
-  strings.forEach(function(element) {
-      let key = "";
-      let offset = element.charCodeAt(0) - 97;
-      for (let i = 0; i < element.length; i++) {
-          let base = element.charCodeAt(i) - offset;
-          if (base < 97) {
-              base += 26;
-              
-          }
-          console.log(base);
-          key += String.fromCharCode(base);
-      }
+  var groups = {};
 
-      console.log(key);
-
-      if (groups.has(key)) {
-          result[groups.get(key)].push(element);
-      } else {
-          result.push([element]);
-          groups.set(key, result.length-1);
+  strings.forEach((char) => {
+    console.log("Now char is:" + char);
+    let key = "";
+    let offset = char.charCodeAt(0) - "a".charCodeAt(0);
+    for (let i = 0; i < char.length; i++) {
+      let base = char.charCodeAt(i) - offset;
+      if (base < "a".charCodeAt(0)) {
+        base += 26;
       }
+      console.log(base);
+      key += String.fromCharCode(base);
+    }
+
+    console.log(key);
+    console.log(groups);
+
+    if (groups.hasOwnProperty(key)) {
+      result[groups[key]].push(char);
+    } else {
+      result.push([char]);
+      groups[key] = result.length - 1;
+    }
+    console.log();
   });
+
   return result;
 };
-groupStrings(["abc", "bcd", "fcd","acef", "xyz", "fa", "az", "ba", "a", "z"]);
-
+groupStrings(["abc", "bcd", "fcd", "acef", "xyz", "fa", "az", "ba", "a", "z"]);

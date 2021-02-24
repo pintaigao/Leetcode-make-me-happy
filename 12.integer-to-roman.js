@@ -9,8 +9,5 @@
  * @param {number} num
  * @return {string}
  */
-var intToRoman = function(num) {
-    
-};
+var intToRoman = function (num) {};
 // @lc code=end
-

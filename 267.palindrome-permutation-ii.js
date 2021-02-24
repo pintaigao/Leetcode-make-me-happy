@@ -9,66 +9,81 @@
  */
 var generatePalindromes = function (s) {
   //count char
-  let map = new Map()
+  let map = {};
   for (let char of s) {
-    let currentCount = map.get(char) == undefined ? 0 : map.get(char)
-    map.set(char, currentCount + 1)
+    let currentCount = map[char] == undefined ? 0 : map[char];
+    map[char] = currentCount + 1;
   }
 
-  //get the midpoint character
-  let midpoint = "", permutationArr = []
+  console.log(map);
 
-  for (let key of map.keys()) {
-    let curCount = map.get(key)
+  //get the midpoint character
+  let midpoint = "",
+    permutationArr = [];
+
+  for (let key in map) {
+    let curCount = map[key];
     while (curCount >= 2) {
-      permutationArr.push(key)
-      curCount -= 2
+      permutationArr.push(key);
+      curCount -= 2;
     }
     if (curCount == 1) {
       if (midpoint != "") {
-        return []
+        return [];
       }
-      midpoint = key
+      midpoint = key;
     }
   }
-  
-  let ret = [], len = permutationArr.length
+
+  console.log(midpoint);
+  console.log(permutationArr);
+
+  let ret = [];
+  let used = [];
+  let cur = [];
+  let len = permutationArr.length;
 
   //helper function for backtracking
-  const helper = (used, pos, cur) => {
+  const helper = (pos) => {
     if (pos == len) {
-      ret.push(cur.slice())
-      return
+      ret.push(cur.slice());
+      return;
     }
+
     for (let i = 0; i < len; i++) {
       if (used[i]) {
-        continue
+        continue;
       }
+
       if (i > 0 && permutationArr[i - 1] == permutationArr[i] && !used[i - 1]) {
-        continue
+        // 防止[a,a,b]到第二个a的时候，从第一个a开始再排重复的一次
+        continue;
       }
-      used[i] = true
-      cur.push(permutationArr[i])
 
-      helper(used, pos + 1, cur)
+      used[i] = true;
+      cur.push(permutationArr[i]);
 
-      cur.pop()
-      used[i] = false
+      helper(pos + 1);
+
+      cur.pop();
+      used[i] = false;
     }
-    return
-  }
+    return;
+  };
   //remaining char used for permutation
+  helper(0);
+  console.log(ret);
 
-  helper([], 0, [])
-  let result = []
+  let result = [];
   //reverse and add to res
   for (let el of ret) {
-    let cur = el.join("")
-    let rev = el.slice().reverse().join("")
-    result.push(cur + midpoint + rev)
+    let cur = el.join("");
+    let rev = el.slice().reverse().join("");
+    result.push(cur + midpoint + rev);
   }
-  return result
+
+  console.log(result);
+  return result;
 };
 
-// generatePalindromes("aabb");
-
+generatePalindromes("aaaabb");

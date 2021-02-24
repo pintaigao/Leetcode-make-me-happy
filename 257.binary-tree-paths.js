@@ -18,15 +18,17 @@ function binaryTreePaths(root) {
   if (!root) return [];
   let allPaths = [];
   let path = [];
-  explore(root, path, allPaths);
+
+  let explore = function (node) {
+    path.push(node.val);
+    if (node.left) explore(node.left);
+    if (node.right) explore(node.right);
+    if (!node.left && !node.right) {
+      allPaths.push(path.join("->"));
+    }
+    path.pop();
+  };
+
+  explore(root);
   return allPaths;
-};
-
-function explore(node, path, allPaths) {
-  path.push(node.val);
-  if (node.left) explore(node.left, path, allPaths);
-  if (node.right) explore(node.right, path, allPaths);
-  if (!node.left && !node.right) allPaths.push(path.join('->'));
-  path.pop();
 }
-
