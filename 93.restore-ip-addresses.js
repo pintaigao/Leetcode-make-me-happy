@@ -9,12 +9,11 @@
  */
 function restoreIpAddresses(s) {
   const res = [];
-  dfs([], 0);
-  return res;
+  let prefix = [];
 
-  function dfs(prefix, idx) {
+  let dfs = function (idx) {
     if (prefix.length === 4 && idx === s.length) {
-      res.push(prefix.join('.'));
+      res.push(prefix.join("."));
       return;
     }
 
@@ -23,20 +22,22 @@ function restoreIpAddresses(s) {
     }
 
     for (let r = idx; r < s.length; r++) {
-      if (r !== idx && s[idx] === '0') return;
+      if (r !== idx && s[idx] === "0") return;
 
       const num = parseInt(s.slice(idx, r + 1));
-      console.log(num);
+
       if (num > 255) {
         return;
       }
       prefix.push(num);
-      console.log(prefix);
-      dfs(prefix, r + 1);
+
+      dfs(r + 1);
       prefix.pop();
     }
-  }
+  };
+
+  dfs(0);
+  return res;
 }
 
 restoreIpAddresses("7025511135");
-

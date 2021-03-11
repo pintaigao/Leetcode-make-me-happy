@@ -8,28 +8,20 @@
  * @param {number} n
  * @return {number}
  */
+
+// Approach 1: Dynamic Programming O(N*M) O(N*e M)
 var uniquePaths = function (m, n) {
-  let dp = []
-  for (let i = 0; i < m; i++) {
-    dp.push([])
-  }
-  for (let i = 0; i < m; i++) {
-    dp[i][0] = 1
-  }
-  for (let i = 0; i < n; i++) {
-    dp[0][i] = 1
-  }
+  let dp = new Array(m).fill(0).map((pos) => {
+    return new Array(n).fill(1);
+  });
 
-  
-
-  for (let i = 1; i < m; i++) {
-    for (let j = 1; j < n; j++) {
-      dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+  for (let col = 1; col < m; ++col) {
+    for (let row = 1; row < n; ++row) {
+      dp[col][row] = dp[col - 1][row] + dp[col][row - 1];
     }
-    console.log(dp);
-    console.log();
   }
-  return dp[m - 1][n - 1]
+
+  return dp[m - 1][n - 1];
 };
 
-uniquePaths(7,3);
+// uniquePaths(7, 3);

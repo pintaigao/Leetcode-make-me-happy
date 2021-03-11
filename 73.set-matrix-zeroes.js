@@ -19,8 +19,8 @@ var setZeroes = function (matrix) {
   for (let i = 0; i < R; i++) {
     for (let j = 0; j < C; j++) {
       if (matrix[i][j] == 0) {
-        rows.push(i);
-        cols.push(j);
+        rows.add(i);
+        cols.add(j);
       }
     }
   }
