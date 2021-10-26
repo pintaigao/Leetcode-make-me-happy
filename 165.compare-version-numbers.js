@@ -8,9 +8,11 @@
  * @param {string} version2
  * @return {number}
  */
+
+// Approach 1: Split + Parse, Two Pass
 var compareVersion = function (version1, version2) {
-  let v1 = version1.split('.');
-  let v2 = version2.split('.');
+  let v1 = version1.split(".");
+  let v2 = version2.split(".");
   let length = Math.max(v1.length, v2.length);
   for (let i = 0; i < length; ++i) {
     let val1 = i >= v1.length ? 0 : parseInt(v1[i]);
@@ -22,4 +24,3 @@ var compareVersion = function (version1, version2) {
 
   return 0;
 };
-

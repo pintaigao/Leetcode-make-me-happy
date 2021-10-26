@@ -14,10 +14,13 @@
  * @param {TreeNode} root
  * @return {number}
  */
+
+// BFS 的方法
 var findSecondMinimumValue = function (root) {
-  var min1 = root.val, min2 = -1;
+  var min1 = root.val,
+    min2 = -1;
   var nodes = [root];
-  while (nodes && nodes.length > 0) {
+  while (nodes.length > 0) {
     var node = nodes.pop();
     if (node.val > min1 && (node.val < min2 || min2 < 0)) {
       min2 = node.val;
@@ -29,10 +32,7 @@ var findSecondMinimumValue = function (root) {
     if (node.right != null) {
       nodes.push(node.right);
     }
-
   }
 
   return min2 > min1 ? min2 : -1;
-
 };
-

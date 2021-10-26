@@ -10,33 +10,27 @@
  * @param {string} str
  * @return {boolean}
  */
+// Approach 1: Two Hash Maps O(N) O(N)
 var wordPattern = function (pattern, str) {
-
-  let stringArr = str.split(" ");
-
-  if (pattern.length !== stringArr.length) {
-    return false;
-  }
-
-  console.log(stringArr);
-  let patternMap = {};
-  let stringMap = {};
-  for (let i = 0; i < stringArr.length; i++) {
-    let word = stringArr[i];
-    let p = pattern[i];
-
-    if (stringMap.hasOwnProperty(word) && stringMap[word] !== p || patternMap.hasOwnProperty(p) && patternMap[p] !== word) {
-      // return false;
+  var pArr = pattern.split("");
+  var sArr = str.split(" ");
+  if (pArr.length !== sArr.length) return false;
+  var mapP2S = {};
+  var mapS2P = {};
+  for (var i = 0; i < pArr.length; ++i) {
+    if (pArr[i] in mapP2S) {
+      if (sArr[i] !== mapP2S[pArr[i]]) return false;
+    } else {
+      mapP2S[pArr[i]] = sArr[i];
     }
-    stringMap[word] = p;
-    patternMap[p] = word;
+    if (sArr[i] in mapS2P) {
+      if (pArr[i] !== mapS2P[sArr[i]]) return false;
+    } else {
+      mapS2P[sArr[i]] = pArr[i];
+    }
   }
-  console.log(patternMap);
-  console.log(stringMap);
-
   return true;
 };
 
-wordPattern("abba", "dog cat cat dog");
+// wordPattern("abba", "dog cat cat dog");
 // @lc code=end
-

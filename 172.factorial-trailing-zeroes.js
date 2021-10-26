@@ -13,7 +13,17 @@
  * @param {number} n
  * @return {number}
  */
+
+// 最原始的做法
 var trailingZeroes = function (n) {
+  let fb = function (num) {
+    if (num === 1) {
+      return 1;
+    }
+
+    return num * fb(num - 1);
+  };
+
   let result = fb(n) + "";
   let count = 0;
   for (let i = result.length - 1; i >= 0; i--) {
@@ -26,14 +36,6 @@ var trailingZeroes = function (n) {
   }
 
   return count;
-};
-
-let fb = (num) => {
-  if (num === 1) {
-    return 1;
-  }
-
-  return num * fb(num - 1);
 };
 
 // Approach 2: Counting Factors of 5

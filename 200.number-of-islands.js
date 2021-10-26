@@ -10,7 +10,7 @@
  * @return {number}
  */
 
-// 1. DFS
+// 1. DFS O(M×N) O(M×N)
 var numIslands = function (grid) {
   if (grid == null || grid.length == 0) {
     return 0;
@@ -46,8 +46,7 @@ let dfs = function (grid, r, c) {
   dfs(grid, r, c + 1);
 };
 
-// 2.BFS
-
+// 2.BFS O(M×N) O(min(M, N))[the size of queue can grow up to min(M,NM,N)]
 let numIslands2 = function (grid) {
   if (grid == null || grid.length == 0) {
     return 0;
@@ -91,4 +90,7 @@ let numIslands2 = function (grid) {
 
   return num_islands;
 };
+
+// Solution 3: Union Find Next Time
+
 // @lc code=end

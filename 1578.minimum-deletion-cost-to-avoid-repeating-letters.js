@@ -35,8 +35,6 @@ var minCost = function (s, cost) {
   return res;
 };
 
-minCost("abaac", [1, 2, 3, 4, 5]);
-
 let minCost2 = function (s, cost) {
   let n = s.length;
   let result = 0;
@@ -48,4 +46,45 @@ let minCost2 = function (s, cost) {
   }
   return result;
 };
+
+// Solution 3: Stack
+let minCost3 = function (s, cost) {
+  let stack = [];
+  let total_cost = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (stack.length === 0 || stack[stack.length - 1][0] !== s[i]) {
+      stack.unshift([s[i], cost[i]]);
+    } else {
+      if (stack[stack.length - 1][1] >= cost[i]) {
+        total_cost += cost[i];
+      } else {
+        let value = stack.shift();
+        total_cost += value[1];
+        stack.unshift([s[i], cost[i]]);
+      }
+    }
+
+    console.log(stack);
+  }
+  return total_cost;
+};
+
+let minCost4 = function (s, cost) {
+  let ans = 0;
+  let prev = 0;
+  for (let i = 1; i < s.length; i++) {
+    if (s[prev] !== s[i]) prev = i;
+    else {
+      ans += Math.min(cost[prev], cost[i]);
+      console.log(ans);
+      console.log();
+      if (cost[prev] < cost[i]) prev = i;
+    }
+  }
+
+  return ans;
+};
+
+// Main Function
+minCost4("aaabaa", [1, 2, 3, 4, 5, 6]);
 // @lc code=end
