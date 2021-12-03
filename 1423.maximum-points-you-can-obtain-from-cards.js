@@ -19,6 +19,7 @@ var maxScore = function (cardPoints, k) {
   let cur = 0;
   let l = 0;
   let r = 0;
+  4;
   while (r < cardPoints.length) {
     total += cardPoints[r];
     cur += cardPoints[r];
@@ -46,7 +47,7 @@ let maxScore = function (cardPoints, k) {
     //sliding window left => start = -1
     newSum -= cardPoints[end];
     newSum += cardPoints[cardPoints.length - (k - end)];
-    if (newSum > sum) sum = newSum;
+    sum = Math.max(sum, newSum);
   }
   return sum;
 };

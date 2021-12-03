@@ -26,7 +26,58 @@
  * @param {BinaryMatrix} binaryMatrix
  * @return {number}
  */
-var leftMostColumnWithOne = function (binaryMatrix) {
+
+// Solution 1: Linear Search Each Row, correct way to use the api
+let leftMostColumnWithOne1 = function (binaryMatrix) {
+  let rows = binaryMatrix.dimensions().get(0);
+  let cols = binaryMatrix.dimensions().get(1);
+  let smallestIndex = cols;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (binaryMatrix.get(row, col) == 1) {
+        smallestIndex = Math.min(smallestIndex, col);
+        break;
+      }
+    }
+  }
+  return smallestIndex == cols ? -1 : smallestIndex;
+};
+
+// Solution 2: Binary Search Each Row
+/* 
+In the row below, we've determined that the middle element is a 0.
+On what side must the target element (first 1) be? The left, or the right?
+Don't forget, all the 0's are before all the 1's. 
+*/
+let leftMostColumnWithOne2 = function (binaryMatrix) {
+  let rows = binaryMatrix.dimensions()[0];
+  let cols = binaryMatrix.dimensions()[1];
+  let smallestIndex = cols;
+  for (let row = 0; row < rows; row++) {
+    // Binary Search for the first 1 in the row.
+    let lo = 0;
+    let hi = cols - 1;
+    while (lo < hi) {
+      let mid = parseInt((lo + hi) / 2);
+      if (binaryMatrix.get(row, mid) == 0) {
+        lo = mid + 1;
+      } else {
+        hi = mid;
+      }
+    }
+    // If the last element in the search space is a 1, then this row
+    // contained a 1.
+    if (binaryMatrix.get(row, hi) == 1) {
+      smallestIndex = Math.min(smallestIndex, hi);
+    }
+  }
+  // If smallest_index is still set to cols, then there were no 1's in
+  // the grid.
+  return smallestIndex == cols ? -1 : smallestIndex;
+};
+
+// Approach 3: Start at Top Right, Move Only Left and Down
+var leftMostColumnWithOne3 = function (binaryMatrix) {
   const rows = binaryMatrix.dimensions()[0];
   const cols = binaryMatrix.dimensions()[1];
   let leftMost = -1;
