@@ -17,6 +17,8 @@ Joining the blocks gives "123-456".
  * @param {string} number
  * @return {string}
  */
+
+/* Solution 1 */
 var reformatNumber = function (number) {
   // recursive function to add dashes, needs a string without dashes as input
   let recursiveReformatNumber = function (number) {
@@ -40,4 +42,27 @@ var reformatNumber = function (number) {
   // remove all non-numbers (dashes, and spaces)
   return recursiveReformatNumber(number.replace(/\D/g, ""));
 };
+
+/* A Solution That I highly will do */
+/* Solution 2 */
+var reformatNumber2 = function (number) {
+  number = number.replace(" ", "").replace("-", "");
+  let result = "";
+  while (number.length) {
+    if (number.length > 4) {
+      result += number.substring(0, 3) + "-";
+      number = number.substring(3, number.length);
+    } else if (number.length == 4) {
+      result += number.substring(0, 2) + number.substring(2, 4);
+    } else {
+      result += number;
+    }
+  }
+
+  return result;
+};
+
+/* Testing */
+reformatNumber2();
+
 // @lc code=end
