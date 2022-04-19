@@ -22,6 +22,7 @@ var champagneTower = function (poured, query_row, query_glass) {
 
   for (let r = 0; r <= query_row; ++r) {
     for (let c = 0; c <= r; ++c) {
+      // 讨论当前这个杯子的下面两个杯子的情况，-1 减掉的是当前杯子的水量，/2 是下面两个杯子的水量
       let q = (A[r][c] - 1) / 2;
       if (q > 0) {
         A[r + 1][c] += q;
