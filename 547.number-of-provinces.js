@@ -18,7 +18,7 @@ var findCircleNum = function (isConnected) {
   let result = 0;
 
   var dfs = function (i, j) {
-    if (isConnected[i][j] !== 1) {
+    if (isConnected[i][j] === "#") {
       return;
     }
     //mark it visited
