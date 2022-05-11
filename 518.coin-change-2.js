@@ -25,4 +25,27 @@ var change = function (amount, coins) {
   console.log(dp[amount]);
   return dp[amount];
 };
+
+/* Solution 2: 回溯的方法 */
+let change = function (amount, coins) {
+  let [count, path] = [0, 0];
+
+  let dfs = (startIndex) => {
+    if (path == amount) {
+      count++;
+      return;
+    }
+
+    if (path > amount) return;
+
+    for (let i = startIndex; i < coins.length; i++) {
+      path += coins[i];
+      dfs(i);
+      path -= coins[i];
+    }
+  };
+
+  dfs(0);
+  return count;
+};
 // @lc code=end
