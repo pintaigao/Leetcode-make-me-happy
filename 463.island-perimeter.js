@@ -51,4 +51,31 @@ var islandPerimeter = function (grid) {
 
   return result;
 };
+
+// Approach 2: Better Counting O(mn)
+let islandPerimeter2 = function (grid) {
+  let rows = grid.length;
+  let cols = grid[0].length;
+
+  let result = 0;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] == 1) {
+        result += 4;
+
+        // 减2，因为grid[r-1][c]和grid[r][c]的边都减了
+        if (r > 0 && grid[r - 1][c] == 1) {
+          result -= 2;
+        }
+
+        // 减2，因为grid[r][c-1]和grid[r][c]的边都减了
+        if (c > 0 && grid[r][c - 1] == 1) {
+          result -= 2;
+        }
+      }
+    }
+  }
+
+  return result;
+};
 // @lc code=end
