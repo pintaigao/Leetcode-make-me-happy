@@ -48,4 +48,30 @@ var wiggleSort = function (nums) {
   }
 };
 
+/* O(n)的做法 */
+var wiggleSort = function (nums) {
+  //5001个桶
+  let bucket = new Array(5001).fill(0);
+  for (let num of nums) {
+    bucket[num]++;
+  }
+  let j = 5000;
+  //插空放 较大元素
+  for (let i = 1; i < nums.length; i += 2) {
+    while (bucket[j] == 0) {
+      j--;
+    }
+    nums[i] = j;
+    bucket[j]--;
+  }
+  //插空放 较小元素
+  for (let i = 0; i < nums.length; i += 2) {
+    while (bucket[j] == 0) {
+      j--;
+    }
+    nums[i] = j;
+    bucket[j]--;
+  }
+};
+
 // @lc code=end
