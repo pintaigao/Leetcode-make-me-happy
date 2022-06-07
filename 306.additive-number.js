@@ -27,16 +27,10 @@ var isAdditiveNumber = function (num) {
 
   let n = num.length;
   // i表示substring从0到i
-  // for (let i = 1; i <= parseInt(n / 2); ++i) {
-  //   // j表示substring从i到i+j,即后面接数的长度从1开始
-  //   for (let j = 1; Math.max(j, i) <= n - i - j; ++j) {
-  //     if (isValid(i, j, num)) return true;
-  //   }
-  // }
-
-  for (let i = 1; i <= n - 1; ++i) {
+  for (let i = 1; i <= parseInt(n / 2); ++i) {
     // j表示substring从i到i+j,即后面接数的长度从1开始
-    for (let j = 0; j <= i; ++j) {
+    // 而且因为后面substring的长度是j,所以j的最大值是n-i（i+j<=n）
+    for (let j = 1; Math.max(j, i) <= n - i - j; ++j) {
       if (isValid(i, j, num)) return true;
     }
   }
