@@ -40,7 +40,7 @@ var findOrder = function (numCourses, prerequisites) {
         // 遍历后续课程
         inDegree[course]--; // 将后置课的前置课数量-1
         if (inDegree[course] == 0) {
-          // 一旦减到0，让该课入列
+          // 一旦减到0，让该课入列，说明可以上该课了
           queue.push(course);
         }
       }
