@@ -11,5 +11,5 @@ var findBuildings = function (heights) {
       max = heights[i];
     }
   }
-  return ans;
+  return list;
 };
