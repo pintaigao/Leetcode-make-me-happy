@@ -23,7 +23,7 @@ var reverse = function (x) {
       return 0;
     }
     res = res * 10 + tmp;
-    x /= 10;
+    x = parseInt(x / 10);
   }
   return res;
 };
