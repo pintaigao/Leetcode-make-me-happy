@@ -32,10 +32,8 @@ var copyRandomList = function (head) {
   cur = head;
   // 2. 再把random连起来;
   while (cur) {
-    map.get(cur).next = map.get(cur.next);
-    if (map.get(cur).random) {
-      map.get(cur).random = map.get(cur.random);
-    }
+    map.get(cur).next = map.get(cur.next) || null;
+    map.get(cur).random = map.get(cur.random) || null;
     cur = cur.next;
   }
 
