@@ -59,6 +59,7 @@ var splitArray = function (nums, m) {
       right = mid;
     }
   }
+  // return left or right 都可以
   return left;
 };
 
