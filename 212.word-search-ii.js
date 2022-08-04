@@ -52,5 +52,72 @@ var findWords = function (board, words) {
   return ans;
 };
 
+/* Solution 2: Trie */
+var findWords = function (board, words) {
+  const dirs = [
+    [-1, 0],
+    [0, -1],
+    [1, 0],
+    [0, 1],
+  ];
+  const res = [];
+
+  const buildTrie = (root = {}) => {
+    for (const w of words) {
+      let node = root;
+      for (const c of w) {
+        node[c] = node[c] || {};
+        node[c].count = node[c].count + 1 || 1;
+        node = node[c];
+      }
+      node.end = w;
+    }
+    return root;
+  };
+
+  const search = (root, x, y) => {
+    const c = board?.[x]?.[y];
+    const node = root?.[c];
+    if (!c || !node) return;
+
+    if (node.end) {
+      res.push(node.end);
+      deleteNode(node.end);
+      node.end = null;
+    }
+
+    board[x][y] = "#";
+    for (const [dx, dy] of dirs) {
+      const i = x + dx;
+      const j = y + dy;
+
+      search(node, i, j);
+    }
+    board[x][y] = c;
+  };
+
+  const deleteNode = (w) => {
+    let toDelete = root;
+    for (const c of w) {
+      toDelete[c].count--;
+      if (!toDelete[c].count) {
+        delete toDelete[c];
+        break;
+      }
+      toDelete = toDelete[c];
+    }
+  };
+
+  const root = buildTrie();
+
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      search(root, i, j);
+    }
+  }
+
+  return res;
+};
+
 findWords([["a", "a"]], ["oath", "pea", "eat", "rain"]);
 // @lc code=end
