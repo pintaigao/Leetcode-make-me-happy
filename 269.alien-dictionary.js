@@ -16,7 +16,7 @@ var alienOrder = function (words) {
   for (let i = 0; i < words.length - 1; i++) {
     for (let j = 0; j < words[i].length; j++) {
       //预防“abc”,"ab"的这种情况
-      if (j >= words[i + 1].length()) return "";
+      if (j >= words[i + 1].length) return "";
       //如果字符相同，比较下一个
       if (words[i][j] == words[i + 1][j]) continue;
       //保存第一个不同的字符顺序，每一个key（代表字母），它的value表示排在她后面的字母
@@ -31,13 +31,12 @@ var alienOrder = function (words) {
   //2.拓扑排序
   //创建保存入度的数组
   let degrees = new Array(26).fill(-1);
-
   //注意，不是26字母都在words中出现，所以出度分为两种情况：没有出现的字母出度为-1，出现了的字母的出度为非负数
   for (let word of words) {
     //将出现过的字符的出度设定为0
     for (let c of [...word]) degrees[c.charCodeAt() - "a".charCodeAt()] = 0;
   }
-
+  // 每个字母出现的次数
   for (let key of Object.keys(map)) {
     for (let val of map[key]) {
       degrees[val.charCodeAt() - "a".charCodeAt()]++;
@@ -55,7 +54,7 @@ var alienOrder = function (words) {
     }
   }
 
-  // 从排在头的开始
+  // 执行图的操作，从排在头的开始
   while (list.length) {
     let cur = list.shift();
     sb.push(cur);
@@ -63,6 +62,7 @@ var alienOrder = function (words) {
     if (map.hasOwnProperty(cur)) {
       for (let c of map[cur]) {
         degrees[c.charCodeAt() - "a".charCodeAt()]--;
+        // 等于0，说明没有字母排在它前面了（接在它的前面）
         if (degrees[c.charCodeAt() - "a".charCodeAt()] == 0) list.push(c);
       }
     }
@@ -73,5 +73,5 @@ var alienOrder = function (words) {
   else return sb.join("");
 };
 
-console.log(alienOrder(["abc", "ab"]));
+console.log(alienOrder(["wrt", "wrf", "er", "ett", "rftt"]));
 // @lc code=end
