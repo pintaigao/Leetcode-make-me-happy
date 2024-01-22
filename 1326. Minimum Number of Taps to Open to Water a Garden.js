@@ -14,16 +14,19 @@ function minTaps(n, ranges) {
 
   // 遍历水龙头的位置和覆盖范围
   for (let i = 0; i <= n; i++) {
+    // 为了确保每个水龙头的覆盖范围始终在花园的有效边界内
     // 当前水龙头的位置
     const left = Math.max(0, i - ranges[i]);
     // 当前水龙头的覆盖范围
     const right = Math.min(n, i + ranges[i]);
 
     // 更新dp数组，使得在覆盖范围内所需的水龙头数量最小
-    for (let j = left + 1; j <= right; j++) {
+    for (let j = left; j <= right; j++) {
       dp[j] = Math.min(dp[j], dp[left] + 1);
     }
   }
+
+  console.log(dp);
 
   // 返回dp数组的最后一个元素，即为最少需要打开的水龙头数量
   return dp[n] === Infinity ? -1 : dp[n];
@@ -31,12 +34,12 @@ function minTaps(n, ranges) {
 
 // 测试
 const n = 5;
-const ranges = [3, 4, 1, 1, 0, 0];
+const ranges = [0, 1, 0, 0, 1, 0];
 const result = minTaps(n, ranges);
 console.log(result);
 
 // 贪心算法
-var minTaps = function (n, ranges) {
+var minTaps2 = function (n, ranges) {
   // 初始化一个数组 'rightMost' 来记录每个点可以覆盖到的最远右端点
   const rightMost = new Array(n + 1).fill(0).map((_, i) => i);
 
