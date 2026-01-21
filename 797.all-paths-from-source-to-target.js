@@ -87,5 +87,32 @@ var allPathsSourceTarget3 = function (graph) {
   console.log(res);
   return res;
 };
-allPathsSourceTarget3([[4, 3, 1], [3, 2, 4], [3], [4], []]);
-// @lc code=end
+
+var allPathsSourceTarget4 = function (graph) {
+  let n = graph.length;
+  let res = [];
+  let node = [0]
+  let paths = [[0]];
+  while (node.length) {    
+    // 核心
+    let cur = node.shift();
+    let path = paths.shift();
+    
+    for (let child of graph[cur]) {    
+      if (child === n - 1) {
+        res.push([...path, child])
+      } else {
+        node.push(child);
+        paths.push([...path, child])
+      }
+    }
+  }
+
+  return res;
+};
+
+allPathsSourceTarget4([[1, 2], [3], [3], []]);
+
+
+
+

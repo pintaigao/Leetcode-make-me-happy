@@ -85,6 +85,27 @@ let minCost4 = function (s, cost) {
   return ans;
 };
 
+var minCost5 = function (colors, neededTime) {
+  let n = colors.length;
+  let result = new Array(n).fill(0);
+
+  for (let i = 1; i < n; i++) {
+    if (colors[i] === colors[i - 1]) {
+      minCost = Math.min(neededTime[i], neededTime[i - 1]);
+      result[i] = minCost + result[i - 1]
+      neededTime[i] = Math.max(neededTime[i], neededTime[i-1]);
+    } else {
+      result[i] = result[i] + result[i - 1]
+    }
+  }
+
+  console.log(result);
+  console.log(result[n - 1]);
+
+  return result[n - 1];
+};
+
 // Main Function
-minCost4("aaabaa", [1, 2, 3, 4, 5, 6]);
+minCost5("aaabbbabbbb", [3,5,10,7,5,3,5,5,4,8,1]);
+
 // @lc code=end
