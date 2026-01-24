@@ -121,17 +121,10 @@ var closedIsland2 = function (grid) {
         let [curI, curJ] = queue.shift();
         // 如果是超过边界或者是1，就跳过
         for (let dir of directions) {
-          if (
-            curI + dir[0] >= 0 &&
-            curI + dir[0] < rows &&
-            curJ + dir[1] >= 0 &&
-            curJ + dir[1] < cols &&
-            grid[curI + dir[0]][curJ + dir[1]] == 0
-          ) {
+          if (curI + dir[0] >= 0 && curI + dir[0] < rows && curJ + dir[1] >= 0 && curJ + dir[1] < cols && grid[curI + dir[0]][curJ + dir[1]] == 0) {
             queue.push([curI + dir[0], curJ + dir[1]]);
           }
         }
-
         // 淹没它
         grid[curI][curJ] = 1;
       }
