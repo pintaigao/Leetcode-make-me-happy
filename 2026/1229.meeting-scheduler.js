@@ -17,8 +17,7 @@ var minAvailableDuration = function (slots1, slots2, duration) {
   slots1.sort((a, b) => a[0] - b[0]);
   slots2.sort((a, b) => a[0] - b[0]);
 
-  let pointer1 = 0,
-    pointer2 = 0;
+  let pointer1 = 0, pointer2 = 0;
 
   while (pointer1 < slots1.length && pointer2 < slots2.length) {
     // 两个人的交汇时间，左边是最晚的那一个时间，右边是最早的那一个时间

@@ -11,11 +11,8 @@
  */
 // Approach 1: Hash Table of Heaps
 var diagonalSort = function (mat) {
-  let m = mat.length;
-  let n = mat[0].length;
-
   // Data structure to store the diagonals.
-  let diagonals = {};
+  let m = mat.length, n = mat[0].length, diagonals = {};
 
   // 按照斜的方向，把每一个斜线（key=row-col）上的值放入到diagonals map中(value)
   // diagonals[row - col].push(mat[row][col]);
@@ -123,7 +120,7 @@ var diagonalSort3 = function (mat) {
   for (let i = 0; i < m; i++) {
     let arr = [];
     // 把每一个斜线上的值放入到arr中
-    for (let j = 0, k = i; j < n, k < m; j++, k++) {
+    for (let k = i, j = 0; k < m && j < n; k++, j++) {
       if (mat[k][j]) {
         arr.push(mat[k][j]);
       } else {
@@ -133,7 +130,7 @@ var diagonalSort3 = function (mat) {
     // 排序
     arr.sort((a, b) => a - b);
     // 放回原来的位置
-    for (let j = 0, k = i, x = 0; j < n, k < m; j++, k++, x++) {
+    for (let j = 0, k = i, x = 0; j < n k < m; j++, k++, x++) {
       if (mat[k][j]) {
         mat[k][j] = arr[x];
       } else {
