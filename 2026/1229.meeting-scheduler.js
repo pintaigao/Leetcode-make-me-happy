@@ -14,8 +14,8 @@
 // Approach 1: Two pointers O(MlogM+NlogN) O(1)
 var minAvailableDuration = function (slots1, slots2, duration) {
   // 按开始available时间排序
-  slots1.sort((a, b) => a[0] - b[0]);
-  slots2.sort((a, b) => a[0] - b[0]);
+  // slots1.sort((a, b) => a[0] - b[0]);
+  // slots2.sort((a, b) => a[0] - b[0]);
 
   let pointer1 = 0, pointer2 = 0;
 

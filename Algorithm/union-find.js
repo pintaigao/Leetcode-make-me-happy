@@ -1,6 +1,6 @@
 class UF {
     constructor(n) {
-        // 记录连通分量
+        // 记录连通分量，一开始互不连通，有n个连通分量,即每个节点自成一个分量，自己可以连通自己
         this._count = n;
         // 节点 x 的父节点是 parent[x]
         this.parent = new Array(n);
