@@ -5,6 +5,8 @@ var removeDuplicates = function (nums) {
   }
   let slow = 0, fast = 0;
   while (fast < nums.length) {
+    // 如果 nums[fast] == nums[slow]，fast 继续往前走，直到遇到不相等的元素（nums[fast] !== nums[slow]）
+    // 更新 slow 指针到下一位，并把 nums[fast] 的值赋给 nums[slow] （这样子nums[slow]不和nums[slow-1]相等）
     if (nums[fast] !== nums[slow]) {
       slow++;
       // 维护 nums[0..slow] 无重复

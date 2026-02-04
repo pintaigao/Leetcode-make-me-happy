@@ -17,10 +17,8 @@
  * @param {ListNode} list2
  * @return {ListNode}
  */
-var mergeTwoLists = function (list1, list2) {
-  let preHead = new ListNode(-1);
-
-  let prev = preHead;
+var mergeTwoLists = function (l1, l2) {
+  let preHead = new ListNode(-1), prev = preHead;
 
   while (l1 && l2) {
     if (l1.val <= l2.val) {
