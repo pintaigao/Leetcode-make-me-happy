@@ -20,4 +20,6 @@ var longestCommonPrefix = function (strs) {
     }
   return prefix;
 };
+
+// 
 // @lc code=end
