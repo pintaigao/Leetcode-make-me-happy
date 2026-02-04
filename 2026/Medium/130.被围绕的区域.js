@@ -51,7 +51,6 @@ var solveBFS = function (board) {
 
         if (board[r][c] === 'O') {
           let queue = [[r, c]];
-
           board[r][c] = 'E';
 
           while (queue.length) {
