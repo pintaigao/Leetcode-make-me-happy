@@ -94,7 +94,7 @@ var findCircleNum = function (isConnected) {
 };
 
 // Solution 3: Union Find
-import UF from '../Algorithm/union-find.js';
+import UF from '../../Algorithm/union-find.js';
 var findCircleNum = function (isConnected) {
   let n = isConnected.length;
   let uf = new UF(n);

@@ -1,4 +1,4 @@
-import UF from '../Algorithm/union-find'
+import UF from '../../Algorithm/union-find'
 
 var equationsPossible = function (equations) {
   // 26 个英文字母

@@ -1,4 +1,4 @@
-import { UF } from '../Algorithm/union-find.js';
+import { UF } from '../../Algorithm/union-find.js';
 /**
  * @param {number} n
  * @param {number[][]} edges
