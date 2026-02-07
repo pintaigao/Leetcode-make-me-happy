@@ -17,6 +17,8 @@
 
 // 普通人的做法
 var prisonAfterNDays = function (cells, n) {
+  let hasCycle = false, cycle = 0, set = new Set();
+
   // 根据条件，生成下一日的cell
   let nextDay = function (cells) {
     let nextDayCell = cells.map(() => 0);
@@ -29,10 +31,6 @@ var prisonAfterNDays = function (cells, n) {
   if (cells == null || cells.length == 0 || n <= 0) {
     return cells;
   }
-
-  let hasCycle = false;
-  let cycle = 0;
-  let set = new Set();
 
   // 每天一循环
   for (let i = 0; i < n; i++) {
