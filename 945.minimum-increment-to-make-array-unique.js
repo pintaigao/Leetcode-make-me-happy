@@ -13,13 +13,25 @@
 // sort完成后，每次当前和前一个相比较，最少要比前一个大1
 var minIncrementForUnique = function (A) {
   A.sort((a, b) => a - b);
-  let res = 0,
-    need = 0;
+  let res = 0, need = 0;
   for (let a of A) {
     // need - a < 0 表示当前值比前一个大，不需要操作
     res += Math.max(need - a, 0);
     // 下一个起码是这个数+1以保证不一样
     need = Math.max(a, need) + 1;
+  }
+  return res;
+};
+
+// 或者
+var minIncrementForUnique = function (A) {
+  A.sort((a, b) => a - b);
+  let res = 0, need = 0;
+  for (let i = 0; i < A.length; i++) {
+    if (A[i] <= A[i - 1]) {
+      res += A[i - 1] + 1 - A[i];
+      A[i] = A[i - 1] + 1;
+    }
   }
   return res;
 };
