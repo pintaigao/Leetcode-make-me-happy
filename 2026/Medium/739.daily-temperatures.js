@@ -12,13 +12,13 @@
 
 // Solution 1: Stack
 var dailyTemperatures = function (temperatures) {
-  let stack = [];
-  let res = [];
+  let stack = [], res = [];
 
   // 循环每个温度
   for (let i = 0; i < temperatures.length; i++) {
     // 如果当前温度比栈顶元素大，则将当前温度放入栈中,并将栈顶元素取出，放入结果数组中
     while (stack.length && temperatures[i] > temperatures[stack[0]]) {
+      // 说明当前温度比栈顶元素大，则将当前温度的 index 放入栈中,并将栈顶元素取出，放入结果数组中
       let index = stack.shift();
       res[index] = i - index;
     }
