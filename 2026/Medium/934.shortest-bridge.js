@@ -12,37 +12,14 @@
 
 // DFS find the island -> BFS expand the island
 var shortestBridge = function (A) {
-  let m = A.length,
-    n = A[0].length;
-
-  let visited = new Array(m).fill(null).map(() => Array(n));
-
-  let dirs = [
-    [1, 0],
-    [-1, 0],
-    [0, 1],
-    [0, -1],
-  ];
-  let q = [];
-  let found = false;
+  let m = A.length, n = A[0].length, dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]], q = [], found = false;
 
   let dfs = function (i, j) {
     //已经访问过，或者是岛屿的边界，则返回
-    if (
-      i < 0 ||
-      j < 0 ||
-      i >= A.length ||
-      j >= A[0].length ||
-      visited[i][j] ||
-      A[i][j] == 0
-    ) {
-      return;
-    }
-    visited[i][j] = true;
+    if (i < 0 || j < 0 || i >= A.length || j >= A[0].length || A[i][j] === 'visited' || A[i][j] == 0) { return; }
+    A[i][j] = 'visited';
     q.unshift([i, j]);
-    for (let dir of dirs) {
-      dfs(i + dir[0], j + dir[1]);
-    }
+    for (let dir of dirs) { dfs(i + dir[0], j + dir[1]); }
   };
 
   // 1. dfs to find an (一个) island, mark it in `visited`
@@ -59,25 +36,22 @@ var shortestBridge = function (A) {
     }
   }
 
-  console.log(visited);
-  console.log(q);
-
   // 2. bfs to expand this island
   let step = 0;
   while (q.length !== 0) {
+    // 一批一批
     let size = q.length;
     while (size > 0) {
       let cur = q.pop();
       for (let dir of dirs) {
-        let i = cur[0] + dir[0];
-        let j = cur[1] + dir[1];
-        if (i >= 0 && j >= 0 && i < m && j < n && !visited[i][j]) {
+        let i = cur[0] + dir[0], j = cur[1] + dir[1];
+        if (i >= 0 && j >= 0 && i < m && j < n && A[i][j] !== 'visited') {
           // 最先找到的岛屿的边界，就是最短的桥
           if (A[i][j] == 1) {
             return step;
           }
           q.unshift([i, j]);
-          visited[i][j] = true;
+          A[i][j] = 'visited';
         }
       }
       size -= 1;
