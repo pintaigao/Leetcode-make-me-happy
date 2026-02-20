@@ -1,4 +1,4 @@
 .idea/
 .vscode/
 .DS_Store
-./Frontend Algorithm/React/node_modules/
+*/node_modules/
