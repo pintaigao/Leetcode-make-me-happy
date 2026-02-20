@@ -1,6 +1,9 @@
 // import {lazy} from 'react'
-import {createBrowserRouter} from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import JobBoards from "../pages/job-boards/job-boards.tsx";
+import WhiteBoard from "../pages/white-board/white-board.tsx";
+import ContactForm from "../pages/contact-form/contact-form.tsx";
+import Tabs from "../pages/tabs/tabs.tsx";
 // import MainLayout from '../layouts/MainLayout'
 // import ManageLayout from '../layouts/ManageLayout'
 // import QuestionLayout from '../layouts/QuestionLayout'
@@ -31,6 +34,18 @@ const router = createBrowserRouter([
         path: 'job-boards',
         element: <JobBoards/>
       },
+      {
+        path: 'white-board',
+        element: <ContactForm/>
+      },
+      {
+        path: 'contact-form',
+        element: <WhiteBoard/>
+      },
+      {
+        path: 'tabs',
+        element: <Tabs/>
+      }
     ]
   }
 ])

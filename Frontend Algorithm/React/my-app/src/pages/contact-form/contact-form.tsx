@@ -1,6 +1,14 @@
+import './contact-form.scss';
+import useSubmitForm from "./useSubmitForm.ts";
+const SUBMIT_URL = 'https://questions.greatfrontend.com/api/questions/contact-form';
 
-import submitForm from './contact-form.scss';
 export default function ContactForm() {
+  function submitForm(event) {
+    useSubmitForm(event, SUBMIT_URL).then((response) => {
+      console.log(response);
+    });
+  }
+  
   return (
     <form
       // Ignore the onSubmit prop, it's used by GFE to
