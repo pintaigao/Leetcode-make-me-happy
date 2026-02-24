@@ -61,6 +61,7 @@ class LRUCache {
     // key -> Node(key, val)
     this.capacity = capacity;
     // Node(k1, v1) <-> Node(k2, v2)...
+    // {key: Node(key, value)}
     this.map = {};
     // 最大容量
     this.cache = new DoubleList();
@@ -72,15 +73,6 @@ class LRUCache {
   说的有点玄幻，实际上很简单，就是尽量让 LRU 的主方法 get 和 put 避免直接操作 map 和 cache 的细节。
   */
 
-  /* 将某个 key 提升为最近使用的 */
-  makeRecently(key) {
-    let x = this.map[key];
-    // 先从链表中删除这个节点
-    this.cache.remove(x);
-    // 重新插到队尾
-    this.cache.addLast(x);
-  }
-
   /* 添加最近使用的元素 */
   addRecently(key, val) {
     let x = new Node(key, val);
@@ -88,6 +80,15 @@ class LRUCache {
     this.cache.addLast(x);
     // 在 map 中添加 key 的映射
     this.map[key] = x;
+  }
+
+  /* 将某个 key 提升为最近使用的 */
+  makeRecently(key) {
+    let x = this.map[key];
+    // 先从链表中删除这个节点
+    this.cache.remove(x);
+    // 重新插到队尾
+    this.cache.addLast(x);
   }
 
   /* 删除某一个 key */
@@ -104,29 +105,21 @@ class LRUCache {
     // 链表头部的第一个元素就是最久未使用的
     let deletedNode = this.cache.removeFirst();
     // 同时别忘了从 map 中删除它的 key
-    let deletedKey = deletedNode.key;
-    delete this.map[deletedKey];
+    delete this.map[deletedNode.key];
   }
 
-  /**
-   * @param {number} key
-   * @return {number}
-   */
+  // 以下为 LRUCache 的主方法
   get(key) {
-    if (!this.map[key]) {
-      return -1;
-    }
+    if (!this.map[key]) { return -1; }
     // 将该数据提升为最近使用的
     this.makeRecently(key);
+
     return this.map[key].value;
   }
-  /**
-   * @param {number} key
-   * @param {number} value
-   * @return {void}
-   */
+
   put(key, value) {
     if (this.map[key]) {
+      // 不能直接 makeRecently，因为 value 可能发生变化，例如 put(1, 1) 后 put(1, 10)，这时 key = 1 的 value 就变了
       // 删除旧的数据
       this.deleteKey(key);
       // 新插入的数据为最近使用的数据

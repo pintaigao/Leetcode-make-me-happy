@@ -5,6 +5,7 @@ import WhiteBoard from "../pages/white-board/white-board.tsx";
 import ContactForm from "../pages/contact-form/contact-form.tsx";
 import Tabs from "../pages/tabs/tabs.tsx";
 import Accordion from "../pages/accordion/accordian.tsx";
+import CustomHooks from '../pages/custom-hooks/custom-hooks.tsx';
 // import MainLayout from '../layouts/MainLayout'
 // import ManageLayout from '../layouts/ManageLayout'
 // import QuestionLayout from '../layouts/QuestionLayout'
@@ -33,23 +34,27 @@ const router = createBrowserRouter([
       // },
       {
         path: 'job-boards',
-        element: <JobBoards/>
+        element: <JobBoards />
       },
       {
         path: 'white-board',
-        element: <ContactForm/>
+        element: <ContactForm />
       },
       {
         path: 'contact-form',
-        element: <WhiteBoard/>
+        element: <WhiteBoard />
       },
       {
         path: 'tabs',
-        element: <Tabs/>
+        element: <Tabs />
       },
       {
         path: 'accordion',
-        element: <Accordion/>
+        element: <Accordion />
+      },
+      {
+        path: 'custom-hooks',
+        element: <CustomHooks />
       }
     ]
   }
