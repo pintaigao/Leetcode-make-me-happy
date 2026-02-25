@@ -1,0 +1,18 @@
+App {
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12;
+  }
+}

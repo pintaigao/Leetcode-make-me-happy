@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from './pages/App';
-import './styles.css';
+import './styles.scss';
 
 async function enableMocking() {
   // Only enable MSW in dev (Vite sets import.meta.env.DEV)

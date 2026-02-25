@@ -17,6 +17,7 @@ export function useIntersection<T extends Element>({
   useEffect(() => {
     if (!enabled) return;
     const el = ref.current;
+    console.log(el)
     if (!el) return;
 
     const obs = new IntersectionObserver(

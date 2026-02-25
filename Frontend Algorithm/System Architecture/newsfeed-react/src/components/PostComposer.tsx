@@ -34,15 +34,18 @@ export default function PostComposer() {
       imageUrl: imageUrl.trim() || undefined,
     });
   }, [canSubmit, mutation, message, imageUrl]);
+  
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      console.log('onKeyDown', e);
       // Ctrl/Cmd + Enter to post
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
         submit();
       }
     };
+    
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [submit]);
@@ -57,16 +60,14 @@ export default function PostComposer() {
             className="input"
             placeholder="What's on your mind?"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
+            onChange={(e) => setMessage(e.target.value)}/>
           <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
             <input
               className="input"
               placeholder="Optional image URL (https://...)"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              aria-label="Image URL"
-            />
+              aria-label="Image URL"/>
             <button className="btn" onClick={submit} disabled={!canSubmit || mutation.isPending}>
               {mutation.isPending ? 'Posting…' : 'Post'}
             </button>
