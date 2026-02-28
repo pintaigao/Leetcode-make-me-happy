@@ -11,7 +11,7 @@
  */
 // Solution 1: 模拟
 var candyCrush = function (board) {
-  let [row, column, found] = [board.length, board[0].length, true];
+  let row = board.length, column = board[0].length, found = true;
   // 一遍，一遍的消除
   while (found) {
     found = false;
@@ -27,7 +27,8 @@ var candyCrush = function (board) {
           found = true;
           let ind = j;
           while (ind < column && Math.abs(board[i][ind]) == val) {
-            board[i][ind++] = -val;
+            board[i][ind] = -val;
+            ind += 1
           }
         }
 
@@ -36,7 +37,8 @@ var candyCrush = function (board) {
           found = true;
           let ind = i;
           while (ind < row && Math.abs(board[ind][j]) == val) {
-            board[ind++][j] = -val;
+            board[ind][j] = -val;
+            ind += 1;
           }
         }
       }
@@ -52,6 +54,7 @@ var candyCrush = function (board) {
         let storeInd = row - 1;
         for (let i = row - 1; i >= 0; i--) {
           if (board[i][j] > 0) {
+
             board[storeInd][j] = board[i][j];
             storeInd -= 1;
           }

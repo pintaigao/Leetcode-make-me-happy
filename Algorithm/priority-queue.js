@@ -1,4 +1,4 @@
-class MyPriorityQueue {
+export class MyPriorityQueue {
   constructor(compare = (a, b) => a - b, capacity = Number.MAX_SAFE_INTEGER) {
     this._compare = compare; // compare 默认小顶堆
     this._capacity = capacity;
