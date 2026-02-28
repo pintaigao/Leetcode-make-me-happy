@@ -21,6 +21,7 @@ class UF {
     // 将两棵树合并为一棵
     // this.parent[rootP] = rootQ;
     // parent[rootQ] = rootP 也一样
+    //parent[rootQ] = rootP 表示把q的根节点是 rootP
     // 小树接到大树下面，较平衡
     if (this.size[rootP] < this.size[rootQ]) {
       this.parent[rootP] = rootQ;
@@ -56,12 +57,12 @@ class UF {
     // return this.parent[x];
 
     // 递归写法更好理解版
-    if (this.parent[x] === x) {
-      return x;
-    }
-    var root = this.find(this.parent[x]);
-    this.parent[x] = root;
-    return root;
+    // if (this.parent[x] === x) {
+    //   return x;
+    // }
+    // var root = this.find(this.parent[x]);
+    // this.parent[x] = root;
+    // return root;
   }
 
   // 返回当前的连通分量个数
@@ -77,3 +78,18 @@ class UF {
 }
 
 export { UF };
+
+// 执行例子
+let uf = new UF(10);
+console.log(uf.count_()); // 10
+uf.union(0, 1);
+console.log(uf.count_()); // 9
+uf.union(1, 5);
+uf.union(1, 9);
+uf.union(2, 8);
+uf.union(8, 6);
+uf.union(7, 2);
+console.log(uf.count_()); // 8
+console.log(uf.parent);
+
+
