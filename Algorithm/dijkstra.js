@@ -14,7 +14,8 @@ class State {
 // 返回从起点 src 到其他节点的最小路径权重和
 function dijkstra(graph, src) {
   // 记录从起点 src 到其他节点的最小路径权重和
-  // distTo[i] 表示从起点 src 到节点 i 的最小路径权重和
+
+  // distTo[i] 表示从起点 src 到节点 i 的最小路径权重和 !!!
   const distTo = Array(graph.size()).fill(Infinity);
 
   // 优先级队列，distFromStart 较小的节点排在前面
