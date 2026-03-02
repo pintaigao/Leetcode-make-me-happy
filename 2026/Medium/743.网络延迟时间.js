@@ -18,11 +18,8 @@ var networkDelayTime = function (times, n, k) {
 
 		while (!pq.isEmpty()) {
 			const [curDist, curNode] = pq.dequeue();
-
 			// 如果已有更优路径，则跳过
 			if (distTo[curNode] < curDist) continue;
-
-
 			// 遍历当前节点的邻居
 			for (const [nextNode, weight] of g[curNode]) {
 				const nextDist = curDist + weight;
@@ -73,7 +70,7 @@ var networkDelayTime2 = function (times, n, k) {
 			}
 		}
 
-		// 如果 x < 0，所有点都 done=true（都选完了）。这时最短路都定完，可以计算答案,说明没有找到没有被访问过的节点，或者所有没有被访问过的节点距离都是 Infinity，说明剩余的节点不可达，直接返回结果
+		// 如果 x < 0，所有点都 done=true（都选完了）。这时最短路都定完，可以计算答案说明没有找到没有被访问过的节点，或者所有没有被访问过的节点距离都是 Infinity，说明剩余的节点不可达，直接返回结果
 		if (x < 0) {
 			return Math.max(...dis)
 		}
