@@ -42,12 +42,11 @@ var minimumEffortPath = function (heights) {
         // Math.max的原因是因为题目要求的是路径上每一步的体力消耗的最大值，而不是所有步骤的体力消耗之和。
         let nextEffortFromStart = Math.max(curEffortFromStart, Math.abs(matrix[nextRow][nextCol] - matrix[curRow][curCol]));
         // let nextEffortFromStart = curEffortFromStart + Math.abs(matrix[nextRow][nextCol] - matrix[curRow][curCol]);
-        // 已经存在更优路径，则跳过
-        if (distTo[nextRow][nextCol] <= nextEffortFromStart) {
-          continue;
+        // 存在更优路径，则更新 distTo 数组和优先级队列
+        if (distTo[nextRow][nextCol] > nextEffortFromStart) {
+          distTo[nextRow][nextCol] = nextEffortFromStart;
+          pq.push(new State(nextRow, nextCol, nextEffortFromStart));
         }
-        pq.push(new State(nextRow, nextCol, nextEffortFromStart));
-        distTo[nextRow][nextCol] = nextEffortFromStart;
       }
       console.log(pq._data);
       console.log(d);
