@@ -12,8 +12,7 @@ var isSameTree = function (p, q) {
   }
 
   // 判断其他节点是否相同
-  let leftTree = isSameTree(p.left, q.left);
-  let rightTree = isSameTree(p.right, q.right);
+  let leftTree = isSameTree(p.left, q.left), rightTree = isSameTree(p.right, q.right);
   // 判断左子树和右子树是否相同
   if (!leftTree || !rightTree) {
     return false;
