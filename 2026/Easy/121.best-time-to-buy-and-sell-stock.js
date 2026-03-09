@@ -9,10 +9,11 @@
  * @param {number[]} prices
  * @return {number}
  */
+// 
 var maxProfit = function (prices) {
-  let minprice = Number.MAX_VALUE;
-  let maxProfit = 0;
+  let minprice = Number.MAX_VALUE, maxProfit = 0;
   for (let i = 0; i < prices.length; i++) {
+
     if (prices[i] < minprice) {
       minprice = prices[i];
     } else if (prices[i] - minprice > maxProfit) {
@@ -21,4 +22,18 @@ var maxProfit = function (prices) {
   }
   return maxProfit;
 };
+
+var maxProfit2 = function (prices) {
+  let minprice = Number.MAX_VALUE, maxProfit = 0;
+  for (let i = 0; i < prices.length; i++) {
+
+    if (prices[i] < minprice) {
+      minprice = prices[i];
+    }
+
+    maxProfit = Math.max(maxProfit, prices[i] - minprice);
+  }
+  return maxProfit;
+};
+
 // @lc code=end
