@@ -19,7 +19,11 @@
  */
 /* Solution 1：Linear Time */
 var countNodes = function (root) {
-  return root != null ? 1 + countNodes(root.right) + countNodes(root.left) : 0;
+  if (root == null) {
+    return 0;
+  }
+
+  return countNodes(root.left) + countNodes(root.right) + 1;
 };
 
 /* Solution 2: count level */

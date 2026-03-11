@@ -13,8 +13,7 @@ var summaryRanges = function (nums) {
   if (!nums.length) {
     return [];
   }
-  let pointer = 0;
-  let result = [];
+  let pointer = 0, result = [];
 
   for (let i = 0; i < nums.length; i++) {
     pointer = i;
