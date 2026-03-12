@@ -1,7 +1,7 @@
 // Debounce：过一段时间后才执行
-export default function debounce(func, wait) {
+export function debounce(func, wait) {
   let timeout;
-  
+
   // 1. debounce 要返回一个function，so return function(){}
   // 2. 这个 function 要能执行任何 func with args，所以 func,apply(this, arg)
   // 3. 必须要...args,因为如果是 args，只会传一个参数，原方程可能有很多参数
@@ -12,15 +12,18 @@ export default function debounce(func, wait) {
     clearTimeout(timeout);
     // Reset the timeout, restarting the wait period
     timeout = setTimeout(() => {
+      console.log(this);
       func.apply(this, args);
     }, wait);
   };
 }
 
+function resize(width) {
+  console.log("This is a resize with width:", width);
+}
+
 // 用法
-const handleResize = debounce(() => {
-  console.log('Window resized');
-}, 3000);
+const handleResize = debounce((width) => resize(width), 3000);
 
 
 // window.addEventListener('resize', handleResize);
@@ -43,32 +46,32 @@ setTimeout(() => {
 }, 2000); // 2 秒后再次调用
 setTimeout(() => {
   console.log("Calling handleResize again after 4 seconds");
-  handleResize();
+  handleResize(7, 8, 9);
 }, 4000); // 4 秒后再次调用
 // 只有在最后一次调用后的 3 秒后，才会输出 'Window resized'
 
 // leading + trailing debounce 的实现
-export default function debounce(func, wait, options = {}) {
+export function debounce2(func, wait, options = {}) {
   let timeout, lastArgs, lastThis;
-  
-  const {leading = false, trailing = true} = options;
-  
+
+  const { leading = false, trailing = true } = options;
+
   return function (...args) {
     lastArgs = args;
     lastThis = this;
-    
+
     const callNow = leading && !timeout;
-    
+
     clearTimeout(timeout);
-    
+
     timeout = setTimeout(() => {
       timeout = null;
-      
+
       if (trailing && !callNow) {
         func.apply(lastThis, lastArgs);
       }
     }, wait);
-    
+
     if (callNow) {
       func.apply(lastThis, lastArgs);
     }
