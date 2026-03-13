@@ -5,8 +5,9 @@ foo();
 // 3
 
 // Immediately invoked async function expression
-(async function() {
+(async function () {
   console.log(await Promise.resolve(3));
 })();
 // 3 
-AwaitRestrictionExample01.js
+
+console.log(Promise.resolve(3));
