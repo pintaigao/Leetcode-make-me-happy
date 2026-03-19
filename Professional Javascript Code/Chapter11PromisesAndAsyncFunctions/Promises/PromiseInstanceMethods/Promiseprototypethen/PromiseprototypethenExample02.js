@@ -15,4 +15,4 @@ p1.then('gobbeltygook');
 p2.then(null, () => onRejected('p2'));
 
 // p2 rejected (after 3s) 
-PromiseThenExample02.js
+

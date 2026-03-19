@@ -1,3 +1,3 @@
 class MyThenable {
-  then() {}
+  then() { }
 }
