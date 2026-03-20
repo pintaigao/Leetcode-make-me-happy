@@ -10,11 +10,12 @@ async function baz() {
   console.log('baz');
 }
 
-foo();
+foo().then((value) => {
+  console.log(value); // undefined
+});
 bar();
 baz();
 
 // baz
 // bar
 // foo
-HaltResumeExecutionExample01.js

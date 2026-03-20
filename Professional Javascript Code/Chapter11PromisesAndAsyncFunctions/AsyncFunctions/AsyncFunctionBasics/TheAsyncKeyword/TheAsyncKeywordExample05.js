@@ -18,6 +18,9 @@ async function baz() {
     then(callback) { callback('baz'); }
   };
   return thenable;
+
+  // Or, more concisely:
+  // return { then(callback) { callback('baz') } }
 }
 baz().then(console.log);
 // baz
@@ -28,4 +31,3 @@ async function qux() {
 }
 qux().then(console.log);
 // qux
-AsyncExample01.js
