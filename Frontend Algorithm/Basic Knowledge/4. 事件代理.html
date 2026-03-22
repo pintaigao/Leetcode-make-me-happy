@@ -1,0 +1,109 @@
+<html>
+<!-- 动态 -->
+<div>
+  <ul id="list">
+    <li>Item 1</li>
+  </ul>
+
+  <button id="add">Add Item</button>
+</div>
+<!-- 删除 -->
+<div>
+  <ul id="todoList">
+    <li>
+      Learn JavaScript
+      <button class="remove-btn">Remove</button>
+    </li>
+  </ul>
+
+  <button id="addTodo">Add Todo</button>
+</div>
+<!-- 待办事项 -->
+<ul id="todo-list">
+  <li data-id="1" data-custom="1.1">Learn JavaScript</li>
+  <li data-id="2" data-custom="2.1">Practice React</li>
+  <li data-id="3" data-custom="3.1">Prepare interview</li>
+</ul>
+<!-- 动态展示 -->
+<div id="dynamicShowing">
+  <ul>
+    <li>
+      <!-- button Here -->
+    </li>
+  </ul>
+  <p id="displayContent">
+    <!-- Content Here -->
+  </p>
+</div>
+<script>
+  // 动态
+  let list = document.getElementById('list'), addBtn = document.getElementById('add'), count = 2;
+
+  // 事件代理：只给父元素 list 绑定一次
+  list.addEventListener('click', function (event) {
+    const item = event.target.closest('li');
+    if (!item) return;
+    // 展示点击事件 click -> console.log
+    console.log('Clicked:', item.textContent);
+  });
+
+  // 动态新增 child
+  addBtn.addEventListener('click', function () {
+    const li = document.createElement('li');
+    li.textContent = `Item ${count++}`;
+    list.appendChild(li);
+  });
+
+  // 删除
+  const todoList = document.getElementById('todoList');
+  const addTodoBtn = document.getElementById('addTodo');
+
+  let todoIndex = 2;
+
+  // 只绑定一次到父元素
+  todoList.addEventListener('click', function (event) {
+    // 判断是不是点到了删除按钮
+    if (event.target.matches('.remove-btn')) {
+      const li = event.target.closest('li');
+      if (li) {
+        li.remove();
+      }
+    }
+  });
+
+  // 动态新增一条 todo
+  addTodoBtn.addEventListener('click', function () {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      New Task ${todoIndex++}
+      <button class="remove-btn">Remove</button>
+    `;
+    todoList.appendChild(li);
+  });
+
+  // 待办事项
+  const todoList2 = document.getElementById('todo-list');
+
+  todoList2.addEventListener('click', function (event) {
+    const item = event.target;
+    if (!item) return;
+
+    console.log('Clicked item id:', item.dataset.id);
+    console.log('Clicked item custom data:', item.dataset.custom);
+    console.log('Clicked item text:', item.textContent);
+  });
+
+  // 动态展示
+  let showContentBtn = document.getElementById('showTime'), displayContent = document.getElementById('displayContent');
+  displayContent.textContent = 'Content: 1';
+  for (let i = 0; i < 5; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = `Show Content ${i + 1}`;
+    btn.addEventListener('click', function () {
+      displayContent.textContent = `Content: ${i + 1}`;
+    });
+    document.querySelector('#dynamicShowing ul').appendChild(btn);
+  }
+</script>
+
+</html>

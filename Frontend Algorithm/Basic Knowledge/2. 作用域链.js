@@ -21,6 +21,8 @@ function section(title) {
   console.log(`\n=== ${title} ===`);
 }
 
+
+// 1. 作用域链决定了变量查找顺序
 section('Example 1: 最基础的向外查找');
 
 const globalName = 'global';
@@ -34,9 +36,7 @@ function outer() {
     console.log('innerName ->', innerName);
     console.log('outerName ->', outerName);
     console.log('globalName ->', globalName);
-    console.log(
-      '[说明] inner 先找自己, 再找 outer, 最后找到全局变量 globalName'
-    );
+    console.log('[说明] inner 先找自己, 再找 outer, 最后找到全局变量 globalName');
   }
 
   inner();
@@ -44,6 +44,7 @@ function outer() {
 
 outer();
 
+// 2. 变量遮蔽, 内层优先
 section('Example 2: 变量遮蔽, 内层优先');
 
 const value = 'global value';
@@ -64,6 +65,7 @@ function showShadowing() {
 showShadowing();
 console.log('global value ->', value);
 
+// 3. 找不到变量时会报错
 section('Example 3: 找不到变量时会报错');
 
 function tryToReadMissing() {
@@ -78,8 +80,8 @@ function tryToReadMissing() {
 
 tryToReadMissing();
 
+// 4. 作用域链来自“定义位置”, 不是“调用位置”
 section('Example 4: 作用域链来自“定义位置”, 不是“调用位置”');
-
 const site = 'global-site';
 
 function makeReader() {
@@ -103,8 +105,8 @@ function callReader() {
 callReader();
 console.log('global site ->', site);
 
+// 5. 块级作用域也会参与查找
 section('Example 5: 块级作用域也会参与查找');
-
 const mode = 'global';
 
 {
@@ -120,6 +122,8 @@ const mode = 'global';
 
 console.log('global mode ->', mode);
 
+
+// 6. for 循环里的作用域链
 section('Example 6: for 循环里的作用域链');
 
 const callbacks = [];

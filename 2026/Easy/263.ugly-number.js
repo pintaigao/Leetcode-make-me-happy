@@ -25,6 +25,7 @@ var isUgly = function (num) {
 
 /* 回溯的方法 */
 var isUgly = function (num) {
+  // “
   if (num <= 0) return false;
   if (num === 1 || num === 2 || num === 3 || num === 5) return true;
   if (num % 2 === 0) return isUgly(num / 2);
