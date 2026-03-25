@@ -7,6 +7,10 @@ function Person(name, age = 18) {
     console.log(`this.name = ${this.name}`);
   };
 
+  this.sayHi = function () {
+    console.log("Hi, I'm " + this.name + ", I'm " + this.age + " years old");
+  }
+
   // 这里面的 getAge 只是 构造函数内部的普通函数，并没有挂到实例上，也没有挂到原型上，所以外面根本调不到：
   function getAge() {
     console.log(`this.age = ${this.age}`);
@@ -22,28 +26,31 @@ Person.prototype.getNameAndAge = function () {
   console.log(this.name + ", " + this.age);
 }
 
-console.log(Person); // false
+Person.age = 30; // 给构造函数添加一个静态属性 age
+// 注意这里的 this 是指向 Person 的, 因为 getAge 是 Person 的静态方法, 所以 this.age 实际上是 Person.age
+Person.getAge = function () {
+  return this.age; // 30
+};
 
 const p1 = new Person("Alice");
 const p2 = new Person("Bob");
 
-p1.sayHi(); // Hi, I'm Alice
+p1.sayHi(); // Hi, I'm Alice, I'm 18 years old
+p1.__proto__.sayHi(); // Hi, I'm Alice
 p2.sayHi(); // Hi, I'm Bob
 p1.getName();
 p1.getNameAndAge();
 console.log(p1.getName === Person.prototype.getName);
-console.log("================================");
-
+console.log(Person.getAge()); // 30
+console.log("================================================================================================================================");
 
 // 1. 每个函数都有一个 prototype 属性, 用于实现原型链
 console.log(p1.__proto__ === Person.prototype); // true
 console.log(p2.__proto__ === Person.prototype); // true
-console.log(Person.__proto__);
-
+console.log(p1.sayHi === p1.__proto__.sayHi); // 如果Person里面没有 this.sayHi定义在构造函数内部，true，如果有，false
 
 // 2. Person.prototype 默认会有一个 constructor，指回 Person 本身。
 console.log(Person.prototype.constructor === Person); // true
-
 console.log(Person.__proto__ === Function.prototype); // true
 console.log(Function.prototype.__proto__ === Object.prototype); // true
 console.log(Object.prototype.__proto__ === null); // true
@@ -59,7 +66,7 @@ console.log(Object.prototype.__proto__ === null); // true
 // 更多 example:
 // 1. 原型上的方法, 实例也可以直接调用
 console.log(p1.sayHi === p2.sayHi); // true
-console.log(p1.hasOwnProperty("sayHi")); // false
+console.log(p1.hasOwnProperty("sayHi")); // false 但是如果 Person 有this.sayHi 定义在构造函数内部, 就是 true
 console.log("sayHi" in p1); // true
 
 // 2. 实例先找自己身上的属性, 找不到再去原型上找

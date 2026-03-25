@@ -23,13 +23,13 @@ var coinChange = function (coins, amount) {
   }
 
   console.log(dp);
-  
+
   return dp[amount] > amount ? -1 : dp[amount];
 };
 
- // 从上往下
-var coinChange2 = function(coins, amount) {
- const memo = new Array(amount + 1);
+// 从上往下
+var coinChange2 = function (coins, amount) {
+  const memo = new Array(amount + 1);
 
   function dp(remain) {
     if (remain === 0) return 0;
@@ -48,13 +48,13 @@ var coinChange2 = function(coins, amount) {
   }
 
   const res = dp(amount);
-  
+
   return res === Infinity ? -1 : res;
 }
 // @lc code=end
 
 // Main Function
 // let coins = [1, 2, 5], amount = 100;
-let coins = [2,5,10,1], amount = 27;
+let coins = [2, 5, 10, 1], amount = 27;
 let result = coinChange2(coins, amount);
 console.log(result);

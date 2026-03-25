@@ -1,0 +1,97 @@
+<div>
+  <button id="btn">Click me 1</button>
+  <button id="btn2">Click me 2</button>
+  <div id="outer">
+    <button id="inner">Click me</button>
+  </div>
+  <!-- Stop propagation -->
+  <div id="box">
+    <a id="link" href="https://example.com">Go</a>
+  </div>
+  <!-- Stop Immediate Propagation -->
+  <div id="parent">
+    <button id="btn3">Click me</button>
+  </div>
+  <script>
+    // Dom0 event model
+    // 最老、最简单的写法，就是直接给元素的事件属性赋值。
+    const btn = document.getElementById("btn");
+
+    btn.onclick = function () {
+      console.log("clicked");
+    };
+
+    // Dom2 event model
+    // 这种写法可以给同一个元素绑定多个事件处理函数。
+    const btn2 = document.getElementById("btn2");
+
+    btn2.addEventListener("click", function () {
+      console.log("clicked");
+    });
+
+    btn2.addEventListener("click", function () {
+      console.log("clicked again");
+    });
+
+    // Event propagation(传播): capture, target, bubble
+    const outer = document.getElementById("outer");
+    const inner = document.getElementById("inner");
+
+    outer.addEventListener("click", () => {
+      console.log("outer capture");
+    }, true);
+
+    inner.addEventListener("click", () => {
+      console.log("inner");
+    });
+
+    outer.addEventListener("click", () => {
+      console.log("outer bubble");
+    });
+
+    // Stop propagation
+    const box = document.getElementById("box");
+    const link = document.getElementById("link");
+
+    box.addEventListener("click", () => {
+      console.log("box clicked");
+    });
+
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log("link clicked");
+    });
+
+    // Stop Immediate Propagation
+    const parent = document.getElementById("parent");
+    const btn3 = document.getElementById("btn3");
+    const btn4 = document.getElementById("btn3");
+
+    btn3.addEventListener("click", (e) => {
+      console.log("btn handler 1");
+      e.stopPropagation();
+    });
+
+    btn3.addEventListener("click", () => {
+      console.log("btn handler 2");
+    });
+
+    // btn handler 1 & btn handler 2
+
+    btn4.addEventListener("click", (e) => {
+      console.log("btn handler 3");
+      e.stopImmediatePropagation();
+    });
+
+    btn4.addEventListener("click", () => {
+      console.log("btn handler 4");
+    });
+
+    // btn handler 3
+
+    parent.addEventListener("click", () => {
+      console.log("parent handler");
+    });
+  </script>
+</div>

@@ -16,10 +16,7 @@
 /* Solution 1 */
 /* 遇到这个位置的char和前面的char不同就讨论前面的情况 */
 var minCost = function (s, cost) {
-  let res = 0,
-    max_cost = 0,
-    sum_cost = 0,
-    n = s.length;
+  let res = 0, max_cost = 0, sum_cost = 0, n = s.length;
   for (let i = 0; i < n; ++i) {
     if (i > 0 && s[i] != s[i - 1]) {
       res += sum_cost - max_cost;
@@ -100,7 +97,7 @@ let minCost4 = function (s, cost) {
 };
 
 /* Solution 5 */
-/* Two Pointer, L allways point to the current max one */
+/* Two Pointer, L always point to the current max one */
 let minCost5 = function (s, cost) {
   // No need to check, already colorful
   if (s.length === 1) {
@@ -153,4 +150,73 @@ var minCost6 = function (s, cost) {
   }
   return result;
 };
+
+// 双指针
+function minCost(s, cost) {
+  let totalCost = 0; // 总删除成本
+  let n = s.length;
+
+  for (let i = 1; i < n; i++) {
+    if (s[i] === s[i - 1]) {
+      // 如果相邻字符相同，删除较小成本的字符
+      if (cost[i] < cost[i - 1]) {
+        totalCost += cost[i]; // 删除当前字符
+        cost[i] = cost[i - 1]; // 保留较大成本的字符
+      } else {
+        totalCost += cost[i - 1]; // 删除前一个字符
+      }
+    }
+  }
+
+  return totalCost;
+}
+
+// 我的暴力解法
+var minCost7 = function (colors, neededTime) {
+  colors = colors.split("");
+
+  let l = 0, r = 0, result = 0;
+  while (l < colors.length && r <= colors.length) {
+    if (colors[l] === colors[r]) {
+      r += 1;
+    } else {
+      if (r - l > 1) {
+        let max = 0, sum = 0;
+        for (let i = l; i < r; i++) {
+          // 计算这一段的总时间和最大时间
+          max = Math.max(max, neededTime[i]);
+          sum += neededTime[i];
+        }
+        // 只保留一个，删除其他的,result加上删除其他“最小的“时间
+        result += sum - max;
+      }
+      l = r;
+    }
+  }
+
+  return result;
+};
 // @lc code=end
+
+
+// 面试练习
+// Two Pointer
+// I
+function minCost(s, cost) {
+  let totalCost = 0; // 总删除成本
+  let n = s.length;
+
+  for (let i = 1; i < n; i++) {
+    if (s[i] === s[i - 1]) {
+      // 如果相邻字符相同，删除较小成本的字符
+      if (cost[i] < cost[i - 1]) {
+        totalCost += cost[i]; // 删除当前字符
+        cost[i] = cost[i - 1]; // 保留较大成本的字符
+      } else {
+        totalCost += cost[i - 1]; // 删除前一个字符
+      }
+    }
+  }
+
+  return totalCost;
+}
