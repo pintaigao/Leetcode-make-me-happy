@@ -13,14 +13,11 @@
 // 1.Easy Sliding Window O(n): Find minimum subarray
 var maxScore = function (cardPoints, k) {
   // Subarray的长度
-  let n = cardPoints.length - k;
-  let min = Number.MAX_VALUE;
+  let n = cardPoints.length - k, min = Number.MAX_VALUE;
   // 整一个数组的和
-  let total = 0;
-  let cur = 0;
+  let total = 0, cur = 0;
   // 左右pointer
-  let l = 0;
-  let r = 0;
+  let l = 0, r = 0;
 
   while (r < cardPoints.length) {
     total += cardPoints[r];
@@ -84,12 +81,11 @@ let maxScore3 = function (cardPoints, k) {
   return sum;
 };
 
-maxScore([1, 79, 80, 1, 1, 1, 200, 1], 3);
+// maxScore([1, 79, 80, 1, 1, 1, 200, 1], 3);
 
 // 3.我能看懂的
 let maxScore4 = function (cardPoints, k) {
-  let sum = 0;
-  let cardPointsSize = cardPoints.length;
+  let sum = 0, cardPointsSize = cardPoints.length;
   for (let i = 0; i < k; ++i) sum += cardPoints[i];
   let m = sum;
   for (let i = 0; i < k; ++i) {
@@ -100,3 +96,30 @@ let maxScore4 = function (cardPoints, k) {
 };
 
 // @lc code=end
+
+// 练习
+var maxScore5 = function (cardPoints, k) {
+  if (k == 0) {
+    return 0;
+  }
+
+  let sum = 0;
+  for (let i = 0; i < k; i++) {
+    sum += cardPoints[i];
+  }
+
+  let newSum = sum, counter = 1;
+
+  while (counter <= k) {
+    newSum = newSum - cardPoints[k - counter] + cardPoints[cardPoints.length - counter];
+    sum = Math.max(sum, newSum);
+    counter += 1;
+  }
+
+  console.log(sum);
+
+  return sum;
+}
+
+maxScore5([1, 79, 80, 1, 1, 1, 200, 1], 3);
+

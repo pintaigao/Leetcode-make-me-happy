@@ -165,3 +165,138 @@ closedIsland2([
 
 // Solution 3: Union Find
 // @lc code=end
+
+
+// 练习
+var closedIsland3 = function (grid) {
+  let count = 0, directions = [[0, 1], [0, -1], [-1, 0], [1, 0]];
+
+  // If we meet the edge, we will flood fill it to water, so that we can exclude those islands connected to the edge.
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      // If the current cell is in the first or last row, or in the first or last column, and the value of the current cell is 0…
+      if (((i == 0 || i == grid.length - 1 || j == 0 || j == grid[0].length - 1)) && grid[i][j] == 0) {
+        // …we will flood fill it to water, so that we can exclude those islands connected to the edge.
+        dfs(i, j);
+      }
+    }
+  }
+
+  // After we have excluded those islands connected to the edge, we can count the number of closed islands by iterating through the grid and performing a DFS for each unvisited land cell (0).
+  for (let i = 1; i < grid.length - 1; i++) {
+    for (let j = 1; j < grid[0].length - 1; j++) {
+      if (grid[i][j] == 0) {
+        count++;
+        dfs(i, j);
+      }
+    }
+  }
+
+  // First we will define a dfs function that takes the current cell's coordinates as parameters. 
+  function dfs(i, j) {
+    // First we define a termination condition for the DFS. If the current cell is out of bounds or is water (1), we will return immediately.
+    if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 1) {
+      return;
+    }
+
+    // After the termination condition, we will mark the current cell as visited by changing its value to 1 (water). This way, we can avoid visiting the same cell again in future DFS calls.
+    grid[i][j] = 1;
+
+    // Then we will recursively call the DFS function for the four adjacent cells (up, down, left, right) using the directions array.
+    for (let dir of directions) {
+      dfs(i + dir[0], j + dir[1]);
+    }
+  }
+
+  return count;
+}
+
+// BFS 练习
+var closedIsland4 = function (grid) {
+  let count = 0, directions = [[0, 1], [0, -1], [-1, 0], [1, 0]];
+  let queue = [];
+
+
+  // Find Edge Case
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      if (((i == 0 || i == grid.length - 1 || j == 0 || j == grid[0].length - 1)) && grid[i][j] == 0) {
+        queue.push([i, j]);
+        while (queue.length) {
+          let [currI, currJ] = queue.shift();
+          grid[currI][currJ] = 1;
+
+          for (let dir of directions) {
+            let nextI = currI + dir[0], nextJ = currJ + dir[1];
+
+            if (nextI >= 0 && nextI < grid.length && nextJ >= 0 && nextJ < grid[0].length && grid[nextI][nextJ] == 0) {
+              queue.push([nextI, nextJ]);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Count the number of closed islands
+  for (let j = 1; j < grid[0].length - 1; j++) {
+    for (let i = 1; i < grid.length - 1; i++) {
+      if (grid[i][j] == 0) {
+        count++;
+        queue.push([i, j]);
+        while (queue.length) {
+          let [currI, currJ] = queue.shift();
+          grid[currI][currJ] = 1;
+
+          for (let dir of directions) {
+            let nextI = currI + dir[0], nextJ = currJ + dir[1];
+
+            if (nextI >= 0 && nextI < grid.length && nextJ >= 0 && nextJ < grid[0].length && grid[nextI][nextJ] == 0) {
+              queue.push([nextI, nextJ]);
+            }
+          }
+        }
+      }
+    }
+  }
+  return count;
+}
+
+// DFS 练习2
+var closedIsland3Imporved = function (grid) {
+  let count = 0, directions = [[0, 1], [0, -1], [-1, 0], [1, 0]];
+
+  // If we meet the edge, we will flood fill it to water, so that we can exclude those islands connected to the edge.
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      // If the current cell is in the first or last row, or in the first or last column, and the value of the current cell is 0…
+      if (grid[i][j] == 0 && dfs(i, j)) {
+        count++;
+      }
+    }
+  }
+
+  // First we will define a dfs function that takes the current cell's coordinates as parameters. 
+  function dfs(i, j) {
+    // First we define a termination condition for the DFS. If the current cell is out of bounds or is water (1), we will return immediately.
+    if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length) {
+      return false;
+    }
+
+    if (grid[i][j] !== 0) {
+      return true;
+    }
+
+    // After the termination condition, we will mark the current cell as visited by changing its value to 1 (water). This way, we can avoid visiting the same cell again in future DFS calls.
+    grid[i][j] = -1;
+
+    let top = dfs(i - 1, j);
+    let bottom = dfs(i + 1, j);
+    let left = dfs(i, j - 1);
+    let right = dfs(i, j + 1);
+
+    return top && bottom && left && right;
+  }
+
+  return count;
+}
