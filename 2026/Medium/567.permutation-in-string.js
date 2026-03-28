@@ -11,7 +11,7 @@
  * @return {boolean}
  */
 /* Solution 3: Hashmap的方法 */
-var checkInclusion = function (s1, s2) {};
+var checkInclusion = function (s1, s2) { };
 
 /* Solution 4: Array记录26个字母 */
 var checkInclusion = function (s1, s2) {
