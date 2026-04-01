@@ -11,10 +11,10 @@
  * @return {boolean}
  */
 /* Solution 3: Hashmap的方法 */
-var checkInclusion = function (s1, s2) { };
+var checkInclusion1 = function (s1, s2) { };
 
 /* Solution 4: Array记录26个字母 */
-var checkInclusion = function (s1, s2) {
+var checkInclusion2 = function (s1, s2) {
   if (s1.length > s2.length) return false;
   let s1map = new Array(26).fill(0);
 
@@ -28,8 +28,7 @@ var checkInclusion = function (s1, s2) {
     for (let j = 0; j < s1.length; j++) {
       s2map[s2.charCodeAt(i + j) - "a".charCodeAt(0)] += 1;
     }
-    console.log(s1map, s2map);
-    console.log();
+
     // 然后看看是不是s1map和s2map是不是match
     if (s1map.toString() === s2map.toString()) return true;
   }
@@ -37,17 +36,15 @@ var checkInclusion = function (s1, s2) {
 };
 
 /* 划窗 */
-let checkInclusion = function (s1, s2) {
+let checkInclusion3 = function (s1, s2) {
   if (s1.length > s2.length) return false;
-  let s1map = new Array(26).fill(0);
-  let s2map = new Array(26).fill(0);
+
+  let s1map = new Array(26).fill(0), s2map = new Array(26).fill(0);
   // 记录s1中每个字母出现的次数，记录s2前s1.length个字母出现的次数
   for (let i = 0; i < s1.length; i++) {
     s1map[s1.charCodeAt(i) - "a".charCodeAt(0)] += 1;
     s2map[s2.charCodeAt(i) - "a".charCodeAt(0)] += 1;
   }
-
-  let count = 0;
 
   if (s1map.join("") == s2map.join("")) count += 1;
 
@@ -69,19 +66,13 @@ let checkInclusion = function (s1, s2) {
 };
 
 /* 较快的划窗 */
-var checkInclusion = function (s1, s2) {
-  let n = s1.length,
-    m = s2.length;
-  if (n > m) {
-    return false;
-  }
+var checkInclusion4 = function (s1, s2) {
+  let n = s1.length, m = s2.length, left = 0, right = 0;
+  if (n > m) { return false }
   let cnt = new Array(26).fill(0);
   // 记录s1中每个字母数量，用负值表示
-  for (let i = 0; i < n; i++) {
-    cnt[s1[i].charCodeAt() - "a".charCodeAt()]--;
-  }
-  let left = 0;
-  for (let right = 0; right < m; right++) {
+  for (let i = 0; i < n; i++) { cnt[s1[i].charCodeAt() - "a".charCodeAt()]--; }
+  while (right < m) {
     let x = s2[right].charCodeAt() - "a".charCodeAt();
     // right指针向右每移动一位，s2[right]的数量+1
     cnt[x]++;
@@ -94,7 +85,91 @@ var checkInclusion = function (s1, s2) {
     if (right - left + 1 === n) {
       return true;
     }
+
+    right++;
   }
   return false;
 };
+
+// Solution 5：和 76 相类似
+var checkInclusion5 = function (t, s) {
+  // 判断 s 中是否存在 t 的排列
+  let need = new Map(), window = new Map(), left = 0, right = 0, valid = 0;
+  for (let c of t) {
+    need.set(c, (need.get(c) || 0) + 1);
+  }
+
+
+  while (right < s.length) {
+    let c = s.charAt(right);
+    right++;
+    // 进行窗口内数据的一系列更新
+    if (need.has(c)) {
+      window.set(c, (window.get(c) || 0) + 1);
+      if (window.get(c) === need.get(c)) {
+        valid++;
+      }
+    }
+
+    // 判断左侧窗口是否要收缩
+    while (right - left >= t.length) {
+      // 在这里判断是否找到了合法的子串
+      if (valid === need.size) {
+        return true;
+      }
+      let d = s.charAt(left);
+      left++;
+      // 进行窗口内数据的一系列更新
+      if (need.has(d)) {
+        if (window.get(d) === need.get(d)) {
+          valid--;
+        }
+        window.set(d, window.get(d) - 1);
+      }
+    }
+  }
+  // 未找到符合条件的子串
+  return false;
+};
+
+var checkInclusion6 = function (t, s) {
+  // 判断 s 中是否存在 t 的排列
+  let seen = {}, left = 0, right = 0, valid = 0;
+  for (let c of t) { seen[c] = (seen[c] || 0) + 1 }
+
+  while (right < s.length) {
+    let c = s.charAt(right);
+    right++;
+    // 进行窗口内数据的一系列更新
+    if (seen.hasOwnProperty(c)) {
+      seen[c]--;
+      if (seen[c] === 0) {
+        valid++;
+      }
+    }
+
+    // 判断左侧窗口是否要收缩
+    console.log(seen);
+    while (right - left >= t.length) {
+
+      // 在这里判断是否找到了合法的子串
+      if (valid === Object.keys(seen).length) { return true }
+
+      let d = s.charAt(left);
+      left++;
+      // 进行窗口内数据的一系列更新
+      if (seen.hasOwnProperty(d)) {
+        if (seen[d] === 0) {
+          valid--;
+        }
+        seen[d]++;
+      }
+    }
+  }
+  // 未找到符合条件的子串
+  return false;
+};
 // @lc code=end
+
+
+checkInclusion6("adc", "dcda");

@@ -25,10 +25,7 @@ var minAvailableDuration = function (slots1, slots2, duration) {
     let intersectRight = Math.min(slots1[pointer1][1], slots2[pointer2][1]);
 
     // 如果交汇时间大于duration，说明可以接受
-    if (
-      intersectRight > intersectLeft &&
-      intersectRight - intersectLeft >= duration
-    ) {
+    if (intersectRight > intersectLeft && intersectRight - intersectLeft >= duration) {
       return [intersectLeft, intersectLeft + duration];
     }
     // 两个指针指的time slot，先结束的那个往后移到下一个time slot
