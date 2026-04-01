@@ -14,7 +14,7 @@
 
 /* DFS 1：*/
 var wordBreak = function (s, wordDict) {
-  const [len, wordSet] = [s.length, new Set(wordDict)];
+  let len = s.length;
 
   const canBreak = (start) => {
     // 判断从start到末尾的子串能否break
@@ -25,7 +25,8 @@ var wordBreak = function (s, wordDict) {
     for (let i = start + 1; i <= len; i++) {
       //指针i去划分两部分，for枚举出当前所有的选项i
       const prefix = s.slice(start, i); // 切出的前缀部分
-      if (wordSet.has(prefix) && canBreak(i)) {
+      // canBreak 是一个递归函数，判断从i到末尾的子串能否break。只有前缀部分是单词，且递归看剩余子串能break，才返回真
+      if (wordDict.indexOf(prefix) !== -1 && canBreak(i)) {
         // 前缀部分是单词，且剩余子串能break，返回真
         return true;
       } // 如果前缀部分不是单词，就不会执行canBreak(i)。进入下一轮迭代，再切出一个前缀串，再试
@@ -38,9 +39,7 @@ var wordBreak = function (s, wordDict) {
 
 /* DFS 记忆化 */
 const wordBreak = (s, wordDict) => {
-  const len = s.length;
-  const wordSet = new Set(wordDict);
-  const memo = new Array(len);
+  let len = s.length, wordSet = new Set(wordDict), memo = new Array(len);
 
   const canBreak = (start) => {
     if (start == len) return true;
@@ -62,10 +61,7 @@ const wordBreak = (s, wordDict) => {
 
 /* BFS */
 const wordBreak = (s, wordDict) => {
-  const wordSet = new Set(wordDict);
-  const len = s.length;
-  const queue = [];
-  queue.push(0);
+  let wordSet = new Set(wordDict), len = s.length, queue = [0];
 
   while (queue.length) {
     const start = queue.shift(); // 考察出列的指针
@@ -121,9 +117,7 @@ const wordBreak = (s, wordDict) => {
 
 /* DP */
 const wordBreak = (s, wordDict) => {
-  const wordSet = new Set(wordDict);
-  const len = s.length;
-  const dp = new Array(len + 1).fill(false);
+  let wordSet = new Set(wordDict), len = s.length, dp = new Array(len + 1).fill(false);
   dp[0] = true;
 
   for (let i = 1; i <= len; i++) {
@@ -141,3 +135,5 @@ const wordBreak = (s, wordDict) => {
 };
 
 // @lc code=end
+
+// 练习
