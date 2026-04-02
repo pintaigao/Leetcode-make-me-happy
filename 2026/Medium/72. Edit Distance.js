@@ -71,9 +71,9 @@ var minDistance2 = function (s1, s2) {
   let m = s1.length, n = s2.length;
   // 备忘录初始化为特殊值，代表还未计算
   // 为什么要用二维数组的形式？ 因为双指针i，j
-  let memo = Array.from({length: m}, () => new Array(n).fill(-1));
+  let memo = Array.from({ length: m }, () => new Array(n).fill(-1));
 
-  function dp(i,j) {
+  function dp(i, j) {
     if (i == -1) return j + 1;
     if (j == -1) return i + 1;
     // 查备忘录，避免重叠子问题
@@ -84,17 +84,31 @@ var minDistance2 = function (s1, s2) {
     if (s1.charAt(i) == s2.charAt(j)) {
       memo[i][j] = dp(i - 1, j - 1);
     } else {
-      memo[i][j] = Math.min(
-        dp(i, j - 1) + 1,
-        dp(i - 1, j) + 1,
-        dp(i - 1, j - 1) + 1
-      );
+      // 插入、删除、替换三种操作的最小代价, +1 是因为当前操作需要加 1
+      memo[i][j] = Math.min(dp(i, j - 1) + 1, dp(i - 1, j) + 1, dp(i - 1, j - 1) + 1);
     }
     return memo[i][j];
   }
-  
- dp(m - 1, n - 1);
- console.log(memo);
+
+  dp(m - 1, n - 1);
+  console.log(memo);
 };
 
 // 2.DP table 解法
+var minDistance = function (s1, s2) {
+  let m = s1.length, n = s2.length;
+  let dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+
+  // base case
+  for (let i = 1; i <= m; i++) dp[i][0] = i;
+  for (let j = 1; j <= n; j++) dp[0][j] = j;
+
+  // 自底向上求解
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      if (s1.charAt(i - 1) === s2.charAt(j - 1)) dp[i][j] = dp[i - 1][j - 1];
+      else dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + 1);
+
+  // 储存着整个 s1 和 s2 的最小编辑距离
+  return dp[m][n];
+};
