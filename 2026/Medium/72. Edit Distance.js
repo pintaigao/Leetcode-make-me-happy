@@ -39,7 +39,7 @@ function minDistance(word1, word2) {
 }
 
 // 暴力解法 自顶向下递归
-var minDistance = function (s1, s2) {
+var minDistance1 = function (s1, s2) {
   let m = s1.length, n = s2.length;
   // i，j 初始化指向最后一个索引
 
@@ -65,3 +65,36 @@ var minDistance = function (s1, s2) {
 
   return dp(m - 1, n - 1);
 }
+
+// 对以上暴力解法带备忘录的优化
+var minDistance2 = function (s1, s2) {
+  let m = s1.length, n = s2.length;
+  // 备忘录初始化为特殊值，代表还未计算
+  // 为什么要用二维数组的形式？ 因为双指针i，j
+  let memo = Array.from({length: m}, () => new Array(n).fill(-1));
+
+  function dp(i,j) {
+    if (i == -1) return j + 1;
+    if (j == -1) return i + 1;
+    // 查备忘录，避免重叠子问题
+    if (memo[i][j] != -1) {
+      return memo[i][j];
+    }
+    // 状态转移，结果存入备忘录
+    if (s1.charAt(i) == s2.charAt(j)) {
+      memo[i][j] = dp(i - 1, j - 1);
+    } else {
+      memo[i][j] = Math.min(
+        dp(i, j - 1) + 1,
+        dp(i - 1, j) + 1,
+        dp(i - 1, j - 1) + 1
+      );
+    }
+    return memo[i][j];
+  }
+  
+ dp(m - 1, n - 1);
+ console.log(memo);
+};
+
+// 2.DP table 解法
