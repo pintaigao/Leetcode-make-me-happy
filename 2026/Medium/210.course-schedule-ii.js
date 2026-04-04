@@ -17,12 +17,15 @@ var findOrder = function (numCourses, prerequisites) {
 
   // 构建前置课数组和哈希表
   for (let [course, prerequisites_course] of prerequisites) {
+    // 每个位置的值代表该课的前置课数量
     inDegree[course]++;
     graph[prerequisites_course] = graph[prerequisites_course] ? [course, ...graph[prerequisites_course]] : [course];
   }
 
   let res = []; // 结果数组
   let queue = []; // 存放前置课为0的课
+
+  // 如果有环，所有课都有前置课，入度都不为0，queue永远为空，res永远为空，最后返回[]
   for (let i = 0; i < numCourses; i++) {
     // 起初推入所有前置课为0的课
     if (inDegree[i] === 0) queue.push(i);
@@ -49,3 +52,53 @@ var findOrder = function (numCourses, prerequisites) {
   return res.length === numCourses ? res : []; // 选齐了就返回res，否则返回[]
 };
 // @lc code=end
+
+
+// 练习
+var findOrder2 = function (numCourses, prerequisites) {
+  let map = {}, path = [], visited = new Set(), currentPath = new Set(), hasCycle = false;
+
+  // Build 
+  for (let i = 0; i < numCourses; i++) {
+    map[i] = [];
+  }
+
+  for (let [course, pre] of prerequisites) {
+    map[pre].push(course);
+  }
+
+  console.log(map);
+
+
+  for (let i = 0; i < numCourses; i++) {
+    dfs(i);
+  }
+
+  function dfs(course) {
+    if (currentPath.has(course)) {
+      // explicitly mention 这个有环！！！
+      hasCycle = true;
+      return;
+    }
+
+    if (visited.has(course)) {
+      return;
+    }
+
+    // 防止
+    visited.add(course);
+    currentPath.add(course);
+
+    // map[course]如果没有值这一条就不会运行
+    for (let c of map[course]) {
+      dfs(c);
+    }
+
+    path.push(course);
+    currentPath.delete(course);
+  }
+
+  return hasCycle ? [] : path.reverse()
+}
+
+findOrder2(4, [[1, 0], [2, 0], [3, 1], [3, 2]]);

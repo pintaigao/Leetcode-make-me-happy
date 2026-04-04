@@ -1,17 +1,17 @@
 // Valid empty class definition
-class Foo {}
+class Foo { }
 
 // Valid class definition with constructor
 class Bar {
-  constructor() {}
+  constructor() { }
 }
 
 // Valid class definition with getter
 class Baz {
-  get myBaz() {}
+  get myBaz() { }
 }
 
 // Valid class definition with static method
 class Qux {
-  static myQux() {}
+  static myQux() { }
 } 
