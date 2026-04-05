@@ -52,9 +52,9 @@ var findOrder = function (numCourses, prerequisites) {
   return res.length === numCourses ? res : []; // 选齐了就返回res，否则返回[]
 };
 // @lc code=end
+·
 
-
-// 练习
+// 练习 DFS 
 var findOrder2 = function (numCourses, prerequisites) {
   let map = {}, path = [], visited = new Set(), currentPath = new Set(), hasCycle = false;
 
@@ -85,7 +85,7 @@ var findOrder2 = function (numCourses, prerequisites) {
       return;
     }
 
-    // 防止
+    // 防止重复访问，visited和currentPath的区别是：visited是全局的，currentPath是当前路径的
     visited.add(course);
     currentPath.add(course);
 
