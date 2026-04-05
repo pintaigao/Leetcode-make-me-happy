@@ -53,7 +53,7 @@ var countComponents1 = function (n, edges) {
   for (let i = 0; i < n; i++) {
     if (!visited[i]) {
       count++;
-      queue.push(i);
+      queue = [i];
       visited[i] = true;
       while (queue.length > 0) {
         const node = queue.shift();

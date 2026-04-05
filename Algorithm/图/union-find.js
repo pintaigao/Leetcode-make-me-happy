@@ -21,7 +21,7 @@ class UF {
     // 将两棵树合并为一棵
     // this.parent[rootP] = rootQ;
     // parent[rootQ] = rootP 也一样
-    //parent[rootQ] = rootP 表示把q的根节点是 rootP
+    //parent[rootQ] = rootP 表示q的根节点是 rootP
     // 小树接到大树下面，较平衡
     if (this.size[rootP] < this.size[rootQ]) {
       this.parent[rootP] = rootQ;
@@ -36,16 +36,15 @@ class UF {
 
   // 判断 p 和 q 是否连通
   connected(p, q) {
-    var rootP = this.find(p);
-    var rootQ = this.find(q);
-    return rootP == rootQ;
+    return this.find(p) == this.find(q);
   }
 
   // 返回某个节点 x 的根节点
   find(x) {
+    // while x 不是根节点（更新后的 x 不是指向自己），就继续找
     while (this.parent[x] !== x) {
-      // 路径压缩
-      this.parent[x] = this.parent[this.parent[x]];
+      // 下一段：路径压缩 保持树的扁平化，减少树的高度，优化性能 （可选）
+      // this.parent[x] = this.parent[this.parent[x]];
       x = this.parent[x];
     }
     return x;

@@ -24,3 +24,78 @@ var equationsPossible = function (equations) {
   }
   return true;
 };
+
+
+// DFS
+var equationsPossible2 = function (equations) {
+  const graph = Array.from({ length: 26 }, () => []);
+
+  for (const eq of equations) {
+    if (eq[1] === '=') {
+      const a = eq.charCodeAt(0) - 97, b = eq.charCodeAt(3) - 97;
+      graph[a].push(b);
+      graph[b].push(a);
+    }
+  }
+
+  function canReach(start, target, visited) {
+    if (start === target) return true;
+    visited[start] = true;
+
+    for (const next of graph[start]) {
+      if (!visited[next] && canReach(next, target, visited)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  for (const eq of equations) {
+    if (eq[1] === '!') {
+      const a = eq.charCodeAt(0) - 97, b = eq.charCodeAt(3) - 97;
+
+      if (a === b) return false;
+
+      const visited = new Array(26).fill(false);
+      if (canReach(a, b, visited)) return false;
+    }
+  }
+
+  return true;
+};
+
+// BFS
+var equationsPossible3 = function (equations) {
+  const graph = Array.from({ length: 26 }, () => []);
+
+  for (const eq of equations) {
+    if (eq[1] === '=') {
+      const a = eq.charCodeAt(0) - 97, b = eq.charCodeAt(3) - 97;
+      graph[a].push(b);
+      graph[b].push(a);
+    }
+  }
+
+  for (const eq of equations) {
+    if (eq[1] === '!') {
+      const a = eq.charCodeAt(0) - 97, b = eq.charCodeAt(3) - 97;
+      const visited = new Array(26).fill(false);
+      let queue = [a];
+
+      while (queue.length) {
+        let char = queue.shift();
+        visited[char] = true;
+
+        if (char === b) {
+          return false;
+        }
+
+        for (const next of graph[char]) {
+          !visited[next] && queue.push(next);
+        }
+      }
+    }
+  }
+  return true;
+};
