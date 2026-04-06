@@ -30,6 +30,7 @@ var equationsPossible = function (equations) {
 var equationsPossible2 = function (equations) {
   const graph = Array.from({ length: 26 }, () => []);
 
+  // 构建图，只有相等关系才构建边
   for (const eq of equations) {
     if (eq[1] === '=') {
       const a = eq.charCodeAt(0) - 97, b = eq.charCodeAt(3) - 97;
@@ -38,19 +39,8 @@ var equationsPossible2 = function (equations) {
     }
   }
 
-  function canReach(start, target, visited) {
-    if (start === target) return true;
-    visited[start] = true;
 
-    for (const next of graph[start]) {
-      if (!visited[next] && canReach(next, target, visited)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
+  // Main Logic
   for (const eq of equations) {
     if (eq[1] === '!') {
       const a = eq.charCodeAt(0) - 97, b = eq.charCodeAt(3) - 97;
@@ -58,8 +48,21 @@ var equationsPossible2 = function (equations) {
       if (a === b) return false;
 
       const visited = new Array(26).fill(false);
-      if (canReach(a, b, visited)) return false;
+      if (dfs(a, b, visited)) return false;
     }
+  }
+
+  function dfs(start, target, visited) {
+    if (start === target) return true;
+    visited[start] = true;
+
+    for (const next of graph[start]) {
+      if (!visited[next] && dfs(next, target, visited)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   return true;

@@ -18,10 +18,9 @@ var findCircleNum = function (isConnected) {
   if (isConnected.length === 0) {
     return 0;
   }
+  let result = 0;
 
-  let len = isConnected.length, result = 0;
-
-  for (let i = 0; i < len; i++) {
+  for (let i = 0; i < isConnected.length; i++) {
     for (let j = 0; j < isConnected[i].length; j++) {
       if (isConnected[i][j] === 1) {
         result++;
@@ -33,6 +32,7 @@ var findCircleNum = function (isConnected) {
 
   var dfs = function (i, j) {
     if (isConnected[i][j] === "#") {
+
       return;
     }
     //mark it visited
@@ -74,6 +74,7 @@ var findCircleNum = function (isConnected) {
 // Solution 3: BFS
 var findCircleNum = function (isConnected) {
   let n = isConnected.length, visited = new Set(), ans = 0, queue = [];
+  // 每一个 row（每一个 city）看
   for (let i = 0; i < n; i++) {
     if (!visited.has(i)) {
       queue = [i];
@@ -109,3 +110,6 @@ var findCircleNum = function (isConnected) {
   return uf.getCount();
 }
 // @lc code=end
+
+
+// 练习
