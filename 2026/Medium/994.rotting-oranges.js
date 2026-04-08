@@ -112,3 +112,42 @@ orangesRotting([
   [0, 1, 1],
 ]);
 // @lc code=end
+
+// 练习
+
+var orangesRotting10 = function (grid) {
+  let queue = [], directions = [[-1, 0], [1, 0], [0, 1], [0, -1]], minutes = 0, freshOranges = 0;
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      if (grid[i][j] == 2) queue.push([i, j])
+      if (grid[i][j] == 1) freshOranges++;
+    }
+  }
+
+  while (queue.length) {
+    let size = queue.length, rottedThisMinute = false;
+    for (let i = 0; i < size; i++) {
+      let [x, y] = queue.shift();
+      for (let d of directions) {
+        let nx = x + d[0], ny = y + d[1];
+        if (nx < 0 || nx >= grid.length || ny < 0 || ny >= grid[0].length || grid[nx][ny] == 0 || grid[nx][ny] == 2) continue;
+        if (grid[nx][ny] == 1) {
+          grid[nx][ny] = 2;
+          freshOranges--;
+          rottedThisMinute = true;
+          queue.push([nx, ny]);
+        }
+      }
+    }
+
+    if (rottedThisMinute) minutes++;
+  }
+
+  return freshOranges === 0 ? minutes : -1;
+}
+
+orangesRotting10([
+  [2, 1, 1],
+  [1, 1, 0],
+  [0, 1, 1],
+]);
