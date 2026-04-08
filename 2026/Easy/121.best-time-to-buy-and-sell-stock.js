@@ -31,9 +31,13 @@ var maxProfit2 = function (prices) {
       minprice = prices[i];
     }
 
+    // 每个位置都计算一次利润，取最大值
     maxProfit = Math.max(maxProfit, prices[i] - minprice);
   }
   return maxProfit;
 };
 
 // @lc code=end
+
+// 练习
+

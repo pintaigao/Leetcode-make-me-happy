@@ -90,12 +90,8 @@ var maxEvents3 = function (events) {
 
     // While day += 1 would work, we can do better. We can skip to the start of the next event,
     // either in the Priority Queue or events
-    const nextPrioStart =
-      priorityQueue.length > 0
-        ? priorityQueue[priorityQueue.length - 1][0]
-        : Infinity;
-    const nextEventStart =
-      events.length > 0 ? events[events.length - 1][0] : Infinity;
+    const nextPrioStart = priorityQueue.length > 0 ? priorityQueue[priorityQueue.length - 1][0] : Infinity;
+    const nextEventStart = events.length > 0 ? events[events.length - 1][0] : Infinity;
     day = Math.max(day + 1, Math.min(nextPrioStart, nextEventStart));
   }
 
@@ -110,12 +106,9 @@ let maxEvents4 = function (events) {
     },
   });
 
-  events.sort((a, b) => {
-    return a[0] - b[0];
-  });
+  events.sort((a, b) => { return a[0] - b[0] });
 
-  let i = 0,
-    res = 0;
+  let i = 0, res = 0;
 
   for (let day = 0; day <= Math.pow(10, 5); day++) {
     while (i < events.length && events[i][0] == day) {
@@ -200,3 +193,26 @@ maxEvents2([
   [1, 4],
 ]);
 // @lc code=end
+
+// 练习
+let maxEvents7 = function (events) {
+  let attend = new Set();
+
+  events.sort((a, b) => {
+    if (a[1] !== b[1]) {
+      return a[1] - b[1];
+    } else {
+      return a[0] - b[0];
+    }
+  });
+
+  for (let event of events) {
+    for (let day = event[0]; day <= event[1]; day++) {
+      if (!attend.has(day)) {
+        attend.add(day);
+        break;
+      }
+    }
+  }
+  return attend.size;
+}
