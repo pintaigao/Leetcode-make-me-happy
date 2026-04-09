@@ -33,6 +33,7 @@ var jump = function (nums) {
 
 // 贪心的解法
 // 不需要真的递归穷举出所有选择的具体结果来比较求最值，而只需要每次选择那个最有潜力的局部最优解，最终就能得到全局最优解。
+// Why it is Greedy？ 因为在当前这一步能覆盖到的所有位置里，我们并不急着立刻选某一个落点，而是先把这一层全部看完，找出下一步最远能扩到哪里。这样每次“跳一次”都对应扩展一整层范围，所以跳数最少。
 var jump = function (nums) {
   if (nums.length <= 1) {
     return 0;
@@ -59,3 +60,43 @@ var jump = function (nums) {
   return -1;
 };
 
+
+// 练习
+
+let canJump11 = function (nums) {
+  let farthest = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (i <= farthest) {
+      farthest = Math.max(farthest, i + nums[i]);
+    }
+
+    if (farthest >= nums.length - 1) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function canJump12(nums) {
+  let jumps = 0;
+  let currentEnd = 0; //当前这一跳所能覆盖的最远边界
+  let farthest = 0; // 在当前范围内，下一跳最多能到哪里
+
+  // i < nums.length - 1, 如果是i < nums.length,i会到达最后一个位置，以我们现在的逻辑，最后一个位置会判断跳不跳，但是到达最后一个位置了就不需要跳了，所以i < nums.length - 1
+  for (let i = 0; i < nums.length; i++) {
+    if (i == nums.length - 1) {
+      return jumps; // 已经到达最后一个位置，返回跳跃次数
+    }
+
+    farthest = Math.max(farthest, i + nums[i]);
+
+    // 说明当前这一层扫描完了 必须跳一次
+    if (i === currentEnd) {
+      jumps++;
+      currentEnd = farthest;
+    }
+  }
+
+  return jumps;
+}

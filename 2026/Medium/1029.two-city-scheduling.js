@@ -37,3 +37,6 @@ twoCitySchedCost([
   [577, 469],
 ]);
 // @lc code=end
+
+
+// 练习

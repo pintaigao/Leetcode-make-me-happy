@@ -74,3 +74,28 @@ let longestOnes3 = function (nums, k) {
 }
 
 // @lc code=end
+// 练习
+let longestOnes10 = function (nums, k) {
+  let left = 0, right = 0, maxLength = 0;
+
+  while (right < nums.length) {
+    if (nums[right] === 0) {
+      k--;
+    }
+    right += 1;
+
+    // 收缩窗口，直到窗口内的 0 的数量不超过 k
+    while (k < 0) {
+      if (nums[left] === 0) {
+        k += 1;
+      }
+      left += 1;
+    }
+
+    if (k >= 0) {
+      maxLength = Math.max(maxLength, right - left + 1);
+    }
+  }
+
+  return maxLength;
+}

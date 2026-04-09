@@ -10,28 +10,27 @@
  * @return {boolean}
  */
 
-// 1. 动态规划,暴力点的解法
+// 1. 暴力点的解法
 var canJump = function (nums) {
-  const n = nums.length, dp = new Array(n).fill(false); // 创建一个长度为n的数组dp，初始值为false
-  dp[0] = true; // 起点位置可以到达
+  const n = nums.length, canReach = new Array(n).fill(false); // 创建一个长度为n的数组canReach，初始值为false
+  canReach[0] = true; // 起点位置可以到达
   for (let i = 1; i < n; i++) { // 遍历数组，从位置1开始
     for (let j = 0; j < i; j++) { // 对于每个位置i，检查之前的位置j
-      if (dp[j] && j + nums[j] >= i) { // 如果位置j可以到达且从j跳跃可以到达i
-        dp[i] = true; // 标记位置i为可达
+      if (canReach[j] && j + nums[j] >= i) { // 如果位置j可以到达且从j跳跃可以到达i
+        canReach[i] = true; // 标记位置i为可达
         break; // 跳出内层循环
       }
     }
   }
-  return dp[n - 1]; // 返回最后一个位置是否可达
+  return canReach[n - 1]; // 返回最后一个位置是否可达
 };
-
-
 
 // 2.贪心算法
 var canJump = function (nums) {
   let maxReach = 0; // 定义变量maxReach表示当前能够到达的最远位置，初始值为0
   for (let i = 0; i < nums.length; i++) { // 遍历数组，对于每个位置i
     if (i <= maxReach) { // 如果当前位置i小于等于maxReach，说明可以从前面某个位置通过跳跃到达当前位置i
+      // i+nums[i]表示从位置i跳跃可以到达的最远位置
       maxReach = Math.max(maxReach, i + nums[i]); // 更新maxReach为max(maxReach, i + nums[i])
     }
     if (maxReach >= nums.length - 1) { // 如果maxReach大于等于数组的最后一个位置，说明可以到达最后一个位置
@@ -70,3 +69,41 @@ var canJump = function (nums) {
 };
 // @lc code=end
 
+// 练习
+let canJump10 = function (nums) {
+  let memo = new Array(nums.length).fill(false);
+  function dp(index) {
+    if (index >= nums.length - 1) return true;
+    if (memo[index]) return true;
+    for (let i = nums[index]; i > 0; i--) {
+      if (dp(index + i) || memo[index + i]) {
+        memo[index] = true;
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  return dp(0);
+}
+
+
+console.log(canJump10([2, 3, 1, 1, 4])); // true
+
+
+
+let canJump11 = function (nums) {
+  let farthest = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (i <= farthest) {
+      farthest = Math.max(farthest, i + nums[i]);
+    }
+
+    if (farthest >= nums.length - 1) {
+      return true;
+    }
+  }
+
+  return false;
+}
