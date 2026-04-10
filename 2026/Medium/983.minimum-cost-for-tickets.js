@@ -273,5 +273,61 @@ var mincostTickets5 = function (days, costs) {
   return result;
 };
 
-mincostTickets5([1, 4, 6, 8, 9, 20, 30], [2, 7, 12]);
+// mincostTickets5([1, 4, 6, 8, 9, 20, 30], [2, 7, 12]);
 // @lc code=end
+
+
+// 练习 
+// This problem asks for a minimum cost, and we keep making repeated decisions like “what is the minimum cost up to this day,” so DP is a natural fit.
+let mincostTickets10 = function (days, costs) {
+  // First I define the state.
+  // Since the problem says travel days are within 1...365, I can do DP by calendar day.
+  // the minimum cost to cover all travel needs from day 1 to day d
+  // This state is useful because for each day I only need to ask:
+  // •	Is today a travel day?
+  // •	If yes, should I buy a 1-day, 7-day, or 30-day pass?
+  // So the current answer can be built from previous answers.
+  let dp = new Array(days[days.length - 1] + 1).fill(0);
+
+  // To quickly check whether a day is a travel day, I put all days into a Set, so membership check is O(1).
+  for (let day of days) {
+    dp[day] = -1;
+  }
+
+  for (let i = 1; i < dp.length; i++) {
+    // If day d is not a travel day, I do not need to buy anything today.
+    // So the minimum cost stays the same as yesterday.
+    if (dp[i] == 0) {
+      dp[i] = dp[i - 1];
+    }
+    else if (dp[i] == -1) {
+      // If day d is a travel day, then this day must be covered by some pass.
+      // I have three choices:
+      // 1.	Buy a 1 - day pass
+      // It only covers today, so the total is:
+      // dp[d - 1] + costs[0]
+      // 2.	Buy a 7 - day pass
+      // It covers[d - 6, d]
+      // So I only need the ->previous cost<- up to d - 7:
+      // dp[max(0, d - 7)] + costs[1]
+      // 3.	Buy a 30 - day pass
+      // It covers[d - 29, d]
+      // So the total is:
+      // dp[max(0, d - 30)] + costs[2]
+      // Then I take the minimum of the three.
+
+      let a = dp[i - 1] + costs[0];
+      let b = dp[Math.max(0, i - 7)] + costs[1];
+      let c = dp[Math.max(0, i - 30)] + costs[2];
+      dp[i] = Math.min(a, b, c);
+    }
+  }
+
+  console.log(dp);
+
+  return dp[dp.length - 1];
+}
+
+
+mincostTickets10([1, 4, 6, 8, 9, 20, 30], [2, 7, 12])
+
