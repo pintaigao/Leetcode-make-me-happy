@@ -86,11 +86,9 @@ import { UF } from "../../Algorithm/union-find.js"
 var solve3 = function (board) {
   if (board.length === 0) return;
 
-  const m = board.length;
-  const n = board[0].length;
+  const m = board.length, n = board[0].length;
   // 给 dummy 留一个额外位置
-  const uf = new UF(m * n + 1);
-  const dummy = m * n;
+  const uf = new UF(m * n + 1), dummy = m * n;
   // 将首列和末列的 O 与 dummy 连通
   for (let i = 0; i < m; i++) {
     if (board[i][0] === 'O')
@@ -131,3 +129,35 @@ solve3(board);
 console.log(board);
 
 
+// 练习
+var solve10 = function (board) {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      if ((i === 0 || i === board.length - 1 || j === 0 || j === board[0].length - 1) && board[i][j] === 'O') {
+        dfs(i, j);
+      }
+    }
+  }
+
+  function dfs(i, j) {
+    if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] !== 'O') {
+      return;
+    }
+
+    board[i][j] = 'E';
+    dfs(i + 1, j);
+    dfs(i - 1, j);
+    dfs(i, j + 1);
+    dfs(i, j - 1);
+  }
+
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      if (board[i][j] === 'O') {
+        board[i][j] = 'X';
+      } else if (board[i][j] === 'E') {
+        board[i][j] = 'O';
+      }
+    }
+  }
+}

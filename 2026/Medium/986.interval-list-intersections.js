@@ -46,6 +46,50 @@ var intervalIntersection = function (A, B) {
 
 
 // 暴力的解法
-let intervalIntersection = function (A, B) {
+let intervalIntersection10 = function (A, B) {
+  let lastDay = A[A.length - 1][1], ans = [];
+  let days = new Array(lastDay + 1).fill(0);
+  for (let [start, end] of A) {
+    for (let i = start; i <= end; i++) {
+      days[i] = 1
+    }
+  }
 
-}
+  for (let [start, end] of B) {
+    if (start > lastDay) {
+      break;
+    }
+
+    let s = start, e = start;
+    while (s <= end && e <= end) {
+      while (days[s] === 0 && s <= end) {
+        s += 1;
+      }
+      e = s;
+      while (days[e] === 1 && e <= end) {
+        e += 1;
+      }
+      ans.push([s, e - 1]);
+      s = e;
+      e += 1;
+    }
+  }
+
+  return ans;
+};
+
+intervalIntersection10(
+  [
+    [0, 2],
+    [5, 10],
+    [13, 23],
+    [24, 25],
+  ],
+  [
+    [1, 5],
+    [8, 12],
+    [15, 24],
+    [25, 26],
+  ]
+);
+

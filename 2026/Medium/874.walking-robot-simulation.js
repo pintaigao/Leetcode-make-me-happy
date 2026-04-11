@@ -11,7 +11,7 @@
  * @return {number}
  */
 var robotSim = function (commands, obstacles) {
-  // 右， 下， 左， 上 （这是坐标不是2d Array）(0,1 => X=0, Y=1)
+  // 上，右， 左， 下 （这是坐标不是2d Array）(0,1 => X=0, Y=1)
   // Set of obstacles indexes in the format of : obstacle[0] + " " + obstacle[1]
   let directions = [[0, 1], [1, 0], [0, -1], [-1, 0]], obstaclesSet = new Set(), x = 0, y = 0, direction = 0, maxDistSquare = 0;
 
