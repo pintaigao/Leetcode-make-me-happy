@@ -19,8 +19,7 @@
  */
 // 1. Postorder pattern化的方法 O(n^2) 的方法
 var findDuplicateSubtrees = function (root) {
-  let res = [];
-  let map = {};
+  let res = [], map = {};
 
   let postorder = function (currrent_node) {
     if (currrent_node == null) return "#";
@@ -67,3 +66,22 @@ let findDuplicateSubtrees2 = function (root) {
 };
 
 // @lc code=end
+// 练习
+var findDuplicateSubtrees = function (root) {
+  let res = [], set = new Set()
+
+  let postorder = function (currrent_node) {
+    if (currrent_node == null) return "#";
+    let serial = currrent_node.val + "," + postorder(currrent_node.left) + "," + postorder(currrent_node.right);
+
+    if (set.has(serial)) {
+      res.push(currrent_node);
+    } else {
+      set.add(serial);
+    }
+    return serial;
+  };
+
+  postorder(root);
+  return [...new Set(res)];
+};
