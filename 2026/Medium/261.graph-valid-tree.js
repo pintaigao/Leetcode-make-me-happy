@@ -178,8 +178,7 @@ var validTree6 = function (n, edges) {
   const uf = new UF(n);
   // 遍历所有边，将组成边的两个节点进行连接
   for (let edge of edges) {
-    let u = edge[0];
-    let v = edge[1];
+    let u = edge[0], v = edge[1];
     // 若两个节点已经在同一连通分量中，会产生环
     if (uf.connected(u, v)) {
       return false;
