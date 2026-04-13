@@ -3,6 +3,7 @@ class UF {
     // 记录连通分量，一开始互不连通，有n个连通分量,即每个节点自成一个分量，自己可以连通自己
     this._count = n;
     // 节点 x 的父节点是 parent[x]
+    // this.parent = new Array(n).fill(0).map((_, index) => index);
     this.parent = new Array(n);
     this.size = new Array(n);
     // 一开始互不连通
@@ -19,9 +20,10 @@ class UF {
     if (rootP === rootQ)
       return;
     // 将两棵树合并为一棵
-    // this.parent[rootP] = rootQ;
-    // parent[rootQ] = rootP 也一样
-    //parent[rootQ] = rootP 表示q的根节点是 rootP
+    // this.parent[rootP] = rootQ; 表示P的根节点是 rootQ
+    // this.size[root!] += this.size[rootP]; rootQ 的树的节点个数增加了 rootP 的树的节点个数
+    // parent[rootQ] = rootP 也一样,表示q的根节点是 rootP
+    // this.size[rootP] += this.size[rootQ]; rootP 的树的节点个数增加了 rootQ 的树的节点个数
     // 小树接到大树下面，较平衡
     if (this.size[rootP] < this.size[rootQ]) {
       this.parent[rootP] = rootQ;

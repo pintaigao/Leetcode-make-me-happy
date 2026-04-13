@@ -14,6 +14,7 @@ export function debounce(func, wait) {
     timeout = setTimeout(() => {
       console.log(this);
       func.apply(this, args);
+      //或者 fn(...args)
     }, wait);
   };
 }
@@ -77,3 +78,30 @@ export function debounce2(func, wait, options = {}) {
     }
   };
 }
+
+//  Debounce with Cancel
+function debounce(fn, delay) {
+  let timer;
+
+  const debounced = (...args) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+
+  debounced.cancel = () => {
+    if (timer) clearTimeout(timer);
+    timer = null;
+  };
+
+  return debounced;
+}
+
+
+// 取消防抖函数的调用
+const handleResizeWithCancel = debounceWithCancel((width) => resize(width), 3000);
+
+// 调用防抖函数
+handleResizeWithCancel(10);
+
+// 取消防抖函数的调用
+handleResizeWithCancel.cancel();
