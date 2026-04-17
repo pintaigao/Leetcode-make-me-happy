@@ -19,12 +19,12 @@
  */
 /* 一:BFS的方法 */
 var zigzagLevelOrder = function (root) {
-  let [res, queue, leftToRight] = [[], [root], true]; //先把节点加入到队列中 & 第一步先从左边开始打印
+  let res = [], queue = [root], leftToRight = true; //先把节点加入到队列中 & 第一步先从左边开始打印
   if (root == null) return res;
   while (queue.length) {
     //记录每层节点的值
-    let level = []
     //统计这一层有多少个节点
+    let level = []
     let count = queue.length;
     //遍历这一层的所有节点，把他们全部从队列中移出来，顺便
     //把他们的值加入到集合level中，接着再把他们的子节点（如果有）
@@ -36,11 +36,10 @@ var zigzagLevelOrder = function (root) {
       // 如果是从右边开始打印，每次要把访问的节点值加入到列表的最前面
       leftToRight ? level.push(node.val) : level.unshift(node.val);
       //左右子节点如果不为空会被加入到队列中
-      if (node.left != null)
-        queue.push(node.left);
-      if (node.right != null)
-        queue.push(node.right);
+      if (node.left != null) queue.push(node.left);
+      if (node.right != null) queue.push(node.right);
     }
+
     //把这一层的节点值加入到集合res中
     res.push(level);
     //改变下次访问的方向

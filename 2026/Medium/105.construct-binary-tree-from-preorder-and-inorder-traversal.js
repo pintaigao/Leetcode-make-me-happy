@@ -50,5 +50,52 @@ var buildTree = function (preorder, inorder) {
   // 两个order分别有一对指针，指向order的头和尾
   return buildTreeHelper(preorder, 0, preorder.length, inorder, 0, inorder.length);
 };
+
+// 二：递归的简化版本
+var buildTree = function (preorder, inorder) {
+  if (!preorder.length || !inorder.length) return null
+  const root = new TreeNode(preorder[0])
+  const rootInInorderIndex = inorder.indexOf(preorder[0])
+  const leftInorder = inorder.slice(0, rootInInorderIndex), leftPreorder = preorder.slice(1, leftInorder.length + 1)
+  const rightInorder = inorder.slice(leftInorder.length + 1), rightPreorder = preorder.slice(leftInorder.length + 1)
+  root.left = buildTree(leftPreorder, leftInorder), root.right = buildTree(rightPreorder, rightInorder)
+  return root;
+};
 // @lc code=end
 
+// 练习
+var buildTree = function (preorder, inorder) {
+  // 存储 inorder 中值到索引的映射
+  var valToIndex = new Map();
+
+  for (let i = 0; i < inorder.length; i++) {
+    valToIndex.set(inorder[i], i);
+  }
+  return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
+
+  // build 函数的定义：
+  // 若前序遍历数组为 preorder[preStart..preEnd]，
+  // 中序遍历数组为 inorder[inStart..inEnd]，
+  // 构造二叉树，返回该二叉树的根节点
+  function build(preorder, preStart, preEnd, inorder, inStart, inEnd) {
+
+    if (preStart > preEnd) {
+      return null;
+    }
+
+    // root 节点对应的值就是前序遍历数组的第一个元素
+    var rootVal = preorder[preStart];
+    // rootVal 在中序遍历数组中的索引
+    var index = valToIndex.get(rootVal);
+
+    var leftSize = index - inStart;
+
+    // 先构造出当前根节点
+    var root = new TreeNode(rootVal);
+    // 递归构造左右子树
+    root.left = build(preorder, preStart + 1, preStart + leftSize, inorder, inStart, index - 1);
+
+    root.right = build(preorder, preStart + leftSize + 1, preEnd, inorder, index + 1, inEnd);
+    return root;
+  }
+};

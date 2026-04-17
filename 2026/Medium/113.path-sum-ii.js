@@ -58,11 +58,7 @@ var pathSum = function (root, targetSum) {
     result.push(temp);
   }
 
-  let result = []
-  let map = {};
-
-  let queueNode = [root];
-  let queueSum = [0];
+  let result = [], map = {}, queueNode = [root], queueSum = [0];
 
   while (queueNode.length) {
     let node = queueNode.shift();
@@ -89,4 +85,29 @@ var pathSum = function (root, targetSum) {
   return result;
 };
 // @lc code=end
+
+// 练习
+var pathSum10 = function (root, targetSum) {
+  let res = [], path = [];
+
+  function traverse(root, value) {
+    if (!root) return;
+
+    if (value == 0 && root.left == null && root.right == null) {
+      path.push(root.val)
+      res.push([...path]);
+      path.pop(root.value);
+      return;
+    }
+
+    path.push(root.val)
+    traverse(root.left, value - root.val)
+    traverse(root.right, value - root.val)
+    path.pop()
+  }
+
+  traverse(root, targetSum - root.val);
+
+  return res;
+};
 

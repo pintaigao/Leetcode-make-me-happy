@@ -31,38 +31,35 @@ var pathSum = function (root, targetSum) {
     }
   };
 
-  const tree = (node) => {
+  const traverse = (node) => {
     if (node) {
       check(node, targetSum);
-      tree(node.left);
-      tree(node.right);
+      traverse(node.left);
+      traverse(node.right);
     }
   };
-  tree(root);
+  traverse(root);
   return count;
 };
 
 /* Solution 2：Map */
 var pathSum = function (root, targetSum) {
-  let map = new Map();
-  map.set(0, 1);
-  let total = 0;
-  let result = 0;
-  helper(root);
+  let map = { 0: 1 }, total = 0, result = 0;
+  traverse(root);
 
-  function helper(root) {
+  function traverse(root) {
     if (!root) return;
+    // Total 是从根节点一直到现在这个位置的 totalSum，所以 key 等于从根节点到这个位置之间某个位置的sum
     total += root.val;
     let key = total - targetSum;
-    if (map.has(key)) {
-      result += map.get(key);
+    if (map[key]) {
+      result += map[key];
     }
-
-    map.set(total, map.get(total) + 1 || 1);
-    helper(root.left);
-    helper(root.right);
-    map.set(total, map.get(total) - 1);
-
+    // 记录从二叉树的根节点开始到现在这个位置，遇到过的路径和为“pathSum“的所有路径条数
+    map[total] = map[total] + 1 || 1;
+    traverse(root.left);
+    traverse(root.right);
+    map[total] = map[total] - 1;
     total -= root.val;
   }
 

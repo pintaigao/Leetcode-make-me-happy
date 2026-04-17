@@ -23,6 +23,7 @@ var findDuplicateSubtrees = function (root) {
 
   let postorder = function (currrent_node) {
     if (currrent_node == null) return "#";
+
     let serial = currrent_node.val + "," + postorder(currrent_node.left) + "," + postorder(currrent_node.right);
 
     map[serial] = map[serial] ? map[serial] + 1 : 1;
@@ -72,13 +73,11 @@ var findDuplicateSubtrees = function (root) {
 
   let postorder = function (currrent_node) {
     if (currrent_node == null) return "#";
+    // 从这里我了解到 dfs 可以返回值
     let serial = currrent_node.val + "," + postorder(currrent_node.left) + "," + postorder(currrent_node.right);
 
-    if (set.has(serial)) {
-      res.push(currrent_node);
-    } else {
-      set.add(serial);
-    }
+    set.has(serial) ? res.push(currrent_node) : set.add(serial);
+
     return serial;
   };
 
