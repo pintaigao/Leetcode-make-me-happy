@@ -66,7 +66,7 @@ let maxSlidingWindow = function (nums, k) {
 };
 
 // @lc code=end
-// 单调队列的实现
+// 单调递减队列的实现
 class MonotonicQueue {
   constructor() {
     this.maxq = [];
@@ -81,21 +81,16 @@ class MonotonicQueue {
     this.maxq.push(n);
   }
 
-  max() {
-    return this.maxq[0];
-  }
+  max() { return this.maxq[0] }
 
   pop(n) {
-    if (n === this.maxq[0]) {
-      this.maxq.shift();
-    }
+    if (n === this.maxq[0]) { this.maxq.shift() }
   }
 }
 
 function maxSlidingWindow(nums, k) {
-  var window = new MonotonicQueue();
-  var res = [];
-  for (var i = 0; i < nums.length; i++) {
+  let window = new MonotonicQueue(), res = [];
+  for (let i = 0; i < nums.length; i++) {
     if (i < k - 1) {
       // 先填满窗口的前 k - 1
       window.push(nums[i]);
@@ -104,9 +99,31 @@ function maxSlidingWindow(nums, k) {
       window.push(nums[i]);
       // 记录当前窗口的最大值
       res.push(window.max());
-      // 移出旧数字
+      // 移出旧数字，同步删除 nums 里面的和 window 里面的
       window.pop(nums[i - k + 1]);
     }
   }
   return res;
 }
+
+// Leetcode 快的方法
+var maxSlidingWindow = function (nums, k) {
+  const ans = [], q = []; // q 记录 index
+  for (let i = 0; i < nums.length; i++) {
+    // 1. 入
+    while (q.length && nums[q[q.length - 1]] <= nums[i]) {
+      q.pop(); // 维护 q 的单调性
+    }
+    q.push(i); // 入队
+    // 2. 出
+    while (i - q[0] >= k) { // 队首已经离开窗口了
+      q.shift(); // 力扣没有 Deque，不过这样写也挺快的
+    }
+    // 3. 记录答案
+    if (i >= k - 1) {
+      // 由于队首到队尾单调递减，所以窗口最大值就是队首
+      ans.push(nums[q[0]]);
+    }
+  }
+  return ans;
+};
