@@ -80,3 +80,35 @@ var sumOfLeftLeaves = function (root) {
   return total;
 };
 // @lc code=end
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumOfLeftLeaves = function (root) {
+  let ans = 0;
+
+  function travel(root) {
+    if (root == null) return sum;
+    if (root.left) {
+      if (!root.left.left && !root.left.right) {
+        ans += root.left.val;
+      }
+      travel(root.left);
+    }
+    if (root.right) {
+      travel(root.right)
+    }
+  }
+  travel(root, ans);
+  return ans;
+};

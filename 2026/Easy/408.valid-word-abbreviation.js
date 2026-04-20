@@ -11,7 +11,8 @@
  * @return {boolean}
  */
 var validWordAbbreviation = function (word, abbr) {
-  var [wordLen, abbrLen, num, flag] = [word.length, 0, 0, true];
+  let wordLen = word.length, abbrLen = 0, num = 0, flag = true;
+  // 或者 for (let i of abbr) 
   [...abbr].forEach((value) => {
     // 如果这个位置是字母
     if (value >= "a" && value <= "z") {
@@ -32,3 +33,6 @@ var validWordAbbreviation = function (word, abbr) {
   return flag && abbrLen + num == wordLen;
 };
 // @lc code=end
+
+
+// 练习
