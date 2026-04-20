@@ -5,9 +5,6 @@
 var maxEnvelopes = function (envelopes) {
   envelopes.sort((a, b) => a[0] !== b[0] ? a[0] - b[0] : b[1] - a[1]);
 
-  console.log(envelopes);
-
-
   let dp = new Array(envelopes.length).fill(1);
 
   for (let i = 0; i < envelopes.length; i++) {
@@ -23,12 +20,10 @@ var maxEnvelopes = function (envelopes) {
 };
 
 var lengthOfLIS = function (nums) {
-  let piles = 0, n = nums.length;
-  let top = new Array(n);
+  let piles = 0, n = nums.length, top = new Array(nums.length);
   for (let i = 0; i < n; i++) {
     // 要处理的扑克牌
-    let poker = nums[i];
-    let left = 0, right = piles;
+    let poker = nums[i], left = 0, right = piles;
     // 二分查找插入位置
     while (left < right) {
       let mid = Math.floor((left + right) / 2);

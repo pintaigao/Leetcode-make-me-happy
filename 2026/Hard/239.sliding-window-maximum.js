@@ -13,9 +13,7 @@
 /* 单调队列  */
 var maxSlidingWindow = function (nums, k) {
   /* 单调双端队列:队尾->队头递增  头[3,2,1]尾*/
-  let len = nums.length;
-  let res = new Array(len - k + 1).fill(0);
-  let que = [];
+  let len = nums.length, res = new Array(nums.length - k + 1).fill(0), que = [];
   // 初始化首个窗口[0,k-1]
   for (let i = 0; i < k; i++) {
     // 新进来的元素>队尾,队尾就要弹出
@@ -24,9 +22,7 @@ var maxSlidingWindow = function (nums, k) {
     que.push(nums[i]);
   }
   // 第一个窗口最大元素已经找到
-  let index = 0;
-  res[index] = que[0];
-  index += 1;
+  let index = 0; res[index] = que[0]; index += 1;
   // 继续求解接下来的窗口
   for (let i = k; i < len; i++) {
     // nums[i]即将要加入窗口;nums[i-k]即将退出窗口
@@ -70,3 +66,47 @@ let maxSlidingWindow = function (nums, k) {
 };
 
 // @lc code=end
+// 单调队列的实现
+class MonotonicQueue {
+  constructor() {
+    this.maxq = [];
+  }
+
+  push(n) {
+    // 将小于 n 的元素全部删除
+    while (this.maxq.length > 0 && this.maxq[this.maxq.length - 1] < n) {
+      this.maxq.pop();
+    }
+    // 然后将 n 加入尾部
+    this.maxq.push(n);
+  }
+
+  max() {
+    return this.maxq[0];
+  }
+
+  pop(n) {
+    if (n === this.maxq[0]) {
+      this.maxq.shift();
+    }
+  }
+}
+
+function maxSlidingWindow(nums, k) {
+  var window = new MonotonicQueue();
+  var res = [];
+  for (var i = 0; i < nums.length; i++) {
+    if (i < k - 1) {
+      // 先填满窗口的前 k - 1
+      window.push(nums[i]);
+    } else {
+      // 窗口向前滑动，加入新数字
+      window.push(nums[i]);
+      // 记录当前窗口的最大值
+      res.push(window.max());
+      // 移出旧数字
+      window.pop(nums[i - k + 1]);
+    }
+  }
+  return res;
+}
