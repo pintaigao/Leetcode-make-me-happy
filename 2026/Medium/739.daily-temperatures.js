@@ -27,3 +27,20 @@ var dailyTemperatures = function (temperatures) {
   return res;
 };
 // @lc code=end
+
+
+// 练习
+var dailyTemperatures10 = function (temperatures) {
+  let queue = [], res = new Array(temperatures.length).fill(0);
+  for (let i = temperatures.length - 1; i >= 0; i--) {
+    while (queue.length && temperatures[queue[queue.length - 1]] <= temperatures[i]) {
+      queue.pop();
+    }
+
+    res[i] = queue.length ? queue[queue.length - 1] - i : 0
+    queue.push(i);
+  }
+
+  return res;
+}
+
