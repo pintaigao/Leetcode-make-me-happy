@@ -11,8 +11,7 @@
  */
 // Binary Search的方法 O(logn) O(1)
 var singleNonDuplicate = function (nums) {
-  let lo = 0;
-  let hi = nums.length - 1;
+  let lo = 0, hi = nums.length - 1;
 
   while (lo < hi) {
     let mid = lo + (hi - lo) / 2;
