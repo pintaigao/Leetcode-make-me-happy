@@ -68,4 +68,59 @@ const sortedListToBST2 = (head) => {
 };
 
 // @lc code=end
+var sortedListToBST = function (head) {
+  // 解法三、通过中序遍历特点写出的解法
+  let len = 0, cur = head;
+  for (let p = head; p != null; p = p.next) {
+    len++;
+  }
+
+  function inorderBuild(left, right) {
+    if (left > right) {
+      return null;
+    }
+    let mid = Math.floor((left + right) / 2);
+    // 构造左子树
+    let root = new TreeNode(cur.val);
+    let leftTree = inorderBuild(left, mid - 1);
+    // 构造根节点
+    cur = cur.next;
+    // 构造右子树
+    let rightTree = inorderBuild(mid + 1, right);
+    // 将左右子树接到根节点上
+    root.left = leftTree;
+    root.right = rightTree;
+    return root;
+  }
+
+  return inorderBuild(0, len - 1);
+};
+
+var sortedListToBST_2 = function (head) {
+  // 解法二、通过找链表中点的方式写出的解法
+  function build(begin, end) {
+    // 把链表左闭右开区间 [begin, end) 的节点构造成 BST
+    if (begin === end) {
+      // 因为是左闭右开区间，所以现在已经成空集了
+      return null;
+    }
+    let mid = getMid(begin, end);
+    let root = new TreeNode(mid.val);
+    root.left = build(begin, mid);
+    root.right = build(mid.next, end);
+    return root;
+  }
+
+  function getMid(begin, end) {
+    // 获取链表左闭右开区间 [begin, end) 的中心节点
+    let slow = begin, fast = begin;
+    while (fast !== end && fast.next !== end) {
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+    return slow;
+  }
+
+  return build(head, null);
+};
 
