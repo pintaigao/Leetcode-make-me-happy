@@ -47,23 +47,42 @@ var findMinDifference = function (timePoints) {
 };
 
 /* Solution 2: Sorted */
-var findMinDifference = function (timePoints) {
-  timePoints.sort();
-  let ans = Number.MAX_VALUE;
-  let t0Minutes = getMinutes(timePoints[0]);
-  let preMinutes = t0Minutes;
-  for (let i = 1; i < timePoints.length; ++i) {
-    const minutes = getMinutes(timePoints[i]);
-    ans = Math.min(ans, minutes - preMinutes); // 相邻时间的时间差
-    preMinutes = minutes;
+let findMinDifference = function (timePoints) {
+  timePoints = timePoints.map(time => {
+    let [hour, minute] = time.split(":").map((num) => Number(num));
+    console.log([hour, minute]);
+    return hour * 60 + minute;
+  });
+
+  timePoints.sort((a, b) => a - b);
+  let result = Number.MAX_VALUE;
+
+  for (let i = 1; i < timePoints.length; i++) {
+    result = Math.min(result, timePoints[i] - timePoints[i - 1]);
   }
-  ans = Math.min(ans, t0Minutes + 1440 - preMinutes); // 首尾时间的时间差
-  return ans;
-};
 
-const getMinutes = (t) => {
-  return ((t[0].charCodeAt() - "0".charCodeAt()) * 10 + (t[1].charCodeAt() - "0".charCodeAt())) * 60 + (t[3].charCodeAt() - "0".charCodeAt()) * 10 + (t[4].charCodeAt() - "0".charCodeAt());
+  // check first and last
+  return Math.min(result, timePoints[0] + 24 * 60 - timePoints[timePoints.length - 1]);
 };
-
-findMinDifference(["01:01", "02:01"]);
 // @lc code=end
+
+// 练习：
+let findMinDifference10 = function (timePoints) {
+  timePoints = timePoints.map(time => {
+    let [hour, minute] = time.split(":").map((num) => Number(num));
+    console.log([hour, minute]);
+    return hour * 60 + minute;
+  });
+
+  timePoints.sort((a, b) => a - b);
+  let result = Number.MAX_VALUE;
+
+  for (let i = 1; i < timePoints.length; i++) {
+    result = Math.min(result, timePoints[i] - timePoints[i - 1]);
+  }
+
+  // check first and last
+  return Math.min(result, timePoints[0] + 24 * 60 - timePoints[timePoints.length - 1]);
+};
+
+findMinDifference10(["12:12", "12:13", "00:12", "00:13"])
