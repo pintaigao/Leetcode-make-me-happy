@@ -10,21 +10,15 @@
  * @return {number[][]}
  */
 /* BFS的方法 */
-var updateMatrix = function (mat) {
-  let queue = [];
+var updateMatrix = function (matrix) {
+  let queue = [], dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]], length = 0;
   for (let i = 0; i < matrix.length; i++) {
     for (let j = 0; j < matrix[0].length; j++) {
       if (matrix[i][j] == 0) queue.push([i, j]);
       else matrix[i][j] = -1;
     }
   }
-  let dirs = [
-    [0, 1],
-    [-1, 0],
-    [1, 0],
-    [0, -1],
-  ];
-  let length = 0;
+
   while (queue.length) {
     let size = queue.length;
     length += 1;
@@ -50,11 +44,7 @@ let updateMatrix2 = function (matrix) {
     return matrix;
   }
 
-  let dis = new Array(matrix.length).fill(null).map((_) => {
-    return new Array(matrix[0].length);
-  });
-
-  let range = matrix.length * matrix[0].length;
+  let dis = new Array(matrix.length).fill(0).map((_) => new Array(matrix[0].length)), range = matrix.length * matrix[0].length;
 
   // 从上往下，左往右
   for (let i = 0; i < matrix.length; i++) {
@@ -85,3 +75,49 @@ let updateMatrix2 = function (matrix) {
   return dis;
 };
 // @lc code=end
+
+
+// 练习
+let updateMatrix10 = function (matrix) {
+  let res = new Array(matrix.length).fill(0).map(() => new Array(matrix[0].length).fill(0)), queue = [], step = 1, directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+
+  for (let i = 0; i < matrix[0].length; i++) {
+    for (let j = 0; j < matrix.length; j++) {
+      if (matrix[i][j] === 0) {
+        queue.push([i, j])
+      }
+
+      if (matrix[i][j] === 1) {
+        res[i][j] = -1;
+      }
+    }
+  }
+
+  console.log(res);
+
+  while (queue.length) {
+    let size = queue.length;
+    while (size > 0) {
+      let cell = queue.shift();
+      for (let dir of directions) {
+        let r = cell[0] + dir[0];
+        let c = cell[1] + dir[1];
+        if (r < 0 || c < 0 || r == matrix.length || c == matrix[0].length || res[r][c] >= 0) continue;
+        if (res[r][c] == -1) {
+          res[r][c] = step;
+          queue.push([r, c]);
+        }
+      }
+
+      size -= 1;
+    }
+    step += 1;
+  }
+
+  console.log(res);
+
+  return res;
+}
+
+
+updateMatrix10([[0], [1]]);
