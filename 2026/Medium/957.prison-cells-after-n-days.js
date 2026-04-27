@@ -36,10 +36,9 @@ var prisonAfterNDays = function (cells, n) {
   for (let i = 0; i < n; i++) {
     // 生成下一日的Cell
     let nextDayCell = nextDay(cells);
-    let key = nextDayCell.join("");
-    if (!set.has(key)) {
+    if (!set.has(nextDayCell.join(""))) {
       // 如果下一日的cell没有出现过，则把下一日的cell放入set
-      set.add(key);
+      set.add(nextDayCell.join(""));
       cycle += 1;
     } else {
       // 如果下一日的cell出现过，则说明有循环
@@ -60,3 +59,9 @@ var prisonAfterNDays = function (cells, n) {
   return cells;
 };
 // @lc code=end
+
+
+// 练习
+var prisonAfterNDays10 = function (cells, n) {
+  let
+}
