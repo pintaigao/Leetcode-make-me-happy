@@ -41,7 +41,7 @@ var shortestBridge = function (A) {
   while (q.length !== 0) {
     // 一批一批
     let size = q.length;
-    while (size > 0) {
+    for (let k = 0; k < size; k++) {
       let cur = q.pop();
       for (let dir of dirs) {
         let i = cur[0] + dir[0], j = cur[1] + dir[1];
@@ -54,7 +54,6 @@ var shortestBridge = function (A) {
           A[i][j] = 'visited';
         }
       }
-      size -= 1;
     }
     // size的作用是，第一轮，如果只走一步，会是怎样（将所有只走一步的visited mark true），然后step += 1
     step++;
@@ -77,3 +76,6 @@ shortestBridge([
 //   [1, 1, 1, 1, 1],
 // ]);
 // @lc code=end
+
+
+// 练习
