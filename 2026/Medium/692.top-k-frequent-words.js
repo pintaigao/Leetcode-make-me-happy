@@ -26,3 +26,28 @@ var topKFrequent = function (words, k) {
   return result.slice(0, k);
 };
 // @lc code=end
+
+// 练习
+var topKFrequent10 = function (words, k) {
+  let map = {};
+  for (let word of words) {
+    map[word] = (map[word] || 0) + 1
+  }
+  console.log(map);
+
+
+  words = [...new Set(words)].sort((a, b) => {
+    if (map[b] == map[a]) {
+      return a.charCodeAt(0) - b.charCodeAt(0)
+    } else {
+      return map[b] - map[a]
+    }
+  });
+
+  console.log(words);
+
+
+  return words.slice(0, k);
+}
+
+topKFrequent10(["aaa", "aa", "a"])

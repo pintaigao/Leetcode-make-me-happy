@@ -1,10 +1,3 @@
-/*
- * @lc app=leetcode id=412 lang=javascript
- *
- * [412] Fizz Buzz
- */
-
-// @lc code=start
 /**
  * @param {number} n
  * @return {string[]}
@@ -14,8 +7,7 @@ var fizzBuzz = function (n) {
   let ans = [];
 
   for (let num = 1; num <= n; num++) {
-    let divisibleBy3 = num % 3 == 0;
-    let divisibleBy5 = num % 5 == 0;
+    let divisibleBy3 = num % 3 == 0, divisibleBy5 = num % 5 == 0;
 
     if (divisibleBy3 && divisibleBy5) {
       // Divides by both 3 and 5, add FizzBuzz
@@ -34,4 +26,3 @@ var fizzBuzz = function (n) {
 
   return ans;
 };
-// @lc code=end

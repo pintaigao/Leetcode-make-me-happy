@@ -49,7 +49,7 @@ class DoubleList {
 
   // 删除链表中第一个节点，并返回该节点，时间 O(1)
   removeFirst() {
-    if (this.head.next == this.tail) return null;
+    if (this.head.next == this.tail) return;
     let first = this.head.next;
     this.remove(first);
     return first;
@@ -147,3 +147,93 @@ obj.put(1, 1);
 var param_1 = obj.get(1);
 console.log(param_1);
 // @lc code=end
+
+
+// 练习
+class Node {
+  constructor(key, val) {
+    this.key = key;
+    this.val = val;
+    this.next = null
+    this.prev = null;
+  }
+}
+
+
+class Cache {
+  constructor() {
+    this.size = 0;
+    this.head = new Node(0, 0);
+    this.tail = new Node(0, 0);
+    this.head.next = this.tail;
+    this.head.prev = null;
+    this.tail.prev = this.head;
+    this.tail.next = null;
+  }
+
+  addLast(x) {
+    x.next = this.tail;
+    x.prev = this.tail.prev;
+    this.tail.prev.next = x;
+    this.tail.prev = x
+    this.size += 1;
+  }
+
+  removeFirst() {
+    if (this.head.next == this.tail) return null;
+    let first = this.head.next;
+    this.remove(first);
+    return first;
+  }
+
+  remove(x) {
+    let last = x.prev, next = x.next
+    last.next = next;
+    next.prev = last;
+    this.size -= 1;
+  }
+
+  getSize() {
+    return this.size;
+  }
+
+}
+
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity
+    this.map = {};
+    this.cache = new Cache();
+  }
+
+  get(key) {
+    if (this.map[key]) {
+      // Make it recent
+      this.cache.remove(this.map[key]);
+      this.cache.addLast(this.map[key]);
+
+      return this.map[key].val
+    } else {
+      return -1;
+    }
+  }
+
+  put(key, value) {
+    let node = new Node(key, value);
+    if (this.map[key]) {
+      this.cache.remove(this.map[key]);
+      this.cache.addLast(this.map[key]);
+      this.map[key].val = value;
+
+      return;
+    }
+
+    if (this.capacity == this.cache.getSize()) {
+      let deleteNode = this.cache.removeFirst();
+      deleteNode && delete this.map[deleteNode.key];
+    }
+
+    this.map[key] = node;
+    this.cache.addLast(node);
+  }
+}
