@@ -60,3 +60,5 @@ var asteroidCollision = function (asteroids) {
 // @lc code=end
 
 asteroidCollision([3, 5, -6, 2, -1, 4])
+
+
