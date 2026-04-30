@@ -16,11 +16,13 @@ var wordPattern = function (pattern, str) {
   if (pArr.length !== sArr.length) return false;
   var mapP2S = {}, mapS2P = {};
   for (var i = 0; i < pArr.length; ++i) {
+
     if (mapP2S[pArr[i]]) {
       if (sArr[i] !== mapP2S[pArr[i]]) return false;
     } else {
       mapP2S[pArr[i]] = sArr[i];
     }
+
     if (mapS2P[sArr[i]]) {
       if (pArr[i] !== mapS2P[sArr[i]]) return false;
     } else {
