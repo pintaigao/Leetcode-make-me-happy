@@ -76,3 +76,15 @@ var maxSubArray3 = function (nums) {
   }
   return maxSum;
 };
+
+
+// 练习
+var maxSubArray10 = function (nums) {
+  let curMax = Number.MIN_SAFE_INTEGER, maxSum = Number.MIN_SAFE_INTEGER;
+  for (let num of nums) {
+    curMax = Math.max(num + curMax, num)
+    maxSum = Math.max(maxSum, curMax);
+  }
+
+  return maxSum;
+}

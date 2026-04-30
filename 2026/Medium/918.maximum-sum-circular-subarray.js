@@ -40,7 +40,7 @@ let maxSubarraySumCircular2 = function (A) {
     curMax = Math.max(curMax + a, a);
     // 最大的和
     maxSum = Math.max(maxSum, curMax);
-    // 和 和 现在这个位置的值， 哪个小
+
     curMin = Math.min(curMin + a, a);
     // 最小的和
     minSum = Math.min(minSum, curMin);
@@ -51,3 +51,50 @@ let maxSubarraySumCircular2 = function (A) {
 };
 
 // @lc code=end
+
+
+// 练习
+let maxSubarraySumCircular10 = function (A) {
+  let newA = [...A, ...A], result = Array.from({ length: newA.length }).fill(0);
+  console.log(result);
+
+  for (let i = 0; i < newA.length; i++) {
+    if (i === 0) {
+      result[i] = Math.max(newA[i], 0)
+    } else {
+      let sum = Math.max(result[i - 1] + newA[i], 0)
+      result[i] = sum;
+    }
+  }
+
+  console.log(result);
+
+  return Math.max(result);
+}
+
+maxSubarraySumCircular10([5, -3, 5])
+
+var maxSubarraySumCircular = function (nums) {
+  // 模拟环状的 nums 数组
+  const n = nums.length, preSum = new Array(2 * n + 1).fill(0);
+
+  // 计算环状 nums 的前缀和
+  for (let i = 1; i < preSum.length; i++) {
+    preSum[i] = preSum[i - 1] + nums[(i - 1) % n];
+  }
+  // 记录答案
+  let maxSum = -Infinity;
+  // 维护一个滑动窗口，以便根据窗口中的最小值计算最大子数组和
+  let window = new MonotonicQueue();
+  window.push(0);
+  for (let i = 1; i < preSum.length; i++) {
+    maxSum = Math.max(maxSum, preSum[i] - window.min());
+    // 维护窗口的大小为 nums 数组的大小
+    if (window.size() === n) {
+      window.pop();
+    }
+    window.push(preSum[i]);
+  }
+
+  return maxSum;
+};
