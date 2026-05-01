@@ -9,25 +9,27 @@
  * @param {string} s
  * @return {string}
  */
-var longestPalindrome = function (str) {
-  function helper(start, end) {
-    while (start >= 0 && end < str.length && str[start] == str[end]) {
-      start--;
-      end++;
+var longestPalindrome = function (s) {
+  let res = "";
+  palindrome = function (l, r) {
+    // 防止索引越界
+    while (l >= 0 && r < s.length && s[l] === s[r]) {
+      // 向两边展开
+      l--;
+      r++;
     }
-    if (maxLen < end - start - 1) {
-      lo = start + 1;
-      maxLen = end - start - 1;
-    }
+    // 此时 s[l+1..r-1] 就是最长回文串
+    return s.substring(l + 1, r);
+  };
+  for (let i = 0; i < s.length; i++) {
+    // 以 s[i] 为中心的最长回文子串
+    // 以 s[i] 和 s[i+1] 为中心的最长回文子串
+    let s1 = palindrome(i, i), s2 = palindrome(i, i + 1);
+    // res = longest(res, s1, s2)
+    res = res.length > s1.length ? res : s1;
+    res = res.length > s2.length ? res : s2;
   }
-
-  let [lo, maxLen] = [0, 0];
-  if (str.length < 2) return str;
-  for (let i = 0; i < str.length - 1; i++) {
-    helper(i, i);
-    helper(i, i + 1);
-  }
-
-  return str.substring(lo, lo + maxLen);
+  return res;
 };
+
 // @lc code=end

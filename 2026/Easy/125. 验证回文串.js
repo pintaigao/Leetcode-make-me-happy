@@ -8,12 +8,10 @@ var isPalindrome = function (s) {
     }
   }
 
-  // 然后对剩下的这些目标字符执行双指针算法，判断回文串
-  s = sb.join('');
   // 一左一右两个指针相向而行
-  let left = 0, right = s.length - 1;
+  let left = 0, right = sb.length - 1;
   while (left < right) {
-    if (s.charAt(left) !== s.charAt(right)) {
+    if (sb[left] !== sb[right]) {
       return false;
     }
     left++;
@@ -21,3 +19,5 @@ var isPalindrome = function (s) {
   }
   return true;
 };
+
+isPalindrome("A man, a plan, a canal: Panama")

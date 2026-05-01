@@ -8,9 +8,7 @@ function solution(S, K) {
     // 如果一个字符串本身就超过 K 种不同字母，那不可能被构造
     if (letterSet.size <= K) {
       wordSets.push(letterSet);
-      for (const ch of letterSet) {
-        allLetters.add(ch);
-      }
+      letterSet.forEach(c => allLetters.add(c));
     }
   }
 
