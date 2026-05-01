@@ -118,10 +118,13 @@ var partition10 = function (s) {
   return result;
 }
 
-// 动态规划
+// 动态规划 从头到尾
 var partition11 = function (s) {
   let res = [], dp = new Array(s.length).fill(0).map(() => new Array(s.length));
+  // 从头开始
+  // 先保持尾不变
   for (let j = 0; j < s.length; j++) {
+    // 然后从头遍历到尾
     for (let i = 0; i <= j; i++) {
       // 如果i == j时，子串只有一个字符，肯定回文
       // j-i == 1时，子串由两个字符组成，字符必须相同s[i] == s[j]
@@ -154,3 +157,41 @@ var partition11 = function (s) {
 };
 
 partition11("aab")
+
+// 动态规划 从尾到头
+var partition12 = function (s) {
+  let res = [], dp = new Array(s.length).fill(0).map(() => new Array(s.length));
+  // 从尾开始
+  // 先保持头不变
+  for (let i = s.length - 1; i >= 0; i--) {
+    // 然后从头遍历到尾
+    for (let j = i; j < s.length; j++) {
+      // 如果i == j时，子串只有一个字符，肯定回文
+      // j-i == 1时，子串由两个字符组成，字符必须相同s[i] == s[j]
+      // j-i > 1时，子串由两个以上字符组成，s[i] == s[j]，且dp[i+1][j-1]=true即除去首尾字符的剩余子串也是回文子串。
+      if (i == j || (j - i == 1 && s[i] == s[j]) || (j - i > 1 && s[i] == s[j] && dp[i + 1][j - 1])) {
+        dp[i][j] = true;
+      } else {
+        dp[i][j] = false;
+      }
+    }
+  }
+  function dfs(temp, start) {
+    if (start == s.length) {
+      res.push(temp.slice());
+      return;
+    }
+    for (let i = start; i < s.length; i++) {
+      if (dp[start][i]) {
+        temp.push(s.substring(start, i + 1));
+        dfs(temp, i + 1);
+        temp.pop();
+
+        // 或者
+        // dfs([...temp, s.substring(start, i + 1)], i + 1);
+      }
+    }
+  }
+  dfs([], 0);
+  return res;
+};
