@@ -39,3 +39,37 @@ var maximumSwap = function (num) {
   return num;
 };
 // @lc code=end
+
+
+//练习
+var maximumSwap10 = function (nums) {
+  let numIndex = new Array(10).fill(-1), numStringArr = String(nums).split(""), swap = false
+  numStringArr.forEach((num, index) => {
+    numIndex[Number(num)] = index;
+  });
+
+
+  for (let i = 0; i < numStringArr.length; i++) {
+    for (let j = 9; j >= 0; j--) {
+      if (numIndex[j] == -1) {
+        continue;
+      }
+
+      if (j > numStringArr[i] && numIndex[j] > i) {
+        swap = true;
+        let temp = numStringArr[i];
+        numStringArr[i] = j;
+        numStringArr[numIndex[j]] = temp;
+
+        break;
+      }
+    }
+
+    if (swap) break;
+  }
+
+  return Number(numStringArr.join(""));
+}
+
+
+maximumSwap10(2736)
