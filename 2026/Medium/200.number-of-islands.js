@@ -41,7 +41,7 @@ var numIslands = function (grid) {
 };
 
 /* BFS */
-let numIslands = function (grid) {
+let numIslands2 = function (grid) {
   if (grid == null || grid.length == 0) {
     return 0;
   }
@@ -74,3 +74,70 @@ let numIslands = function (grid) {
 };
 
 // @lc code=end
+// 练习
+let numIslands10 = function (grid) {
+  let directions = [[-1, 0], [1, 0], [0, 1], [0, -1]], result = 0;
+  function dfs(x, y) {
+    if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == '0' || grid[x][y] == 'visited') {
+      return;
+    }
+
+    grid[x][y] = 'visited'
+    for (let [nx, ny] of directions) {
+      dfs(x + nx, y + ny);
+    }
+  }
+
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      if (grid[i][j] == "1") {
+        console.log(i, j);
+
+        dfs(i, j);
+        result += 1;
+      }
+    }
+  }
+
+  console.log(grid);
+
+
+  return result;
+}
+
+let numIslands11 = function (grid) {
+  let result = 0, queue = [];
+  function bfs() {
+    while (queue.length) {
+      let [x, y] = queue.pop();
+      grid[x][y] = 'visited'
+      for (let [nx, ny] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        if (x + nx >= 0 && x + nx < grid.length && y + ny >= 0 && y + ny < grid[0].length && grid[x + nx][y + ny] == "1") {
+          queue.push([x + nx, y + ny]);
+        }
+      }
+    }
+  }
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      if (grid[i][j] == "1") {
+        queue.push([i, j])
+        bfs();
+
+        result += 1;
+      }
+    }
+  }
+
+
+  return result;
+}
+
+numIslands11([
+  ['1', '1', '0', '0', '0'],
+  ['1', '1', '0', '0', '0'],
+  ['0', '0', '1', '0', '0'],
+  ['0', '0', '0', '1', '1']
+]);
