@@ -73,15 +73,15 @@
       e.stopPropagation();
     });
 
-    btn3.addEventListener("click", () => {
+    btn3.addEventListener("click", (e) => {
       console.log("btn handler 2");
+      e.stopImmediatePropagation();
     });
 
-    // btn handler 1 & btn handler 2
-
+    // btn handler 1 & btn handler 2. 
+    // 因为前面有e.stopImmediatePropagation();， btn handler 3 btn handler 4 都不会输出
     btn4.addEventListener("click", (e) => {
       console.log("btn handler 3");
-      e.stopImmediatePropagation();
     });
 
     btn4.addEventListener("click", () => {

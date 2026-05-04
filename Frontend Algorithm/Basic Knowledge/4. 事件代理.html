@@ -41,6 +41,10 @@
 
   // 事件代理：只给父元素 list 绑定一次
   list.addEventListener('click', function (event) {
+    console.log(event.target); // li...
+    console.log(event.currentTarget); // ul....
+
+    // which tag actually trigger "click"
     const item = event.target.closest('li');
     if (!item) return;
     // 展示点击事件 click -> console.log

@@ -27,17 +27,17 @@ Person.prototype.getNameAndAge = function () {
 }
 
 Person.age = 30; // 给构造函数添加一个静态属性 age
-// 注意这里的 this 是指向 Person 的, 因为 getAge 是 Person 的静态方法, 所以 this.age 实际上是 Person.age
 Person.getAge = function () {
+  // 注意这里的 this 是指向 Person 的, 因为 getAge 是 Person 的静态方法, 所以 this.age 实际上是 Person.age
   return this.age; // 30
 };
 
 const p1 = new Person("Alice");
 const p2 = new Person("Bob");
 
-p1.sayHi(); // Hi, I'm Alice, I'm 18 years old
-p1.__proto__.sayHi(); // Hi, I'm Alice
-p2.sayHi(); // Hi, I'm Bob
+p1.sayHi(); // Hi, I'm Alice, I'm 18 years old // 没有使用 Person.prototype.sayHi的原因是Own properties override prototype properties
+p1.__proto__.sayHi(); // Hi, I'm undefine
+p2.sayHi(); // Hi, I'm Bob, I'm 18 years old
 p1.getName();
 p1.getNameAndAge();
 console.log(p1.getName === Person.prototype.getName);
@@ -47,7 +47,7 @@ console.log("===================================================================
 // 1. 每个函数都有一个 prototype 属性, 用于实现原型链
 console.log(p1.__proto__ === Person.prototype); // true
 console.log(p2.__proto__ === Person.prototype); // true
-console.log(p1.sayHi === p1.__proto__.sayHi); // 如果Person里面没有 this.sayHi定义在构造函数内部，true，如果有，false
+console.log(p1.sayHi === p1.__proto__.sayHi); // false // 如果Person里面没有 this.sayHi定义在构造函数内部，true，如果有，false
 
 // 2. Person.prototype 默认会有一个 constructor，指回 Person 本身。
 console.log(Person.prototype.constructor === Person); // true
