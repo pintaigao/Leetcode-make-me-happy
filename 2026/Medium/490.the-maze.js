@@ -45,44 +45,28 @@ var hasPath = function (maze, start, destination) {
 
 /* BFS */
 let hasPath2 = function (maze, start, destination) {
-  let visited = new Array(maze.length).fill(false).map(() => Array(maze[0].length).fill(false));
-  let dirs = [
-    [0, 1],
-    [0, -1],
-    [-1, 0],
-    [1, 0],
-  ];
-  let queue = [];
-  queue.push(start);
+  let visited = Array.from({ length: maze.length }, () => Array(maze[0].length).fill(false)), dirs = [[0, 1], [0, -1], [-1, 0], [1, 0]], queue = [start];
   visited[start[0]][start[1]] = true;
   while (queue.length) {
     let s = queue.shift();
     if (s[0] == destination[0] && s[1] == destination[1]) return true;
     for (let dir of dirs) {
-      let x = s[0] + dir[0];
-      let y = s[1] + dir[1];
+      let x = s[0] + dir[0], y = s[1] + dir[1];
+      // 和其他题目不同的是，这里一直走到墙，而不是只走一步
       while (x >= 0 && y >= 0 && x < maze.length && y < maze[0].length && maze[x][y] == 0) {
         // 一直到底
-        x += dir[0];
-        y += dir[1];
+        x += dir[0], y += dir[1];
       }
-      if (!visited[x - dir[0]][y - dir[1]]) {
-        queue.push([x - dir[0], y - dir[1]]);
-        visited[x - dir[0]][y - dir[1]] = true;
+      // 后腿一步
+      x = x - dir[0], y = y - dir[1]
+      // 不能直接maze[x - dir[0]][y - dir[1]] = “visited“, 因为上面 maze[x][y] == 0还需要这个0
+      if (!visited[x][y]) {
+        queue.push([x, y]);
+        visited[x][y] = true;
       }
     }
   }
   return false;
 };
 
-hasPath(
-  [
-    [0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0],
-    [1, 1, 0, 1, 1],
-    [0, 0, 0, 0, 0],
-  ],
-  [0, 4],
-  [3, 2]
-);
+

@@ -12,12 +12,10 @@
 var findMinArrowShots = function (points) {
   if (points.length == 0) return 0;
 
-  // sort by x_end
+  // 按末尾排
   points.sort((a, b) => a[1] - b[1]);
-  let arrowCnt = 1;
-
   // 取第一个点的末端作为箭头的起始点
-  let arrowPos = points[0][1];
+  let arrowCnt = 1, arrowPos = points[0][1];
   // loop这个气球的所有点
   for (let i = 1; i < points.length; i++) {
     // 如果这个气球的前端小于箭头的位置，说明现在这个气球可以被刺破
