@@ -19,8 +19,7 @@ var frequencySort = function (s) {
   chars.sort();
 
   // Convert identical chars into single Strings.
-  let charStrings = [];
-  let currentString = "";
+  let charStrings = [], currentString = "";
   currentString += chars[0];
 
   // 组合
@@ -47,7 +46,8 @@ var frequencySort = function (s) {
 // Approach 2: HashMap and Sort
 let frequencySort2 = function (s) {
   // Count up the occurances.
-  let counts = {};
+  // Convert the counts into a string with a sb.
+  let counts = {}, sb = ""
   for (let c of s.split("")) {
     counts[c] = (counts[c] || 0) + 1;
   }
@@ -56,14 +56,7 @@ let frequencySort2 = function (s) {
   let characters = Object.keys(counts);
   characters.sort((a, b) => counts[b] - counts[a]);
 
-  // Convert the counts into a string with a sb.
-  let sb = "";
-  for (let c of characters) {
-    let copies = counts[c];
-    for (let i = 0; i < copies; i++) {
-      sb += c;
-    }
-  }
+  for (let c of characters) for (let i = 0; i < counts[c]; i++) sb += c;
   return sb;
 };
 
@@ -111,3 +104,6 @@ let frequencySort3 = function (s) {
 
 frequencySort3("tree");
 // @lc code=end
+
+
+// 

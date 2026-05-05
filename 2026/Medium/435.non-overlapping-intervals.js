@@ -20,12 +20,11 @@ var eraseOverlapIntervals = function (intervals) {
   if (intervals.length == 0) {
     return 0;
   }
-  intervals.sort((a, b) => {
-    return a[1] - b[1];
-  });
+  intervals.sort((a, b) => a[1] - b[1]);
 
   let dp = new Array(intervals.length), ans = 1;
   dp[0] = 1;
+  // 1 往前 => 2 往前 => 3 往前
   for (let i = 1; i < dp.length; i++) {
     let max = 0;
     for (let j = i - 1; j >= 0; j--) {

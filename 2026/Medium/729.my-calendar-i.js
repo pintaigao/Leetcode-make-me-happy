@@ -69,11 +69,9 @@ var MyCalendar2 = function () {
 };
 
 MyCalendar2.prototype.book = function (start, end) {
-  let [l, r] = [0, this.cal.length - 1];
+  let l = 0, r = this.cal.length - 1;
   while (l <= r) {
-    const mid = Math.floor((r + l) / 2);
-    const [s, e] = this.cal[mid];
-    //
+    const mid = Math.floor((r + l) / 2), [s, e] = this.cal[mid];
     if (s < end && start < e) return false;
     if (start >= e) {
       l = mid + 1;
@@ -91,3 +89,37 @@ MyCalendar2.prototype.book = function (start, end) {
  * var param_1 = obj.book(start,end)
  */
 // @lc code=end
+
+var MyCalendar3 = function () {
+  // 记录日程，键是日程的开始时间，值是日程的结束时间
+  this.calendar = new Map();
+};
+
+MyCalendar3.prototype.book = function (start, end) {
+  // 这个日程
+  // 1. 判断 end 是不是和其他 schedule 相交了（end 在其他日程的中间）
+  // for [key, value] of map
+  // [47,50],[33,41]
+  for (let [s, e] of this.calendar) {
+    if (start < e && end > s) {
+      // 本次日程还没结束，下个日程就开始了
+      return false;
+    }
+  }
+
+  // 2. 判断 start 是不是和其他日程相交了（在其他日程的中间）
+  // for [key, value] of map
+  for (let [s, e] of this.calendar) {
+    if (start < e && start >= s) {
+      // 上个日程还没结束，本次日程就开始了
+      return false;
+    }
+  }
+
+  // 成功安排日程
+  this.calendar.set(start, end);
+  return true;
+}
+
+
+// [[],[47,50],[33,41],[39,45],[33,42],[25,32],[26,35],[19,25],[3,8],[8,13],[18,27]]
