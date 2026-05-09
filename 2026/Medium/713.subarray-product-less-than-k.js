@@ -14,15 +14,19 @@
 /* Solution 1: Sliding Window */
 var numSubarrayProductLessThanK = function (nums, k) {
   if (k <= 1) return 0;
-  let [prod, ans, left] = [1, 0, 0];
-  for (let right = 0; right < nums.length; right++) {
+  let prod = 1, ans = 0, left = 0, right = 0;
+  while (right < nums.length) {
+    // 增加右边
     prod *= nums[right];
+    right += 1;
+
+    // 收缩左边
     while (prod >= k) {
       prod /= nums[left];
       left += 1;
     }
     //每多加一个数字，就会产生right - left + 1个子数组，因为比如说[1,2]多加一个3，子数组多了[3],[3,2],[3,2,1]，所以多了3个，
-    ans += right - left + 1;
+    ans += right - left;
   }
   return ans;
 };
