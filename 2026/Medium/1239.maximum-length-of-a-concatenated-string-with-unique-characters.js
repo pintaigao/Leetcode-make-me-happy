@@ -66,19 +66,23 @@ let maxLength2 = function (arr) {
 
   let result = 0;
   // 组合
-  let dfs = function (path, idx) {
-    let isUniqueChar = isUniqueChars(path);
-
-    if (isUniqueChar) {
-      result = Math.max(path.length, result);
-    }
-    if (idx == arr.length || !isUniqueChar) {
+  let dfs = function (path, start) {
+    if (!isUniqueChars(path)) {
       return;
     }
 
-    for (let i = idx; i < arr.length; i++) {
-      dfs(path + arr[i], i + 1);
+    result = Math.max(path.length, result);
+
+    if (start >= arr.length) {
+      return;
     }
+
+    // for (let i = start; i < arr.length; i++) {
+    //   dfs(path + arr[i], start + 1);
+    // }
+
+    dfs(path + arr[start], start + 1); // 选
+    dfs(path, start + 1); // 不选
     /*
      * "" -> "cha" --> "cha" + "r" --> "cha" + "r" + "act" -> "cha" + "r" + "act" + "ers" -->
      * "cha" + "r" + "ers" --> "cha" + "act" --> "cha" + "act" + "ers"
