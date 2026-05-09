@@ -19,29 +19,18 @@
  */
 /* Solution 1: BFS */
 var verticalOrder = function (root) {
-  let output = [];
+  let output = [], columnTable = {}, column = 0, queue = [[root, column]];
   if (root == null) {
     return output;
   }
 
-  let columnTable = {};
-  let queue = [];
-  let column = 0;
-  queue.unshift([root, column]);
-
   while (queue.length !== 0) {
-    let p = queue.pop();
-    root = p[0];
-    column = p[1];
+    let p = queue.pop(), root = p[0], column = p[1];
 
     if (root != null) {
-      if (!columnTable.hasOwnProperty(column)) {
-        columnTable[column] = [];
-      }
-      columnTable[column].push(root.val);
-
-      queue.unshift([root.left, column - 1]);
-      queue.unshift([root.right, column + 1]);
+      columnTable[column] = columnTable[column] ? [...columnTable[column], root.val] : [root.val]
+      root.left && queue.unshift([root.left, column - 1]);
+      root.right && queue.unshift([root.right, column + 1]);
     }
   }
 
