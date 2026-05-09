@@ -30,3 +30,22 @@ var rob = function (nums) {
   return dp[dp.length - 1];
 };
 // @lc code=end
+
+// 练习
+var rob10 = function (nums) {
+  let result = Array.from({ length: nums.length }, () => new Array(2));
+
+  for (let i = 0; i < nums.length; i++) {
+    // base case
+    if (i == 0) {
+      result[i][0] = 0, result[i][1] = nums[i]
+    } else {
+      // position 1: no rob, value could be rob or no rob
+      result[i][0] = Math.max(result[i - 1][1], result[i - 1][0])
+      // position 2: rob
+      result[i][1] = result[i - 1][0] + nums[i];
+    }
+  }
+
+  return Math.max(result[nums.length - 1][0], result[nums.length - 1][1]);
+}
