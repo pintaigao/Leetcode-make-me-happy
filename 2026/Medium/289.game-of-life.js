@@ -12,15 +12,10 @@
 
 /* 方法一：复制原数组进行模拟 */
 var gameOfLife = function (board) {
-  let neighbors = [0, 1, -1];
-
-  let rows = board.length;
-  let cols = board[0].length;
+  let neighbors = [0, 1, -1], rows = board.length, cols = board[0].length;
 
   // 从board，创建复制数组 copyBoard
-  let copyBoard = board.map((arr) => {
-    return arr.slice();
-  });
+  let copyBoard = board.map((arr) => arr.slice());
 
   // 遍历面板每一个格子里的细胞
   for (let row = 0; row < rows; row++) {
@@ -31,8 +26,7 @@ var gameOfLife = function (board) {
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (!(neighbors[i] == 0 && neighbors[j] == 0)) {
-            let r = row + neighbors[i];
-            let c = col + neighbors[j];
+            let r = row + neighbors[i], c = col + neighbors[j];
 
             // 查看相邻的细胞是否是活细胞
             if (r < rows && r >= 0 && c < cols && c >= 0 && copyBoard[r][c] == 1) {
@@ -56,9 +50,7 @@ var gameOfLife = function (board) {
 
 /* 方法二：使用额外的状态 */
 var gameOfLife = function (board) {
-  let neighbors = [0, 1, -1];
-
-  let [rows, cols] = [board.length, board[0].length];
+  let neighbors = [0, 1, -1], [rows, cols] = [board.length, board[0].length];
 
   // 遍历面板每一个格子里的细胞
   for (let row = 0; row < rows; row++) {
@@ -70,8 +62,7 @@ var gameOfLife = function (board) {
         for (let j = 0; j < 3; j++) {
           if (!(neighbors[i] == 0 && neighbors[j] == 0)) {
             // 相邻位置的坐标
-            let r = row + neighbors[i];
-            let c = col + neighbors[j];
+            let r = row + neighbors[i], c = col + neighbors[j];
 
             // 查看相邻的细胞是否是活细胞
             if (r < rows && r >= 0 && c < cols && c >= 0 && Math.abs(board[r][c]) == 1) {

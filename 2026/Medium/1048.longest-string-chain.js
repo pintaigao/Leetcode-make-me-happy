@@ -15,8 +15,7 @@
 var longestStrChain = function (words) {
   words.sort((a, b) => a.length - b.length);
   // dp[i]表示从words[0]到words[i]最长的词链长度
-  let dp = new Array(words.length).fill(1);
-  let res = 1; //
+  let dp = new Array(words.length).fill(1), res = 1;
 
   /**
    * 判断a是否是b的前身 是返回true 如 "bda" 是"bdca"的前身
@@ -50,10 +49,9 @@ var longestStrChain = function (words) {
 
 /* DFS */
 var longestStrChain = function (words) {
-  let min = 0,
-    max = 16; //最小字符长度，最大字符长度
   //K为字符长度，Set为该字符长度的word集合
-  let map = {};
+
+  let min = 0, max = 16, map = {};
   for (let word of words) {
     map[word.length] = map[word.length].add(word) || new Set([word]);
     min = Math.min(min, word.length);

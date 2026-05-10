@@ -33,3 +33,31 @@ var subsets = function (nums) {
   return result;
 };
 // @lc code=end
+
+
+// 练习
+var subsets10 = function (nums) {
+  let result = [], path = []
+
+  let dfs = (s) => {
+    console.log(path);
+
+    if (s > nums.length) {
+      return;
+    }
+
+    result.push(path.slice());
+
+    for (let i = s; i < nums.length; i++) {
+      path.push(nums[i]);
+      dfs(i + 1);
+      path.pop();
+    }
+  };
+
+  dfs(0);
+
+  return result;
+};
+
+subsets10([1, 2, 3])
