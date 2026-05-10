@@ -13,9 +13,7 @@
 
 // 方法一： Min Array
 var shortestToChar = function (S, C) {
-  let n = S.length,
-    pos = -n,
-    res = [];
+  let n = S.length, pos = -n, res = [];
 
   // 从左往右, 每个字符的距离是当前字符与左边的找到的最近的char的最小距离
   for (let i = 0; i < n; ++i) {
@@ -35,8 +33,7 @@ var shortestToChar = function (S, C) {
 
 // Approach 2 : DP
 let shortestToChar2 = function (S, C) {
-  let n = S.length;
-  let res = [];
+  let n = S.length, res = [];
   for (let i = 0; i < n; ++i) res[i] = S[i] == C ? 0 : n;
   for (let i = 1; i < n; ++i) res[i] = Math.min(res[i], res[i - 1] + 1);
   for (let i = n - 2; i >= 0; --i) res[i] = Math.min(res[i], res[i + 1] + 1);
