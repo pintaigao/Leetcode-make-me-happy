@@ -18,7 +18,7 @@ var insert = function (intervals, newInterval) {
     // 当前遍历的是蓝左边的，不重叠的区间
     res.push(intervals[i]);
     i++;
-  }
+  } zhua
 
   while (i < len && intervals[i][0] <= newInterval[1]) {
     // 当前遍历是有重叠的区间

@@ -11,9 +11,7 @@
  * @return {number}
  */
 var uniquePaths = function (m, n) {
-  let dp = new Array(m).fill(0).map((pos) => {
-    return new Array(n).fill(1);
-  });
+  let dp = Array.from({ length: m }, () => new Array(n).fill(1))
 
   for (let col = 1; col < m; ++col) {
     for (let row = 1; row < n; ++row) {
