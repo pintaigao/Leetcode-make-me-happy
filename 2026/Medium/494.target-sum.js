@@ -15,7 +15,6 @@ var findTargetSumWays = function (nums, target) {
     // Base Cases
     if (index < 0 && curr_sum == target) return 1;
     if (index < 0) return 0;
-
     // Decisions
     let positive = dp(index - 1, curr_sum + nums[index]);
     let negative = dp(index - 1, curr_sum - nums[index]);
@@ -46,27 +45,56 @@ var findTargetSumWays = function (nums, target) {
 
 /* 记忆化的DFS */
 var findTargetSumWays = function (nums, target) {
-  let map = {};
-  let dfs = function (index, curr_sum) {
-    let key = index + "-" + curr_sum;
-    if (map.hasOwnProperty(key)) return map[key];
-    if (index == nums.length) {
-      map[key] = curr_sum == target ? 1 : 0;
-      return map[key];
+  if (nums.length === 0) return 0;
+
+  // 备忘录
+  const memo = new Map();
+  // 定义：利用 nums[i..] 这些元素，能够组成和为 remain 的方法数量
+  function dp(nums, i, remain) {
+    // base case
+    if (i === nums.length) {
+      if (remain === 0) return 1;
+      return 0;
     }
 
-    let positive = dfs(index + 1, curr_sum + nums[index]);
-    let negative = dfs(index + 1, curr_sum - nums[index]);
+    // 把它俺转成字符串才能作为哈希表的键
+    const key = `${i},${remain}`;
 
-    map[key] = positive + negative;
+    // 避免重复计算
+    if (memo.has(key)) {
+      return memo.get(key);
+    }
 
-    return map[key];
-  };
+    // 还是穷举
+    const result = dp(nums, i + 1, remain - nums[i]) + dp(nums, i + 1, remain + nums[i]);
 
-  return dfs(0, 0);
+    // 记入备忘录
+    memo.set(key, result);
+    return result;
+  }
+
+  return dp(nums, 0, target);
 };
 
-/* 动态规划 */
+/* 动态规划 0,1 背包 */
+var subsets = function (nums, sum) {
+  let n = nums.length, dp = Array.from({ length: n + 1 }, () => Array(sum + 1).fill(0));
+  // base case
+  dp[0][0] = 1;
+
+  for (let i = 1; i <= n; i++) {
+    for (let j = 0; j <= sum; j++) {
+      if (j >= nums[i - 1]) {
+        // 两种选择的结果之和
+        dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]];
+      } else {
+        // 背包的空间不足，只能选择不装物品 i
+        dp[i][j] = dp[i - 1][j];
+      }
+    }
+  }
+  return dp[n][sum];
+};
 
 // @lc code=end
 // 练习
@@ -95,8 +123,6 @@ var findTargetSumWays10 = function (nums, target) {
 };
 
 findTargetSumWays10([1, 1, 1, 1, 1], 3)
-
-// 0,1 背包
 // 传入一个整数数组和目标值 target，求有多少种方法使得数组中的元素之和为 target，每个元素可以选择加或者减
 var findTargetSumWays = function (nums, target) {
   // 数组长度为 0 直接返回 0
