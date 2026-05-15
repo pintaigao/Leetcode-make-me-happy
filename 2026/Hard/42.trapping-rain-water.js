@@ -115,25 +115,43 @@ let trap4 = function (height) {
   return sum;
 };
 
-/* 五：Stack */
+/* 四：提前计算每个点左 max 和右 max */
+var trap = function (height) {
+  if (height.length === 0) return 0;
+  // 数组充当备忘录
+  let n = height.length, res = 0, l_max = new Array(n), r_max = new Array(n);
+  // 初始化 base case
+  l_max[0] = height[0], r_max[n - 1] = height[n - 1];
+  // 从左向右计算 l_max，每个点左边最高是他自己还是左边的
+  for (let i = 1; i < n; i++) l_max[i] = Math.max(height[i], l_max[i - 1]);
+  // 从右向左计算 r_max
+  for (let i = n - 2; i >= 0; i--) r_max[i] = Math.max(height[i], r_max[i + 1]);
+  // 计算答案
+  for (let i = 1; i < n - 1; i++) res += Math.min(l_max[i], r_max[i]) - height[i]; // Math.min(l_max[i], r_max[i])不会小于height[i]，有可能是他自己
+  return res;
+};
+
+
+/* 五：单调栈 Stack */
 let trap5 = function (height) {
-  let sum = 0;
-  let stack = [];
-  let current = 0;
+  let sum = 0, stack = [], current = 0;
+  // 从左向右看
   while (current < height.length) {
     //如果栈不空并且当前指向的高度大于栈顶高度就一直循环
     while (stack.length && height[current] > height[stack[0]]) {
       let h = height[stack[0]]; //取出要出栈的元素
-      stack.shift(); //出栈
+      stack.pop(); //出栈
       if (!stack.length) {
         // 栈空就出去
         break;
       }
-      let distance = current - stack[0] - 1; //两堵墙之前的距离。
-      let min = Math.min(height[stack[0]], height[current]);
+      // 现在获得的东西：当前墙的高度 和 上一个栈顶
+      // 两堵墙之前的距离。
+      // 现在确定能兜住水， 但是能兜住多少，取决于两个墙height[stack[0]], height[current]哪个小
+      let distance = current - stack[0] - 1, min = Math.min(height[stack[0]], height[current]);
       sum = sum + distance * (min - h);
     }
-    stack.unshift(current); //当前指向的墙入栈
+    stack.push(current); //当前index入栈
     current++; //指针后移
   }
   return sum;
@@ -182,31 +200,6 @@ let trap7 = function (height) {
   }
   return res;
 };
-
-// 3. 上面带备忘录的暴力解法
-let trap8 = function (height) {
-  let n = height.length;
-  let res = 0;
-  // 数组充当备忘录
-  let l_max = new Array(n).fill(0), r_max = new Array(n).fill(0);
-  l_max[0] = height[0], r_max[n - 1] = height[n - 1];
-  // 从左向右计算 l_max
-  for (let i = 1; i < n; i++)
-    l_max[i] = Math.max(height[i], l_max[i - 1]);
-  // 从右向左计算 r_max
-  for (let i = n - 2; i >= 0; i--)
-    r_max[i] = Math.max(height[i], r_max[i + 1]);
-  // 计算答案
-
-
-  for (let i = 1; i < n - 1; i++)
-    res += Math.min(l_max[i], r_max[i]) - height[i];
-
-  console.log(res);
-
-
-  return res;
-}
 
 
 // trap6([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]);
