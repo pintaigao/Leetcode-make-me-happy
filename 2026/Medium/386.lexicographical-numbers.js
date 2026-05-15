@@ -33,7 +33,7 @@ var lexicalOrder = function (n) {
 };
 
 /* Solution 2: Math */
-let lexicalOrder = function (n) {
+let lexicalOrder2 = function (n) {
   const ret = [];
   let number = 1;
   for (let i = 0; i < n; i++) {
@@ -50,3 +50,36 @@ let lexicalOrder = function (n) {
   return ret;
 };
 // @lc code=end
+
+// 练习
+var lexicalOrder10 = function (n) {
+  let res = [], path = [];
+
+  function traveler() {
+    console.log(path);
+    if (path[0] == '0') {
+      return;
+    }
+
+    if (path.join('') !== '' && Number(path.join('')) <= n) {
+      res.push(Number(path.join('')));
+    }
+
+    if (Number(path.join('')) > n) {
+      return;
+    }
+
+    for (let i = 0; i < 10; i++) {
+      path.push(i + '');
+      traveler();
+      path.pop();
+    }
+  }
+
+  traveler();
+
+  console.log(res);
+}
+
+
+lexicalOrder10(13);

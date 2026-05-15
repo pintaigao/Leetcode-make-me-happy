@@ -21,7 +21,7 @@ var maxProduct = function (nums) {
       imin = tmp;
     }
     imax = Math.max(imax * nums[i], nums[i]);
-    // 保留最小的数，即最大的负数
+    // 保留最小的数，即最大的负数 记住imin 已经被替换成 imax 的值了
     imin = Math.min(imin * nums[i], nums[i]);
 
     max = Math.max(max, imax);
