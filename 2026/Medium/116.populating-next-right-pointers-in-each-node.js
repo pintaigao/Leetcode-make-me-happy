@@ -35,12 +35,8 @@ var connect = function (root) {
     //遍历队列中的每个元素，将每个元素的左右节点也放入队列中
     for (let i = 0; i < size; ++i) {
       tmp = queue.shift();
-      if (tmp.left != null) {
-        queue.push(tmp.left);
-      }
-      if (tmp.right != null) {
-        queue.push(tmp.right);
-      }
+      tmp.left && queue.push(tmp.left);
+      tmp.right && queue.push(tmp.right);
     }
   }
   return root;

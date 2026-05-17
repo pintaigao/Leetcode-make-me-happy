@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
 
-public class Solution
-{
-  public bool ValidTree4(int n, int[][] edges)
-  {
+public class Solution {
+  public bool ValidTree4(int n, int[][] edges) {
     // 构建邻接表
     var adjacencyList = new List<int>[n];
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
       adjacencyList[i] = new List<int>();
     }
 
-    foreach (var edge in edges)
-    {
+    foreach (var edge in edges) {
       int u = edge[0];
       int v = edge[1];
       adjacencyList[u].Add(v);
@@ -32,21 +28,17 @@ public class Solution
 
     int edgeCount = 0;
 
-    while (queue.Count != 0)
-    {
+    while (queue.Count != 0) {
       int node = queue.Dequeue();
 
-      foreach (int neighbor in adjacencyList[node])
-      {
+      foreach (int neighbor in adjacencyList[node]) {
         // 跳过指向父节点的那条边
-        if (parent[node] == neighbor)
-        {
+        if (parent[node] == neighbor) {
           continue;
         }
 
         // 如果这个邻居已经访问过，说明有环
-        if (parent[neighbor] != -2)
-        {
+        if (parent[neighbor] != -2) {
           return false;
         }
 
