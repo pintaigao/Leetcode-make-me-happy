@@ -54,3 +54,48 @@ var minMutation = function (start, end, bank) {
 };
 // @lc code=end
 
+// BFS
+var minMutation10 = function (startGene, endGene, bank) {
+  // BFS 标准框架
+  let bankSet = new Set(bank), q = [startGene], visited = new Set([startGene]), step = 0;
+  if (!bankSet.has(endGene)) {
+    return -1;
+  }
+
+  // 当前基因的每个位置都可以变异为 A/G/C/T，穷举所有可能的结构
+  var getAllMutation = function (gene) {
+    const res = [], geneChars = gene.split('');
+    for (let i = 0; i < geneChars.length; i++) {
+      const oldChar = geneChars[i];
+      for (const newChar of ['A', 'G', 'C', 'T']) {
+        if (oldChar == newChar) { continue; }
+        geneChars[i] = newChar;
+        res.push(geneChars.join(''));
+      }
+      geneChars[i] = oldChar;
+    }
+    return res;
+  };
+
+  while (q.length > 0) {
+    const size = q.length;
+    for (let j = 0; j < size; j++) {
+      const cur = q.shift();
+      if (cur === endGene) {
+        return step;
+      }
+
+      // 向周围扩散
+      for (const newGene of getAllMutation(cur)) {
+        if (!visited.has(newGene) && bankSet.has(newGene)) {
+          q.push(newGene);
+          visited.add(newGene);
+        }
+      }
+    }
+    step++;
+  }
+  return -1;
+};
+
+minMutation10("AACCGGTT", "AAACGGTA", ["AACCGGTA", "AACCGCTA", "AAACGGTA"])
