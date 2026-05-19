@@ -139,8 +139,7 @@ let trap5 = function (height) {
   while (current < height.length) {
     //如果栈不空并且当前指向的高度大于栈顶高度就一直循环
     while (stack.length && height[current] > height[stack[0]]) {
-      let h = height[stack[0]]; //取出要出栈的元素
-      stack.pop(); //出栈
+      let h = height[stack.shift()]; //取出要出栈的元素
       if (!stack.length) {
         // 栈空就出去
         break;
@@ -148,10 +147,11 @@ let trap5 = function (height) {
       // 现在获得的东西：当前墙的高度 和 上一个栈顶
       // 两堵墙之前的距离。
       // 现在确定能兜住水， 但是能兜住多少，取决于两个墙height[stack[0]], height[current]哪个小
+      // 目前栈顶的元素能确定比刚出栈的元素高度高，因为要是低的话 while (height[current] > height[stack[0]]).. 这个就不成立了
       let distance = current - stack[0] - 1, min = Math.min(height[stack[0]], height[current]);
       sum = sum + distance * (min - h);
     }
-    stack.push(current); //当前index入栈
+    stack.unshift(current); //当前index入栈
     current++; //指针后移
   }
   return sum;

@@ -91,3 +91,63 @@ var largestDivisibleSubset = function (nums) {
   return res;
 };
 // @lc code=end
+
+// 动态
+var largestDivisibleSubset = function (nums) {
+  // 定义：dp[i] 表示以 nums[i] 这个数结尾的最长符合要求子序列的长度
+  let n = nums.length, dp = Array.from({ length: n }, () => []);
+  nums.sort((a, b) => a - b);
+  dp[0].push(nums[0]);
+
+  for (let i = 1; i < n; i++) {
+    let maxSubsetLen = 0, index = -1;
+    // 在 nums[0..i-1] 中寻找那个 nums[i] 能接到结尾的最长子序列
+    for (let j = 0; j < i; j++) {
+      if (nums[i] % nums[j] === 0 && dp[j].length > maxSubsetLen) {
+        maxSubsetLen = dp[j].length;
+        index = j;
+      }
+    }
+    // nums[0..i-1] 中最长的那个子序列，再加上 nums[i]，
+    // 就是 nums[0..i] 最长的子序列
+    // index !== -1 就是有，list 传递
+    if (index !== -1) {
+      dp[i] = [...dp[index], nums[i]];
+    } else { // 没有
+      dp[i] = [nums[i]];
+    }
+  }
+
+  // 寻找最长的数组
+  let res = dp[0];
+  for (let i = 1; i < dp.length; i++) {
+    if (res.length < dp[i].length) {
+      res = dp[i];
+    }
+  }
+  return res;
+};
+
+// 对以上动态优化
+var largestDivisibleSubset = function (nums) {
+  // 定义：dp[i] 表示以 nums[i] 这个数结尾的最长符合要求子序列的长度
+  let n = nums.length, dp = Array.from({ length: n }, () => []), res = [];
+  nums.sort((a, b) => a - b);
+  dp[0].push(nums[0]);
+
+  for (let i = 1; i < n; i++) {
+    let maxSubsetLen = [];
+    // 在 nums[0..i-1] 中寻找那个 nums[i] 能接到结尾的最长子序列
+    for (let j = 0; j < i; j++) {
+      if (nums[i] % nums[j] === 0 && dp[j].length > maxSubsetLen.length) {
+        maxSubsetLen = [...dp[j]];
+      }
+    }
+
+    dp[i] = [...maxSubsetLen, nums[i]];
+  }
+
+  // 寻找最长的数组
+  dp.forEach(list => { if (res.length < list.length) { res = list; } });
+  return res;
+};

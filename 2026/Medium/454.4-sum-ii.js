@@ -14,20 +14,14 @@
  */
 /* 1.哈希表 */
 var fourSumCount = function (A, B, C, D) {
-  let cnt = 0;
-  let m = {};
+  let cnt = 0, m = {};
   // 把数组A和B中的数字依次相加，得到的结果和出现的次数存入哈希表中
-  for (let a of A)
-    for (let b of B) {
-      m[a + b] = (m[a + b] || 0) + 1;
-    }
+  for (let a of A) for (let b of B) m[a + b] = (m[a + b] || 0) + 1;
 
   for (let c of C)
     for (let d of D) {
-      // 如果map中存在-(c+d)，则说明他们的和为0，因此结果加1
-      if (!m.hasOwnProperty(-(c + d))) {
-        continue;
-      } else {
+      // 如果map中存在-(c+d)，则说明他们 match, 和为0, result + 出现的次数
+      if (m.hasOwnProperty(-(c + d))) {
         cnt += m[-(c + d)];
       }
     }
