@@ -14,12 +14,13 @@ var minSteps = function (n) {
   // DP Array 表示的是，每个index代表A的个数，对应的value为最小操作值
   let dp = new Array(n + 1).fill(0);
 
+  // dp[1] = 1, dp[2] = 2, 按理来说 dp[1] = 0, 1代表只有一个 a
   // 从第二个A开始看
   for (let i = 2; i <= n; i++) {
     // 最直接的，一直paste一个A
     dp[i] = i;
     // if sequence of length 'j' can be pasted multiple times to get length 'i' sequence
-    // 看前面的情况
+    // 基于这个位置往前看
     for (let j = i - 1; j > 1; j--) {
       if (i % j == 0) {
         /// we just need to paste sequence j (i/j - 1) times, hence additional (i/j) times since we need to copy it first as well.
