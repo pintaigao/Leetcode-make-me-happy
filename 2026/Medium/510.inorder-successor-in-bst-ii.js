@@ -49,3 +49,21 @@ let inorderSuccessor2 = function (node) {
 };
 
 // @lc code=end
+function inorderSuccessor(node) {
+  // 右子树的最小值就是 successor
+  let p = node.right;
+  while (p !== null && p.left !== null) {
+    p = p.left;
+  }
+  if (p !== null) {
+    return p;
+  }
+  // 没有右子树的话，第一个比自己大的父节点就是 successor。
+  // 但是 p 可能是父节点的左子节点也可能是右子节点，
+  // 只有 p 是左子节点的时候父节点才是 successor。
+  p = node;
+  while (p.parent !== null && p.parent.right === p) {
+    p = p.parent;
+  }
+  return p.parent;
+}
