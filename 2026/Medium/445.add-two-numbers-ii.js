@@ -19,9 +19,7 @@
  */
 /* Solution 1: Stack */
 var addTwoNumbers = function (l1, l2) {
-  let s1 = [];
-  let s2 = [];
-
+  let s1 = [], s2 = [], sum = 0, list = new ListNode(0);
   // 把l1，l2链表的每个点的值放入stack中
   while (l1) {
     s1.unshift(l1.val);
@@ -31,9 +29,6 @@ var addTwoNumbers = function (l1, l2) {
     s2.unshift(l2.val);
     l2 = l2.next;
   }
-
-  let sum = 0;
-  let list = new ListNode(0);
 
   /* 关键是这一步，怎么建立链表 */
   while (s1.length || s2.length) {
