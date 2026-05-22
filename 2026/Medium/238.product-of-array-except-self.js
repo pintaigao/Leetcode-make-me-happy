@@ -41,3 +41,25 @@ var productExceptSelf = function (nums) {
   return answer;
 };
 // @lc code=end
+
+
+var productExceptSelf = function (nums) {
+  let n = nums.length, prefix = new Array(n), suffix = new Array(n);
+  prefix[0] = nums[0], suffix[n - 1] = nums[n - 1];
+  // 从左到右的前缀积，prefix[i] 是 nums[0..i] 的元素积
+  for (let i = 1; i < nums.length; i++) {
+    prefix[i] = prefix[i - 1] * nums[i];
+  }
+  // 从右到左的前缀积，suffix[i] 是 nums[i..n-1] 的元素积
+  for (let i = n - 2; i >= 0; i--) {
+    suffix[i] = suffix[i + 1] * nums[i];
+  }
+  // 结果数组
+  let res = new Array(n);
+  res[0] = suffix[1], res[n - 1] = prefix[n - 2];
+  for (let i = 1; i < n - 1; i++) {
+    // 除了 nums[i] 自己的元素积就是 nums[i] 左侧和右侧所有元素之积
+    res[i] = prefix[i - 1] * suffix[i + 1];
+  }
+  return res;
+};

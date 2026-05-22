@@ -31,8 +31,7 @@ WordDistance.prototype.shortest = function (word1, word2) {
   while (l1 < loc1.length && l2 < loc2.length) {
     // 然后就是找出两个array里面的最小的diff
     minDiff = Math.min(minDiff, Math.abs(loc1[l1] - loc2[l2]));
-    if (loc1[l1] < loc2[l2]) l1++;
-    else l2++;
+    loc1[l1] < loc2[l2] ? l1++ : l2++;
   }
 
   return minDiff;

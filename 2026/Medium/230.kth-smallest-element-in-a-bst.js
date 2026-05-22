@@ -68,3 +68,30 @@ var kthSmallest3 = function (root, k) {
   return result.val;
 };
 // @lc code=end
+
+var kthSmallest = function (root, k) {
+  // 记录结果
+  let res = 0;
+  // 记录当前元素的排名
+  let rank = 0;
+  var traverse = function (root) {
+    if (root === null) {
+      return;
+    }
+    traverse(root.left);
+
+    // 中序代码位置
+    rank++;
+    if (k === rank) {
+      // 找到第 k 小的元素
+      res = root.val;
+      return;
+    }
+
+    traverse(root.right);
+  }
+
+  // 利用 BST 的中序遍历特性
+  traverse(root);
+  return res;
+}
