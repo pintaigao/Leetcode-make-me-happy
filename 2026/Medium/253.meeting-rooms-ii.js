@@ -63,11 +63,11 @@ var minMeetingRooms = function (intervals) {
     let [start, end] = [...intervals[i]];
     // 找到最早的结束时间
     let earliest = Math.min(...roomTime);
-    // 如果当前查看的会议的 开始时间 比 最早的结束时间还要早，说明有冲突，如果没有冲突，则替换结束时间
+    // 如果当前查看的会议的 开始时间 比 最早的结束时间还要早，说明有冲突，如果没有冲突，则替换结束时间 （也不是替换，只是模拟移除然后放新的 end）
     start < earliest ? roomTime.push(end) : (roomTime[roomTime.indexOf(earliest)] = end);
   }
 
-  // 返回最后的结果
+  // 返回最后的结果，有多少 end 说明有多少房间正在被使用
   return roomTime.length;
 };
 
@@ -95,3 +95,35 @@ var minMeetingRooms = function (intervals) {
   return rooms.length;
 };
 // @lc code=end
+// 
+var minMeetingRooms = function (meetings) {
+  var n = meetings.length;
+  var begin = new Array(n);
+  var end = new Array(n);
+  for (var i = 0; i < n; i++) {
+    begin[i] = meetings[i][0];
+    end[i] = meetings[i][1];
+  }
+  begin.sort((a, b) => a - b);
+  end.sort((a, b) => a - b);
+
+  // 扫描过程中的计数器
+  var count = 0;
+  // 双指针技巧
+  var res = 0, i = 0, j = 0;
+  while (i < n && j < n) {
+    if (begin[i] < end[j]) {
+      // 扫描到一个红点
+      count++;
+      i++;
+    } else {
+      // 扫描到一个绿点
+      count--;
+      j++;
+    }
+    // 记录扫描过程中的最大值
+    res = Math.max(res, count);
+  }
+
+  return res;
+};

@@ -12,11 +12,10 @@
  * @return {number}
  */
 var shortestWordDistance = function (wordsDict, word1, word2) {
-  var [i1, i2, ans] = [undefined, undefined, Number.MAX_VALUE];
-  var same = word1 == word2;
+  let index1, index2, ans = Number.MAX_VALUE, same = word1 == word2;
   for (var i = 0; i < wordsDict.length; i++) {
-    if (same) {
-      if (wordsDict[i] != word1) continue;
+    // 如果两个单词相同，记录前一个单词的位置
+    if (same && wordsDict[i] == word1) {
       if (i1 != undefined) {
         ans = Math.min(ans, Math.abs(i - i1));
       }
@@ -25,7 +24,7 @@ var shortestWordDistance = function (wordsDict, word1, word2) {
       // 如果两个单词不相同，则只需要比较两个单词的位置即可
       if (wordsDict[i] == word1) i1 = i;
       if (wordsDict[i] == word2) i2 = i;
-      if (i1 !== undefined && i2 !== undefined) ans = Math.min(ans, Math.abs(i1 - i2));
+      if (i1 >= 0 && i2 >= 0) ans = Math.min(ans, Math.abs(i1 - i2));
     }
   }
   return ans;

@@ -11,13 +11,7 @@
  */
 var wallsAndGates = function (rooms) {
   if (rooms == null || !rooms.length || !rooms[0].length) return;
-  var [EMPTY, row, col, queue] = [2147483647, rooms.length, rooms[0].length, []];
-  let direction = [
-    [0, 1],
-    [1, 0],
-    [0, -1],
-    [-1, 0],
-  ];
+  let [EMPTY, row, col, queue, direction] = [2147483647, rooms.length, rooms[0].length, [], [[0, 1], [1, 0], [0, -1], [-1, 0]]];
   //  Find the gate
   for (let i = 0; i < row; i++) {
     for (let j = 0; j < col; j++) {
@@ -30,8 +24,7 @@ var wallsAndGates = function (rooms) {
   while (queue.length) {
     let [x, y] = queue.shift();
     for (let i = 0; i < 4; i++) {
-      let nx = x + direction[i][0];
-      let ny = y + direction[i][1];
+      let nx = x + direction[i][0], ny = y + direction[i][1];
 
       if (0 <= nx && nx < row && 0 <= ny && ny < col && rooms[nx][ny] == EMPTY) {
         rooms[nx][ny] = rooms[x][y] + 1;
