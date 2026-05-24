@@ -10,7 +10,7 @@
 
 // Approach 1: Reverse the Whole String and Then Reverse Each Word O(n) O(1)
 var reverseWords = function (str) {
-  let reverse = function (s, left, right) {
+  let reverse = function (left, right) {
     while (left < right) {
       let tmp = s[left];
       s[left++] = s[right];
@@ -20,8 +20,7 @@ var reverseWords = function (str) {
 
   let reverseEachWord = function (s) {
     let n = s.length;
-    let start = 0,
-      end = 0;
+    let start = 0, end = 0;
 
     while (start < n) {
       // go to the end of the word
@@ -35,7 +34,7 @@ var reverseWords = function (str) {
   };
 
   // reverse the whole string
-  reverse(str, 0, str.length - 1);
+  reverse(0, str.length - 1);
 
   // reverse each word
   reverseEachWord(str);
