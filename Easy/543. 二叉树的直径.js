@@ -39,6 +39,7 @@ let diameterOfBinaryTree2 = function (root) {
     }
     let leftMax = maxDepth(root.left), rightMax = maxDepth(root.right);
     // 后序遍历位置顺便计算最大直径
+    // 值代表这个位置记录到的左子树最大深度和右子树最大深度之和
     maxDiameter = Math.max(maxDiameter, leftMax + rightMax);
     return 1 + Math.max(leftMax, rightMax);
   }

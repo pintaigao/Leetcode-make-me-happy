@@ -23,11 +23,20 @@ MyStack.prototype.pop = function () {
     this.q.push(this.q.shift());
     size--;
   }
-  // 记录新的队尾元素
-  this.top_elem = this.q[0];
-  this.q.push(this.q.shift());
-  // 删除之前的队尾元素
-  return this.q.shift();
+
+  // 一步一步都写清楚一点
+  // 以上结束后,[1,2, .....],1 是将来的栈顶，2 是要被 pop 的元素
+  // 记录新的队尾元素 (新的栈顶)
+  if (size == 2) {
+    this.top_elem = this.q[0];
+    this.q.push(this.q.shift());
+    size -= 1;
+  }
+
+  if (size == 1) {
+    // 模拟 popout 栈顶
+    return this.q.shift();
+  }
 };
 
 // 判断栈是否为空

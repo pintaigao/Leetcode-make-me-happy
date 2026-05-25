@@ -84,18 +84,59 @@ let longestOnes10 = function (nums, k) {
     }
     right += 1;
 
-    // 收缩窗口，直到窗口内的 0 的数量不超过 k
-    while (k < 0) {
-      if (nums[left] === 0) {
-        k += 1;
-      }
-      left += 1;
-    }
-
+    // 不要等到最后一刻才更新 maxLength，因为如果跑完以下，可能窗口已经变了
     if (k >= 0) {
-      maxLength = Math.max(maxLength, right - left + 1);
+      maxLength = Math.max(maxLength, right - left);
+    } else {
+      // 收缩窗口，直到窗口内的 0 的数量不超过 k
+      while (k < 0) {
+        if (nums[left] === 0) {
+          k += 1;
+        }
+        left += 1;
+      }
     }
   }
 
   return maxLength;
 }
+
+// 硬要用 if(nums[right] === 1) 来统计窗口内 1 的数量
+var longestOnes = function (nums, k) {
+  let left = 0;
+  let right = 0;
+  let remainingK = k;
+  let res = 0;
+
+  while (right < nums.length) {
+    if (nums[right] === 1) {
+      // 1 永远可以进窗口
+      right++;
+    } else {
+      // nums[right] === 0
+      if (remainingK > 0) {
+        // 还有翻转次数，这个 0 可以进窗口
+        remainingK--;
+        right++;
+      } else {
+        // 没有翻转次数了，需要移动 left，直到释放一个 0
+        while (nums[left] !== 0) {
+          left++;
+        }
+
+        // 跳过这个旧的 0，相当于释放一次翻转额度
+        left++;
+        remainingK = remainingK + 1
+
+        // 当前 nums[right] 这个 0 使用刚释放出来的额度
+        // remainingK 先 +1 再 -1，抵消了，所以不用改
+        right++;
+        remainingK = remainingK - 1
+      }
+    }
+
+    res = Math.max(res, right - left);
+  }
+
+  return res;
+};
