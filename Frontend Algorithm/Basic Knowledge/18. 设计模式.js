@@ -3,6 +3,7 @@ const Store = (function () {
   let instance;
 
   function createInstance() {
+    // return a simple object that represents the store
     return {
       state: {},
       set(key, value) {
@@ -24,16 +25,19 @@ const Store = (function () {
   };
 })();
 
+
+// 他们获得的是相同的实例，因为闭包，Store.getInstance()只会创建一个实例，并且每次调用都会返回同一个实例。
 const store1 = Store.getInstance();
 const store2 = Store.getInstance();
 
-store1.set("user", "Alice");
 console.log(store2.get("user")); // Alice
 console.log(store1 === store2); // true
 
-// Factory Pattern
+// 2. Factory Pattern
+// 例子，create Button函数根据传入的type参数创建不同类型的按钮对象。
 function createButton(type) {
   if (type === "primary") {
+    // Return a primary button object
     return {
       color: "blue",
       text: "Primary Button"

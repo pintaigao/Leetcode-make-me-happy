@@ -17,15 +17,15 @@
  */
 var numPairsDivisibleBy60 = function (time) {
   // 60个数，每个index带表一个数字，表示该数字的倍数
-  let remainders = new Array(60).fill(0);
-  let count = 0;
+  let remainders = new Array(60).fill(0), count = 0;
   for (let t of time) {
     if (t % 60 == 0) {
       // check if a%60==0 && b%60==0
       count += remainders[0];
     } else {
       // check if a%60+b%60==60
-      console.log(`t for is ${t} and t % 60 the result is: ${t % 60}`);
+      // 假如说 t=30，t%60=30， 那下一个假如 t%60=30，（t 可以是 60 的倍数+30，如 210，可以证明 210 + 30 也是 60 的倍数）
+      // 所以在这里就是找前缀，出现过的余数的个数
       count += remainders[60 - (t % 60)];
     }
     remainders[t % 60] += 1; // remember to update the remainders
