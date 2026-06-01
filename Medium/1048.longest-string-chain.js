@@ -48,7 +48,7 @@ var longestStrChain = function (words) {
 };
 
 /* Map记录最长长度的做法 */
-let longestStrChain = function (words) {
+let longestStrChain2 = function (words) {
   let cnt = new Array(16).fill(new Set()), map = new Map(), ans = 1;
   words.forEach((word) => cnt[word.length - 1].add(word));
 
@@ -78,15 +78,16 @@ let longestStrChain = function (words) {
 };
 
 /* Map作为 DP的做法（最快）*/
-var longestStrChain = function (words) {
+var longestStrChain3 = function (words) {
   // 1. 按长度排序
   words.sort((a, b) => a.length - b.length);
-  const dp = new Map(), res = 1;
+  let dp = new Map(), res = 1;
   for (let word of words) {
     let max = 1;
     // 2. 枚举删除一个字符
     for (let i = 0; i < word.length; i++) {
-      let prev = word.slice(0, i) + word.slice(i + 1);
+      // let prev = word.slice(0, i) + word.slice(i + 1);
+      let prev = word.substring(0, i) + word.substring(i + 1);
 
       if (dp.has(prev)) {
         max = Math.max(max, dp.get(prev) + 1);
@@ -102,7 +103,7 @@ var longestStrChain = function (words) {
 };
 
 /* DFS */
-var longestStrChain = function (words) {
+var longestStrChain4 = function (words) {
   //K为字符长度，Set为该字符长度的word集合
   let min = 0, max = 16, map = {};
   for (let word of words) {
@@ -134,3 +135,46 @@ var longestStrChain = function (words) {
   }
   return res;
 };
+
+// 练习：
+var longestStrChain10 = function (words) {
+  let dp = new Array(words.length).fill(1), map = {};
+  words.sort((a, b) => a.length - b.length)
+
+  for (let word of words) { map[word.length + ''] = (map[word.length] || []).concat(word) }
+  for (let i = 0; i < words.length; i++) {
+    if (!map[words[i].length - 1]) continue;
+    else {
+      for (let word of map[words[i].length - 1]) {
+        if (checkIfMatch(word, words[i])) { dp[i] = Math.max(dp[i], dp[words.indexOf(word)] + 1) }
+      }
+    }
+  }
+
+  function checkIfMatch(a, b) {
+    let indexA = 0, indexB = 0, count = 1
+
+    while (indexA < a.length && indexB < b.length) {
+      if (a[indexA] !== b[indexB] && count == 0) {
+        return false
+      }
+
+      if (a[indexA] == b[indexB]) {
+        indexA += 1;
+        indexB += 1
+      } else if (a[indexA] !== b[indexB] && count > 0) {
+        indexB += 1;
+        count -= 1;
+      }
+    }
+
+    return indexA == a.length
+  }
+
+  return Math.max(...dp)
+};
+
+
+// longestStrChain10(["xbc", "pcxbcf", "xb", "cxbc", "pcxbc"])
+// longestStrChain10(["abcd", "dbqca"])
+longestStrChain10(["a", "b", "ab", "bac"])

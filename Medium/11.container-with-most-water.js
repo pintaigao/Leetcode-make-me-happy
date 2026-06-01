@@ -10,10 +10,9 @@
  * @return {number}
  */
 var maxArea = function (height) {
-  let i = 0,
-    j = height.length - 1,
-    res = 0;
+  let i = 0, j = height.length - 1, res = 0;
   while (i < j) {
+    // 计算当前面积， 依据的是较短的高度
     if (height[i] < height[j]) {
       res = Math.max(res, (j - i) * height[i]);
       i += 1;

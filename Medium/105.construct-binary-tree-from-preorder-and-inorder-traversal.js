@@ -64,21 +64,19 @@ var buildTree = function (preorder, inorder) {
 // @lc code=end
 
 // 练习
-var buildTree = function (preorder, inorder) {
+var buildTree10 = function (preorder, inorder) {
   // 存储 inorder 中值到索引的映射
   var valToIndex = new Map();
 
   for (let i = 0; i < inorder.length; i++) {
     valToIndex.set(inorder[i], i);
   }
-  return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
 
   // build 函数的定义：
   // 若前序遍历数组为 preorder[preStart..preEnd]，
   // 中序遍历数组为 inorder[inStart..inEnd]，
   // 构造二叉树，返回该二叉树的根节点
-  function build(preorder, preStart, preEnd, inorder, inStart, inEnd) {
-
+  function build(preStart, preEnd, inStart, inEnd) {
     if (preStart > preEnd) {
       return null;
     }
@@ -93,9 +91,40 @@ var buildTree = function (preorder, inorder) {
     // 先构造出当前根节点
     var root = new TreeNode(rootVal);
     // 递归构造左右子树
-    root.left = build(preorder, preStart + 1, preStart + leftSize, inorder, inStart, index - 1);
+    root.left = build(preStart + 1, preStart + leftSize, inStart, index - 1);
 
-    root.right = build(preorder, preStart + leftSize + 1, preEnd, inorder, index + 1, inEnd);
+    root.right = build(preStart + leftSize + 1, preEnd, index + 1, inEnd);
     return root;
   }
+
+  return build(0, preorder.length - 1, 0, inorder.length - 1);
+};
+
+
+// 练习 2
+var buildTree11 = function (preorder, inorder) {
+  // build 函数的定义：
+  // 若前序遍历数组为 preorder[preStart..preEnd]，
+  // 中序遍历数组为 inorder[inStart..inEnd]，
+  // 构造二叉树，返回该二叉树的根节点
+
+  function build(newPreOrder, newInOrder) {
+    if (newPreOrder.length == 1) {
+      return newPreOrder[0];
+    }
+
+    let root = newPreOrder[0];
+    let node = new Node(root.val)
+    let rootIndexFromInorder = newInOrder.indexOf(root.val);
+
+    let leftTreePreOrder = newPreOrder.slice(1, 1 + 0 + rootIndexFromInorder), leftTreeInOrder = newInOrder.slice(0, 0 + rootIndexFromInorder)
+    let rightTreePreOrder = newPreOrder.slice(0 + rootIndexFromInorder + 1, newPreOrder.length), rightTreeInOrder = newInOrder.slice(rootIndexFromInorder + 1, newInOrder.length);
+
+    node.left = build(leftTreePreOrder, leftTreeInOrder);
+    node.right = build(rightTreePreOrder, rightTreeInOrder);
+
+    return node;
+  }
+
+  return build(preorder, inorder);
 };

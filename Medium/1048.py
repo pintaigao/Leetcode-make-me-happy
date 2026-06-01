@@ -19,7 +19,8 @@ class Solution:
 
       for word in cnt[i]:
         # 这一步表示从后往前，到这个 word 这个位置上，最长字符串链的长度是多少
-        w_val = map[word] if word in map else 1
+        # w_val = map[word] if word in map else 1
+        w_val = map.get(word, 1)
 
         for j in range(len(word)):
           # 这个 word，通过删除每一个位置上的字符获得一个新的 word(hash)
