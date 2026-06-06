@@ -1,3 +1,4 @@
+// 从某个节点 K 发出一个信号。需要多久才能使所有节点都收到信号
 var networkDelayTime = function (times, n, k) {
 	// 节点编号是从 1 开始的，所以要一个大小为 n + 1 的邻接表
 	const graph = Array.from({ length: n + 1 }, () => []), res = 0;
@@ -10,19 +11,21 @@ var networkDelayTime = function (times, n, k) {
 	}
 
 	// Dijkstra 算法模板 https://labuladong.online/algo/data-structure/dijkstra/
-	function dijkstra(g, src) {
-		// distTo[i] = 从起点到节点 i 的最小距离；Infinity 表示未知 // 最小堆，元素为 [distFromStart, node]
-		const distTo = new Array(g.length).fill(Infinity), pq = new PriorityQueue((a, b) => a[0] - b[0]);
-		// 起点 src，距离为 0
+	function dijkstra(src) {
+		// distTo[i] = 从起点（在这里是 K）到节点 i 的最小距离；Infinity 表示未知 // 最小堆，元素为 [its dist from start, node]
+		const distTo = new Array(graph.length).fill(Infinity), pq = new PriorityQueue((a, b) => a[0] - b[0]);
+		// 起点 src，距离为 0 （理所当然distTo[K] = 0）
 		pq.enqueue([0, src]), distTo[src] = 0;
 
 		while (!pq.isEmpty()) {
 			const [curDist, curNode] = pq.dequeue();
 			// 如果已有更优路径，则跳过
+			// 不能 <= ，因为这个 curNode 才刚被看，我们希望看它后面的 node，< 的情况明确可以不看，但 = 要看
 			if (distTo[curNode] < curDist) continue;
 			// 遍历当前节点的邻居
-			for (const [nextNode, weight] of g[curNode]) {
+			for (const [nextNode, weight] of graph[curNode]) {
 				const nextDist = curDist + weight;
+				// 如果已经有更优路径，则跳过，= 的情况也不看
 				if (distTo[nextNode] <= nextDist) {
 					continue;
 				}
@@ -33,9 +36,9 @@ var networkDelayTime = function (times, n, k) {
 		return distTo;
 	}
 
-	const distTo = dijkstra(graph, k);
+	const distTo = dijkstra(k);
 
-	// 找到最长的那条最短路径
+	// 找到最长的那条
 	for (let i = 1; i <= n; i++) {
 		if (distTo[i] === Infinity) {
 			// 有节点不可达

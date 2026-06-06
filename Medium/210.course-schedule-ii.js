@@ -52,53 +52,48 @@ var findOrder = function (numCourses, prerequisites) {
   return res.length === numCourses ? res : []; // 选齐了就返回res，否则返回[]
 };
 // @lc code=end
-·
 
 // 练习 DFS 
 var findOrder2 = function (numCourses, prerequisites) {
-  let map = {}, path = [], visited = new Set(), currentPath = new Set(), hasCycle = false;
+  let map = {}, res = [], visited = new Set(), currentPath = new Set(), hasCycle = false;
 
   // Build 
-  for (let i = 0; i < numCourses; i++) {
-    map[i] = [];
-  }
-
   for (let [course, pre] of prerequisites) {
-    map[pre].push(course);
-  }
-
-  console.log(map);
-
-
-  for (let i = 0; i < numCourses; i++) {
-    dfs(i);
+    map[pre] = (map[pre] || []).concat(course);
+    map[course] = map[course] || [];
   }
 
   function dfs(course) {
     if (currentPath.has(course)) {
-      // explicitly mention 这个有环！！！
       hasCycle = true;
       return;
     }
 
-    if (visited.has(course)) {
-      return;
-    }
+    if (visited.has(course) || hasCycle) { return; }
 
     // 防止重复访问，visited和currentPath的区别是：visited是全局的，currentPath是当前路径的
     visited.add(course);
     currentPath.add(course);
 
-    // map[course]如果没有值这一条就不会运行
+    // map[course] = [] 情况下这一条不会运行，前提是map[course]被初始化为[]
     for (let c of map[course]) {
       dfs(c);
+      if (hasCycle) { return; }
     }
 
-    path.push(course);
+    // 严格按照 Topological Sort 的方式，后续遍历的时候加上 current 节点
+    res.push(course);
     currentPath.delete(course);
   }
 
-  return hasCycle ? [] : path.reverse()
+  for (let i = 0; i < numCourses; i++) {
+    dfs(i);
+  }
+
+  console.log(res);
+
+
+  return hasCycle ? [] : res.reverse()
 }
 
 findOrder2(4, [[1, 0], [2, 0], [3, 1], [3, 2]]);

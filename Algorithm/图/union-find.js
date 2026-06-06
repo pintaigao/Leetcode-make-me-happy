@@ -4,7 +4,7 @@ class UF {
     this._count = n;
     // 节点 x 的父节点是 parent[x]
     // this.parent = new Array(n).fill(0).map((_, index) => index);
-    this.parent = new Array(n);
+    this.parent = new Array(n); // parent[] value 表示这个 index（代表节点）的父节点值是 value（某个 index）
     this.size = new Array(n);
     // 一开始互不连通
     // 父节点指针初始指向自己
@@ -14,9 +14,9 @@ class UF {
     }
   }
 
+  // 将 P 连接到 Q，Q 是 Root，P 是 Leaf
   union(p, q) {
-    var rootP = this.find(p);
-    var rootQ = this.find(q);
+    let rootP = this.find(p), rootQ = this.find(q);
     if (rootP === rootQ)
       return;
     // 将两棵树合并为一棵
@@ -44,6 +44,7 @@ class UF {
   // 返回某个节点 x 的根节点
   find(x) {
     // while x 不是根节点（更新后的 x 不是指向自己），就继续找
+    // parent[] value 表示这个 index（代表节点）的父节点值是 value（某个 index），所以 parent[x] 就是 x 的父节点，如果 parent[x] !== x，说明 x 不是根节点，需要继续往上找
     while (this.parent[x] !== x) {
       // 下一段：路径压缩 保持树的扁平化，减少树的高度，优化性能 （可选）
       // this.parent[x] = this.parent[this.parent[x]];

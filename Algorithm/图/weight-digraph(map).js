@@ -1,3 +1,4 @@
+// 加权有向图（邻接表实现）
 // 邻接表 map: { from: [{ to, weight }] }
 class WeightedDigraph {
 	constructor(n) {

@@ -13,9 +13,7 @@ var twoCitySchedCost = function (costs) {
   // 两个人的花费相比较，根据的是priceA(a[0] - a[1]) - priceB(b[0] - b[1])的diff大小来排序(所以就是负的在前面),然后当然是ascending order
   // 数组里的每个值，前往 a 的 cost 和前往b 的 cost，根据他们的 diff，按照 diff 从小到大排序
   // [259, 770] => 259 - 770 = -511, [448, 54] => 448 - 54 = 394, 则259, 770在前面，448, 54在后面（因为负数在前面，表示a[0] < a[1]）
-  costs.sort((a, b) => {
-    return a[0] - a[1] - (b[0] - b[1]);
-  });
+  costs.sort((a, b) => a[0] - a[1] - (b[0] - b[1]));
 
   console.log(costs);
 
