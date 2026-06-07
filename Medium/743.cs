@@ -35,7 +35,8 @@ public class Solution {
 
       PriorityQueue<(int distFromStart, int node), int> pq = new PriorityQueue<(int distFromStart, int node), int>();
 
-      // 起点 src，距离为 0
+      // 起点 src，距离为 0,
+      // pq.Enqueue((distFromStart, node), priority), priority 是 distFromStart, 是用来告诉优先队列如何排序的（在这里元素按照 distFromStart 从小到大排序） 
       pq.Enqueue((0, src), 0);
       distTo[src] = 0;
 

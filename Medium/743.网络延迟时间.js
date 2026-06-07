@@ -18,13 +18,13 @@ var networkDelayTime = function (times, n, k) {
 		pq.enqueue([0, src]), distTo[src] = 0;
 
 		while (!pq.isEmpty()) {
-			const [curDist, curNode] = pq.dequeue();
+			const [curDistFromStart, curNode] = pq.dequeue();
 			// 如果已有更优路径，则跳过
 			// 不能 <= ，因为这个 curNode 才刚被看，我们希望看它后面的 node，< 的情况明确可以不看，但 = 要看
-			if (distTo[curNode] < curDist) continue;
+			if (distTo[curNode] < curDistFromStart) continue;
 			// 遍历当前节点的邻居
 			for (const [nextNode, weight] of graph[curNode]) {
-				const nextDist = curDist + weight;
+				const nextDist = curDistFromStart + weight;
 				// 如果已经有更优路径，则跳过，= 的情况也不看
 				if (distTo[nextNode] <= nextDist) {
 					continue;

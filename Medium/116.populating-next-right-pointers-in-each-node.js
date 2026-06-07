@@ -26,7 +26,7 @@ var connect = function (root) {
   }
   let queue = [root];
   while (queue.length) {
-    //将队列中的元素串联起来
+    //将队列中的元素串联起来，size 用于限制同一层
     let [size, tmp] = [queue.length, queue[0]];
     for (let i = 1; i < size; ++i) {
       tmp.next = queue[i];
