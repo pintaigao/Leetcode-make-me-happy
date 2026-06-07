@@ -13,7 +13,7 @@
 
 // 1. 暴力解法
 let removeDuplicates = function (s, k) {
-  let result = s.slice(), length = -1
+  let result = s.slice().split(''), length = -1;
   // 如果字符串长度有变化，则继续循环
   while (length != result.length) {
     // 更新新的长度
@@ -21,27 +21,27 @@ let removeDuplicates = function (s, k) {
     // 遍历字符串，遍历的过程中找到重复的k个字符
     for (let i = 0, count = 1; i < result.length; ++i) {
       // 如果是指针指向第一个元素，或者当前元素和前一个元素不相同，则count = 1
-      if (i == 0 || result.charAt(i) != result.charAt(i - 1)) {
+      // if (i == 0 || result.charAt(i) != result.charAt(i - 1)) {
+      if (i == 0 || result[i] != result[i - 1]) {
         count = 1;
       } else if (count == k) {
         //如果count == k，则删除i-k+1到i+1之间的元素
-        result = result.substring(0, i - k + 1) + result.substring(i + 1);
+        // result = result.substring(0, i - k + 1) + result.substring(i + 1);
+        result.splice(i - k + 1, k);
         break;
       }
-
       count += 1;
     }
   }
 
-  console.log(result);
-
-  return result;
+  return result.join('');
 };
 
 // 2. Memorize count
 var removeDuplicates2 = function (s, k) {
   // count[i] 表示 result[i] 位置的字符连续出现了多少次
   let count = new Array(s.length).fill(0);
+  s = s.split("")
 
   for (let i = 0; i < s.length; ++i) {
     // 如果是指针指向第一个元素，或者当前元素和前一个元素不相同，则count[i] = 1
@@ -53,7 +53,8 @@ var removeDuplicates2 = function (s, k) {
       // 如果count[i] == k，则删除i-k+1到i+1之间的元素
       if (count[i] == k) {
         // 删除i-k+1到i+1之间的元素 slice(start, end) end不包含在内
-        s = s.slice(0, i - k + 1) + s.slice(i + 1);
+        // s = s.slice(0, i - k + 1) + s.slice(i + 1);
+        s.splice(i - k + 1, k);
         // 删除count as well (这一步可有可无，因为反正是覆盖了) splice(start, deleteCount)
         count.splice(i - k + 1, k);
         // 删除后，指针指向i-k
@@ -62,7 +63,7 @@ var removeDuplicates2 = function (s, k) {
     }
   }
 
-  return s;
+  return s.join('');
 };
 
 // 2. Stack
@@ -122,51 +123,3 @@ let removeDuplicates4 = function (s, k) {
 // Main Test
 // removeDuplicates("deeedbbcccbdaa", 3);
 // @lc code=end
-
-// 练习. 暴力解法 超出时间限制
-var removeDuplicates6 = function (s, k) {
-  let count = 0, index = 0, flag = true, current = s[0];
-
-  while (flag) {
-    if (index == s.length - 1) {
-      flag = false;
-    }
-
-    if (s[index] !== current) {
-      current = s[index];
-      count = 1;
-    } else {
-      count += 1;
-    }
-
-
-    if (count == k) {
-      s = s.substring(0, index - k + 1) + s.substring(index + 1);
-      index = 0;
-      count = 0;
-      current = s[0];
-    } else {
-      index += 1;
-    }
-  }
-
-
-  console.log(s);
-  return s;
-}
-
-// 往回看 memorize count
-var removeDuplicates7 = function (s, k) {
-  let memorize = new Array(s.length).fill(0), index = 0;
-  while (index < s.length) {
-    if (index + 1 - k < 0) {
-      index += 1;
-      continue;
-    }
-
-
-
-
-    index += 1;
-  }
-}

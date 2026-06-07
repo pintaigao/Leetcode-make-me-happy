@@ -13,8 +13,6 @@ var maxProfit = function (prices) {
     dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]); // 上一天持有，今天也持有；上一天不持有，今天买入 (不能上一天持有，今天继续买入，因为只能持有一股)
   }
 
-  console.log(dp);
-
   return dp[n - 1][0];
 };
 

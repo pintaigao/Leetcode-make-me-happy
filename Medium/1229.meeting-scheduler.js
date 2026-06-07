@@ -14,9 +14,8 @@
 // Approach 1: Two pointers O(MlogM+NlogN) O(1)
 var minAvailableDuration = function (slots1, slots2, duration) {
   // 按开始available时间排序
-  // slots1.sort((a, b) => a[0] - b[0]);
-  // slots2.sort((a, b) => a[0] - b[0]);
-
+  slots1.sort((a, b) => a[0] - b[0]);
+  slots2.sort((a, b) => a[0] - b[0]);
   let pointer1 = 0, pointer2 = 0;
 
   while (pointer1 < slots1.length && pointer2 < slots2.length) {
@@ -39,6 +38,8 @@ var minAvailableDuration = function (slots1, slots2, duration) {
 };
 
 // Approach 2: Heap(PriorityQueue) O((M+N)log(M+N)) O(M+N)
+// 原理： 不需要知道 slot 属于谁，因为 LeetCode 1229 已经保证同一个人的 slots 之间互不重叠。
+// 所以当我们把所有 slot 混在一起排序后，如果两个相邻 slot 有 overlap，那么这两个 slot 一定来自不同的人
 let minAvailableDuration2 = function (slots1, slots2, duration) {
   let timeslots = [];
 
@@ -50,11 +51,9 @@ let minAvailableDuration2 = function (slots1, slots2, duration) {
     if (slot[1] - slot[0] >= duration) timeslots.push(slot);
   }
   timeslots.sort((a, b) => a[0] - b[0]);
-
-  // 为什么timeslots里面的slot都不知道是谁的情况下，能取得值？
   while (timeslots.length > 1) {
-    let slot1 = timeslots.shift();
-    let slot2 = timeslots[0];
+    // 如果两个相邻 slot 有 overlap，那么这两个 slot 一定来自不同的人
+    let slot1 = timeslots.shift(), slot2 = timeslots[0];
     if (slot1[1] >= slot2[0] + duration) {
       return [slot2[0], slot2[0] + duration];
     }

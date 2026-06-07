@@ -1,7 +1,6 @@
 from typing import List
 from collections import deque, defaultdict
 
-
 class Solution:
   def minimumSemesters(self, n: int, relations: List[List[int]]) -> int:
     adj_list = defaultdict(list)
