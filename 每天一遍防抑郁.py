@@ -55,14 +55,22 @@ class Solution:
     # JS: res.reverse()  // 原地 reverse，并返回数组本身
     # Python: list.reverse() 原地 reverse，但是返回 None
     arr.reverse()
+    
+    # JS: arr = arr.filter(str => new Set(str).size === str.length)
+    arr = [s for s in arr if len(set(s)) == len(s)]
 
     # JS: return hasCycle ? [] : res.reverse()
     # Python 三元表达式
     has_cycle = False
     res = [1, 2, 3]
     answer = [] if has_cycle else res[::-1]
-
-
+    
+    # Stack
+    stack = [];
+    stack.append(x)  # push 放入末尾
+    stack.pop()      # pop 从末尾取出
+    stack[-1]        # peek / top 最后一位
+    
     # =========================
     # 2. Dict / Object / Map
     # =========================
@@ -132,7 +140,12 @@ class Solution:
     # JS: visited.delete(x)
     visited.remove(1)      # 如果不存在会报错
     visited.discard(1)     # 如果不存在不会报错
-
+    
+    # currentStringSet = new Set([...currentStringSet, ...strSet])
+    current_string_set = current_string_set | str_set
+    # 或者
+    for char in str_set:
+      current_string_set.add(char)
 
     # =========================
     # 4. Queue / BFS
@@ -155,6 +168,12 @@ class Solution:
 
     # JS: queue.length
     length = len(queue)
+    
+    # 对应 JS unshift
+    queue.appendleft(x)  
+
+    # 对应 JS shift
+    queue.popleft()      
 
 
     # =========================
@@ -240,6 +259,9 @@ class Solution:
     # JS: s.substring(0, i) + s.substring(i + 1)
     i = 1
     new_s = s[:i] + s[i + 1:]
+    
+    # JS: result.join("")
+    "".join(result)
 
 
     # =========================

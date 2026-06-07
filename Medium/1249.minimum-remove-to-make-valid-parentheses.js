@@ -11,7 +11,7 @@
  */
 /* Stack 的方法，O(n) O(n) */
 var minRemoveToMakeValid = function (s) {
-  let [bracketIndex, invalidIndex, result] = [[], new Array(s.length), []];
+  let bracketIndex = [], invalidIndex = new Array(s.length), result = []
   for (let i = 0; i < s.length; i++) {
     // 如果遇到左括号
     if (s[i] == "(") {
@@ -20,7 +20,8 @@ var minRemoveToMakeValid = function (s) {
     }
     // 如果遇到右括号
     if (s[i] == ")") {
-      if (!bracketIndex.length) {
+      if (bracketIndex.length == 0) {
+        // 这个 “）“的前面不会有“(“ 和 它匹配
         invalidIndex[i] = true;
       } else {
         // 说明找到匹配的了
@@ -34,7 +35,7 @@ var minRemoveToMakeValid = function (s) {
       result.push(s[i]);
     }
   }
-  return result.join();
+  return result.join(““);
 };
 
 /* 非Stack 的方法，计算右括号的个数，O(n) O(1) */

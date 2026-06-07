@@ -62,6 +62,16 @@ public class ConversionNotes {
     // JS: res.reverse()
     arr.Reverse();
 
+    // JS: arr = arr.filter(str => new Set(str).size === str.length)
+    List<string> filtered = new List<string>();
+    foreach (string str in arr) {
+      HashSet<char> set = new HashSet<char>(str);
+
+      if (set.Count == str.Length) {
+        filtered.Add(str);
+      }
+    }
+
 
     // =========================
     // 2. Object / Map / Dictionary
@@ -251,6 +261,9 @@ public class ConversionNotes {
     // JS: s.substring(0, i) + s.substring(i + 1)
     int removeIndex = 1;
     string newS = s.Substring(0, removeIndex) + s.Substring(removeIndex + 1);
+
+    // JS: result.join("") 这里 result 是 List<char>
+    string str = new string(result.ToArray());
 
 
     // =========================
