@@ -10,9 +10,7 @@
  * @return {number}
  */
 var longestConsecutive = function (nums) {
-  let num_set = new Set(nums);
-
-  let result = 0;
+  let num_set = new Set(nums), result = 0;
 
   for (const num of num_set) {
     // 如果当前的数，没有比它小一个的，就看有没有以他为第一个的连续的
