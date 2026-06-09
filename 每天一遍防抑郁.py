@@ -21,6 +21,7 @@ class Solution:
     n = 5
     arr = [0] * n
 
+    # 二维数组
     # JS: let graph = Array.from({ length: n }, () => []);
     # 注意：Python 不要写 [[]] * n，因为内部 list 会共享
     graph = [[] for _ in range(n)]

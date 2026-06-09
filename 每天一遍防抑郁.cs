@@ -72,6 +72,8 @@ public class ConversionNotes {
       }
     }
 
+    // directions = [[0, 1], [0, -1], [-1, 0], [1, 0]];
+    int[][] directions = new int[][] { new int[] { 0, 1 }, new int[] { 0, -1 }, new int[] { -1, 0 }, new int[] { 1, 0 } };
 
     // =========================
     // 2. Object / Map / Dictionary

@@ -15,12 +15,14 @@ public class Solution {
           stack.Pop();
         }
         else {
+          // 没有左括号和他匹配，removeSet 添加这个 index
           removeSet.Add(i);
         }
       }
     }
 
     while (stack.Count > 0) {
+      // 填加“没有右括号和它匹配“的左括号的 index
       removeSet.Add(stack.Pop());
     }
 

@@ -17,7 +17,7 @@ var closedIsland = function (grid) {
   let count = 0;
 
   // DFS的方法
-  let dfs = function (row, col) {
+  function dfs(row, col) {
     //if we meet the edge return 0;
     if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length) {
       return 0;
@@ -74,8 +74,7 @@ var closedIsland2 = function (grid) {
     dfs(grid, i, j - 1);
     dfs(grid, i, j + 1);
   };
-  let m = grid.length,
-    n = grid[0].length;
+  let m = grid.length, n = grid[0].length;
   // 查看上下边的岛屿，exclude他们
   for (let j = 0; j < n; j++) {
     dfs(grid, 0, j);
@@ -170,6 +169,21 @@ closedIsland2([
 // 练习
 var closedIsland3 = function (grid) {
   let count = 0, directions = [[0, 1], [0, -1], [-1, 0], [1, 0]];
+  // First we will define a dfs function that takes the current cell's coordinates as parameters. 
+  function dfs(i, j) {
+    // First we define a termination condition for the DFS. If the current cell is out of bounds or is water (1), we will return immediately.
+    if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 1) {
+      return;
+    }
+
+    // After the termination condition, we will mark the current cell as visited by changing its value to 1 (water). This way, we can avoid visiting the same cell again in future DFS calls.
+    grid[i][j] = 1;
+
+    // Then we will recursively call the DFS function for the four adjacent cells (up, down, left, right) using the directions array.
+    for (let dir of directions) {
+      dfs(i + dir[0], j + dir[1]);
+    }
+  }
 
   // If we meet the edge, we will flood fill it to water, so that we can exclude those islands connected to the edge.
   for (let i = 0; i < grid.length; i++) {
@@ -189,22 +203,6 @@ var closedIsland3 = function (grid) {
         count++;
         dfs(i, j);
       }
-    }
-  }
-
-  // First we will define a dfs function that takes the current cell's coordinates as parameters. 
-  function dfs(i, j) {
-    // First we define a termination condition for the DFS. If the current cell is out of bounds or is water (1), we will return immediately.
-    if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 1) {
-      return;
-    }
-
-    // After the termination condition, we will mark the current cell as visited by changing its value to 1 (water). This way, we can avoid visiting the same cell again in future DFS calls.
-    grid[i][j] = 1;
-
-    // Then we will recursively call the DFS function for the four adjacent cells (up, down, left, right) using the directions array.
-    for (let dir of directions) {
-      dfs(i + dir[0], j + dir[1]);
     }
   }
 
