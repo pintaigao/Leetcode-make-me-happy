@@ -9,20 +9,18 @@
  * @param {number[][]} events
  * @return {number}
  */
-// 思路: 每一天，先参加最早结束的event
+// 思路: 按每一天，先参加最早结束的event
 var maxEvents = function (events) {
-  let pq = [], lastDay = 0;
-  if (events.length === 1) {
-    return 1;
-  }
+  let pq = [], lastDay = 0, index = 0, res = 0, n = events.length;
+  if (events.length === 1) { return 1; }
 
   // Priority Queue， 按照每个会议的结束时间排序，结束时间最早的会议在前面
   events.sort((a, b) => {
+    // 获得最晚的一天
     lastDay = Math.max(lastDay, a[1], b[1]);
+    // 按开始时间从小到大排序
     return a[0] - b[0];
   });
-
-  let index = 0, res = 0, n = events.length;
 
   // 循环每一天
   for (let d = 1; d <= lastDay; ++d) {
@@ -46,18 +44,54 @@ var maxEvents = function (events) {
   return res;
 };
 
-// Javascript 的方法1，保证每一天都参加一个event
+// 以上相同思路，使用MinPriorityQueue(一个自定义的 PQ)
+var maxEvents5 = function (events) {
+  let lastDay = 0, ans = 0, pq = new MinPriorityQueue();
+
+  // 找到最后一天
+  for (const e of events) {
+    lastDay = Math.max(lastDay, e[1]);
+  }
+
+  // 按照开始时间分组
+  const groups = Array.from({ length: lastDay + 1 }, () => []);
+  for (const [startDay, endDay] of events) {
+    groups[startDay].push(endDay);
+  }
+
+  for (let i = 1; i <= lastDay; i++) {
+    // 移除已经过期的会议 （lastDay < i）
+    while (!pq.isEmpty() && pq.front() < i) {
+      pq.dequeue();
+    }
+    // 新增可以参加的会议 // 上面是while (index < n && events[index][0] == d)
+    if (groups[i].length) {
+      for (const endDay of groups[i]) {
+        pq.enqueue(endDay);
+      }
+    }
+    // 参加一个结束时间最早的会议
+    if (!pq.isEmpty()) {
+      pq.dequeue();
+      ans++;
+    }
+  }
+  return ans;
+};
+
+// 按每一个会议，根据每一个会议的 start day，看哪一天参加这个会议
 let maxEvents2 = function (events) {
-  let seen = new Set();
-  // sort event，按照结束时间排序，结束时间最早的会议在前面，如果结束时间相同，按照开始时间排序
+  let attend = new Set();
+  // sort event，按照结束时间排序，结束时间最早的会议在前面，如果结束时间相同，按照开始时间升序
+  // 先参加最早结束的，但是如果结束时间相同，就先参加最早开始的（keep the day tight），把后面天数留给后面
   events.sort((a, b) => (a[1] != b[1] ? a[1] - b[1] : a[0] - b[0]));
 
   for (let [start, end] of events) {
-    // 假如说start的这一天，已经参加过前一个event了，那就加一天，看看next day能不能参加event
-    while (start <= end && seen.has(start)) start += 1;
-    if (start <= end) seen.add(start);
+    // 假如说start的这一天，已经参加过之前某个event了，那就加一天，看看next day能不能参加event
+    while (start <= end && attend.has(start)) start += 1;
+    if (start <= end) attend.add(start);
   }
-  return seen.size;
+  return attend.size;
 };
 
 // Javascript 的方法2
@@ -127,45 +161,11 @@ let maxEvents4 = function (events) {
   return res;
 };
 
-// 使用MinPriorityQueue(一个自定义的 PQ)
-var maxEvents5 = function (events) {
-  let lastDay = 0, ans = 0, pq = new MinPriorityQueue();
-
-  // 找到最后一天
-  for (const e of events) {
-    lastDay = Math.max(lastDay, e[1]);
-  }
-
-  // 按照开始时间分组
-  const groups = Array.from({ length: lastDay + 1 }, () => []);
-  for (const [startDay, endDay] of events) {
-    groups[startDay].push(endDay);
-  }
-
-  for (let i = 1; i <= lastDay; i++) {
-    // 移除已经过期的会议
-    while (!pq.isEmpty() && pq.front() < i) {
-      pq.dequeue();
-    }
-    // 新增可以参加的会议
-    if (groups[i].length) {
-      for (const endDay of groups[i]) {
-        pq.enqueue(endDay);
-      }
-    }
-    // 参加一个结束时间最早的会议
-    if (!pq.isEmpty()) {
-      pq.dequeue();
-      ans++;
-    }
-  }
-  return ans;
-};
-
-// Union Find 方法
+// Union Find 的思路
 var maxEvents6 = function (events) {
+  // 先按结束时间 升序排序
   events.sort((a, b) => a[1] - b[1]);
-  const parent = Array(100001).fill(0).map((_, i) => i);
+  const parent = Array.from({ length: 100001 }, (_, i) => i);
 
   const find = (x) => {
     if (parent[x] !== x) {
@@ -195,24 +195,3 @@ maxEvents2([
 // @lc code=end
 
 // 练习
-let maxEvents7 = function (events) {
-  let attend = new Set();
-
-  events.sort((a, b) => {
-    if (a[1] !== b[1]) {
-      return a[1] - b[1];
-    } else {
-      return a[0] - b[0];
-    }
-  });
-
-  for (let event of events) {
-    for (let day = event[0]; day <= event[1]; day++) {
-      if (!attend.has(day)) {
-        attend.add(day);
-        break;
-      }
-    }
-  }
-  return attend.size;
-}

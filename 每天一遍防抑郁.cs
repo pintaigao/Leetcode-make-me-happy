@@ -90,6 +90,7 @@ public class ConversionNotes {
     // map[course] = map[course] || [];
     int pre = 0;
     int course = 1;
+    // JS: if(!map[pre])
     if (!map.ContainsKey(pre)) {
       map[pre] = new List<int>();
     }

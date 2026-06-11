@@ -25,7 +25,7 @@ var diagonalSort = function (mat) {
     }
   }
 
-  // 排序.
+  // 排序.从小到大
   for (let key in diagonals) {
     diagonals[key].sort((a, b) => a - b);
   }
@@ -110,32 +110,23 @@ let diagonalSort2 = function (mat) {
   return mat;
 };
 
-// Javascript的最快解
+// Javascript 依据index遍历斜向下的方式原地更改的方法
 var diagonalSort3 = function (mat) {
-  //  行数
-  let m = mat.length; //3
-  //  列数
-  let n = mat[0].length; //4
+  //  行数 //  列数
+  let m = mat.length, n = mat[0].length;
   // 2d array的中间斜线的下半边，包括中间斜线
   for (let i = 0; i < m; i++) {
     let arr = [];
-    // 把每一个斜线上的值放入到arr中
+    // 斜线：即每一步都是 x+1，y+1，所以先定好起点坐标，如果[0,0], 起点[1,0], 然后把每一个斜线上的值放入到arr中
     for (let k = i, j = 0; k < m && j < n; k++, j++) {
-      if (mat[k][j]) {
-        arr.push(mat[k][j]);
-      } else {
-        break;
-      }
+      arr.push(mat[k][j]);
     }
+
     // 排序
     arr.sort((a, b) => a - b);
     // 放回原来的位置
-    for (let j = 0, k = i, x = 0; j < n k < m; j++, k++, x++) {
-      if (mat[k][j]) {
-        mat[k][j] = arr[x];
-      } else {
-        break;
-      }
+    for (let j = 0, k = i, x = 0; j < n && k < m; j++, k++, x++) {
+      mat[k][j] = arr[x];
     }
   }
 
@@ -143,29 +134,27 @@ var diagonalSort3 = function (mat) {
   for (let i = 1; i < n; i++) {
     let arr = [];
     // 每个斜边上的值push到arr中
-    for (let j = 0, k = i; j < m; j++, k++) {
-      if (mat[j][k]) arr.push(mat[j][k]);
-      else break;
+    for (let j = 0, k = i; j < m && k < n; j++, k++) {
+      arr.push(mat[j][k]);
     }
     // 排序
     arr.sort((a, b) => a - b);
     // 把排序好的值放回原来的位置
-    for (let j = 0, k = i, x = 0; j < m, x < arr.length; j++, k++, x++) {
-      if (mat[j][k]) {
-        mat[j][k] = arr[x];
-      } else {
-        break;
-      }
+    for (let j = 0, k = i, x = 0; j < m && k < n && x < arr.length; j++, k++, x++) {
+      mat[j][k] = arr[x];
     }
   }
+
   return mat;
 };
 
-diagonalSort3([
-  [11, 25, 66, 1, 69, 7],
-  [23, 55, 17, 45, 15, 52],
-  [75, 31, 36, 44, 58, 8],
-  [22, 27, 33, 25, 68, 4],
-  [84, 28, 14, 11, 5, 50],
-]);
+// diagonalSort3([
+//   [11, 25, 66, 1, 69, 7],
+//   [23, 55, 17, 45, 15, 52],
+//   [75, 31, 36, 44, 58, 8],
+//   [22, 27, 33, 25, 68, 4],
+//   [84, 28, 14, 11, 5, 50],
+// ]);
+
+diagonalSort3([[37, 98, 82, 45, 42]])
 // @lc code=end

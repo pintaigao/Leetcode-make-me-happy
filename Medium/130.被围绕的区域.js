@@ -82,82 +82,56 @@ var solveBFS = function (board) {
 
 
 // 3. 并查集
-import { UF } from "../../Algorithm/union-find.js"
+import { UF } from "../Algorithm/图/union-find.js"
 var solve3 = function (board) {
   if (board.length === 0) return;
-
-  const m = board.length, n = board[0].length;
   // 给 dummy 留一个额外位置
-  const uf = new UF(m * n + 1), dummy = m * n;
-  // 将首列和末列的 O 与 dummy 连通
-  for (let i = 0; i < m; i++) {
-    if (board[i][0] === 'O')
-      uf.union(i * n, dummy);
-    if (board[i][n - 1] === 'O')
-      uf.union(i * n + n - 1, dummy);
-  }
-  // 将首行和末行的 O 与 dummy 连通
-  for (let j = 0; j < n; j++) {
-    if (board[0][j] === 'O')
-      uf.union(j, dummy);
-    if (board[m - 1][j] === 'O')
-      uf.union(n * (m - 1) + j, dummy);
-  }
   // 方向数组 d 是上下左右搜索的常用手法
-  const d = [[1, 0], [0, 1], [0, -1], [-1, 0]];
+  const m = board.length, n = board[0].length, uf = new UF(m * n + 1), dummy = m * n, direction = [[1, 0], [0, 1], [0, -1], [-1, 0]];
+
+  // 将首列和末列的 O 与 dummy 连通 // 将首行和末行的 O 与 dummy 连通
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      // 首行,首列, 末行,末列
+      if ((i == 0 || i == m - 1 || j == 0 || j == n - 1) && board[i][j] == 'O') { uf.union(n * i + j, dummy) }
+    }
+  }
+
+  console.log(uf.parent);
+
+
+  // 只看场内的
   for (let i = 1; i < m - 1; i++)
     for (let j = 1; j < n - 1; j++)
-      if (board[i][j] === 'O')
-        // 将此 O 与上下左右的 O 连通
-        for (let k = 0; k < 4; k++) {
-          const x = i + d[k][0];
-          const y = j + d[k][1];
-          if (board[x][y] === 'O')
-            uf.union(x * n + y, i * n + j);
+      if (board[i][j] === 'O') {
+        console.log(i, j);
+        // 将上下左右的 O 和此 O 相连通 uf.union（从此，接到此 root），相当于像 bfs 一样
+        for (let [nx, ny] of direction) {
+          const x = i + nx, y = j + ny;
+          if (board[x][y] === 'O') {
+            console.log(x, y);
+            // 我的问题：不用看 visited 没 visited 吗？不会重复 union 吗？答，不会，假设‘O1‘，‘O2‘， 在 O1 将 O2 连接到 O1，然后在 O2 的时候，将 O1 连接到O2，但是前一步 O2 的 root 已经是 O1 了，所以相当于还是 union(O1, O1)
+            // 所以这里, 两种写法都可以
+            uf.union(x * n + y, i * n + j); // 将下一个“所对应的root“，接到此“所对应的root“，所以当下一个是edge 的时候parent[edge] = dumny dumny 接到了此 即 parent[dumny] = 此，所以感官上parent[dumny] = dumny，语义上不通但是可行
+            // uf.union(i * n + j, x * n + y); // 将此“所对应的 root“，接到下一个
+
+            console.log(uf.parent);
+          }
         }
+      }
   // 所有不和 dummy 连通的 O，都要被替换
   for (let i = 1; i < m - 1; i++)
     for (let j = 1; j < n - 1; j++)
+      // 如果上面是“将下一个，接到此“，则 paren[dummy] 不是 dumny，而是board[i][j]的值
       if (!uf.connected(dummy, i * n + j))
         board[i][j] = 'X';
 };
 
-
 // Main Function
-let board = [["X", "X", "X", "X"], ["X", "O", "O", "X"], ["X", "X", "O", "X"], ["X", "O", "X", "X"]];
+let board =
+  [["X", "X", "X", "X"],
+  ["X", "O", "O", "X"],
+  ["X", "X", "O", "X"],
+  ["X", "O", "O", "X"]];
 solve3(board);
-console.log(board);
-
-
-// 练习
-var solve10 = function (board) {
-  for (let i = 0; i < board.length; i++) {
-    for (let j = 0; j < board[0].length; j++) {
-      if ((i === 0 || i === board.length - 1 || j === 0 || j === board[0].length - 1) && board[i][j] === 'O') {
-        dfs(i, j);
-      }
-    }
-  }
-
-  function dfs(i, j) {
-    if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] !== 'O') {
-      return;
-    }
-
-    board[i][j] = 'E';
-    dfs(i + 1, j);
-    dfs(i - 1, j);
-    dfs(i, j + 1);
-    dfs(i, j - 1);
-  }
-
-  for (let i = 0; i < board.length; i++) {
-    for (let j = 0; j < board[0].length; j++) {
-      if (board[i][j] === 'O') {
-        board[i][j] = 'X';
-      } else if (board[i][j] === 'E') {
-        board[i][j] = 'O';
-      }
-    }
-  }
-}
+// console.log(board);
