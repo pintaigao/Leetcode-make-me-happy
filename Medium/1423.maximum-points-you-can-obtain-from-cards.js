@@ -12,17 +12,15 @@
  */
 // 1.Easy Sliding Window O(n): Find minimum subarray
 var maxScore = function (cardPoints, k) {
-  // Subarray的长度
-  let n = cardPoints.length - k, min = Number.MAX_VALUE;
+  // Subarray的长度, n相当于总长度 - 后面 k 个元素
   // 整一个数组的和
-  let total = 0, cur = 0;
   // 左右pointer
-  let l = 0, r = 0;
+  let n = cardPoints.length - k, min = Number.MAX_VALUE, total = 0, cur = 0, l = 0, r = 0;
 
-  while (r < cardPoints.length) {
+  while (r < cardPoints.length) { // 想：r 要从最后一位取值吗（即r = [cardPoints.length-1]的时候要执行计算吗，要r < cardPoints.length）
     total += cardPoints[r];
     cur += cardPoints[r];
-    if (r - l + 1 == n) {
+    if (r - l + 1 == n) { // 当【0，r】长度 + 后面 k个元素 = 总长 即现在【0，r】长度 = 总长-后面 k 个元素 
       min = Math.min(min, cur);
       cur -= cardPoints[l];
       l += 1;
