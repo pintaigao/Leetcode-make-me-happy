@@ -39,7 +39,7 @@ var wordBreak = function (s, wordDict) {
 
 /* DFS 记忆化 */
 const wordBreak2 = (s, wordDict) => {
-  let len = s.length, wordSet = new Set(wordDict), memo = new Array(len);
+  let len = s.length, wordSet = new Set(wordDict), memo = new Array(len); // 每个位置index代表 s 上相应的 index位置
 
   const canBreak = (start) => {
     if (start == len) return true;
@@ -48,7 +48,7 @@ const wordBreak2 = (s, wordDict) => {
     for (let i = start + 1; i <= len; i++) {
       const prefix = s.slice(start, i);
       if (wordSet.has(prefix) && canBreak(i)) {
-        memo[start] = true; // 当前递归的结果存一下
+        memo[start] = true; // 当前递归的结果存一下 // 这个位置上执行的逻辑看过了，值也保存了
         return true;
       }
     }
@@ -61,7 +61,7 @@ const wordBreak2 = (s, wordDict) => {
 
 /* BFS */
 const wordBreak3 = (s, wordDict) => {
-  let wordSet = new Set(wordDict), len = s.length, queue = [0];
+  let wordSet = new Set(wordDict), len = s.length, queue = [0] //从 index 0 开始
 
   while (queue.length) {
     const start = queue.shift(); // 考察出列的指针
@@ -73,7 +73,7 @@ const wordBreak3 = (s, wordDict) => {
         if (i < len) {
           // i还没越界，还能继续划分，让它入列，作为下一层待考察的节点
           queue.push(i);
-        } else {
+        } else if (i == len) {
           // i==len，指针越界，说明s串一路被切出单词，现在没有剩余子串，返回true
           return true;
         }
@@ -85,12 +85,7 @@ const wordBreak3 = (s, wordDict) => {
 
 /* 优化后的BFS */
 const wordBreak4 = (s, wordDict) => {
-  const wordSet = new Set(wordDict);
-  const len = s.length;
-  const visited = new Array(len);
-
-  const queue = [];
-  queue.push(0);
+  const wordSet = new Set(wordDict), len = s.length, visited = new Array(len), queue = [0];
 
   while (queue.length) {
     const start = queue.shift(); // 考察出列的指针
@@ -118,7 +113,7 @@ const wordBreak4 = (s, wordDict) => {
 /* DP */
 const wordBreak5 = (s, wordDict) => {
   let wordSet = new Set(wordDict), dp = new Array(s.length + 1).fill(false);
-  dp[0] = true;
+  dp[0] = true; // dp[0] 代表 ““
 
   for (let i = 0; i <= s.length; i++) {
     console.log(i);
@@ -144,7 +139,8 @@ const wordBreak5 = (s, wordDict) => {
   return dp[s.length];
 };
 
-wordBreak5('catsandog', ["og", "sand", "and", "cat", "cats"]);
+// wordBreak5('catsandog', ["og", "sand", "and", "cat", "cats"]);
+wordBreak5("leetcode", ["leet", "code"]);
 
 // @lc code=end
 
@@ -166,13 +162,12 @@ var wordBreak6 = function (s, wordDict) {
     // 回溯算法框架(有计划的前缀前缀的看，而不是无脑的枚举)
     for (let word of wordDict) {
       // 看看哪个单词能够匹配 s[start..] 的前缀
-      let len = word.length;
-      if (start + len <= s.length && s.substring(start, start + len) == word) {
+      if (start + word.length <= s.length && s.substring(start, start + word.length) == word) {
         // 找到一个单词匹配 s[start..start+len)
         // 做选择
         track.push(word);
         // 进入回溯树的下一层，继续匹配 s[start+len..]
-        backtrack(start + len);
+        backtrack(start + word.length);
         // 撤销选择
         track.pop();
       }
