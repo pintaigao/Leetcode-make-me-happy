@@ -63,6 +63,7 @@ let leftMostColumnWithOne2 = function (binaryMatrix) {
     while (lo < hi) {
       let mid = parseInt((lo + hi) / 2);
 
+      // mid 是我要找的东西，如果 low 的不是，low 上面的不用看，所以 lo = mid + 1
       if (binaryMatrix.get(row, mid) == 0) {
         lo = mid + 1;
       } else {
