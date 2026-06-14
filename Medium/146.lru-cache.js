@@ -31,17 +31,23 @@ class DoubleList {
   }
 
   // 在链表尾部添加节点 x，时间 O(1)
+  // 思考： tail.prev 要接到 x 上，但这样会失去 tail.prev 原来的，x.prev 就不知道接到哪里，所以应该先保存 last = tail.prev
   addLast(x) {
-    x.prev = this.tail.prev;
+    let last = this.tail.prev;
+    // 1. 先将 x 的 prev，next 接上
+    x.prev = last;
     x.next = this.tail;
-    this.tail.prev.next = x;
+    // 2. 再将 last tail 分别接到 x 上
+    last.next = x;
     this.tail.prev = x;
+    // 3. size + 1
     this.size += 1;
   }
 
   // 删除链表中的 x 节点（x 一定存在）
   // 由于是双链表且给的是目标 Node 节点，时间 O(1)
   remove(x) {
+    // 将 x 的前后相连接
     x.prev.next = x.next;
     x.next.prev = x.prev;
     this.size -= 1;
@@ -49,9 +55,15 @@ class DoubleList {
 
   // 删除链表中第一个节点，并返回该节点，时间 O(1)
   removeFirst() {
+    // head 的 next 指向第一个节点的 next
     if (this.head.next == this.tail) return;
     let first = this.head.next;
-    this.remove(first);
+    // this.remove(first);
+    // 或者
+    this.head.next = first.next;
+    first.next.prev = this.head
+    this.size -= 1
+
     return first;
   }
 }
@@ -62,6 +74,7 @@ class LRUCache {
     this.capacity = capacity;
     // Node(k1, v1) <-> Node(k2, v2)...
     // {key: Node(key, value)}
+    // key 是用于链表连接的，value 只是用来存储每个 Node 的
     this.map = {};
     // 最大容量
     this.cache = new DoubleList();
@@ -148,92 +161,4 @@ var param_1 = obj.get(1);
 console.log(param_1);
 // @lc code=end
 
-
 // 练习
-class Node {
-  constructor(key, val) {
-    this.key = key;
-    this.val = val;
-    this.next = null
-    this.prev = null;
-  }
-}
-
-
-class Cache {
-  constructor() {
-    this.size = 0;
-    this.head = new Node(0, 0);
-    this.tail = new Node(0, 0);
-    this.head.next = this.tail;
-    this.head.prev = null;
-    this.tail.prev = this.head;
-    this.tail.next = null;
-  }
-
-  addLast(x) {
-    x.next = this.tail;
-    x.prev = this.tail.prev;
-    this.tail.prev.next = x;
-    this.tail.prev = x
-    this.size += 1;
-  }
-
-  removeFirst() {
-    if (this.head.next == this.tail) return null;
-    let first = this.head.next;
-    this.remove(first);
-    return first;
-  }
-
-  remove(x) {
-    let last = x.prev, next = x.next
-    last.next = next;
-    next.prev = last;
-    this.size -= 1;
-  }
-
-  getSize() {
-    return this.size;
-  }
-
-}
-
-class LRUCache {
-  constructor(capacity) {
-    this.capacity = capacity
-    this.map = {};
-    this.cache = new Cache();
-  }
-
-  get(key) {
-    if (this.map[key]) {
-      // Make it recent
-      this.cache.remove(this.map[key]);
-      this.cache.addLast(this.map[key]);
-
-      return this.map[key].val
-    } else {
-      return -1;
-    }
-  }
-
-  put(key, value) {
-    let node = new Node(key, value);
-    if (this.map[key]) {
-      this.cache.remove(this.map[key]);
-      this.cache.addLast(this.map[key]);
-      this.map[key].val = value;
-
-      return;
-    }
-
-    if (this.capacity == this.cache.getSize()) {
-      let deleteNode = this.cache.removeFirst();
-      deleteNode && delete this.map[deleteNode.key];
-    }
-
-    this.map[key] = node;
-    this.cache.addLast(node);
-  }
-}
