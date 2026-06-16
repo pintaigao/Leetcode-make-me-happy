@@ -201,7 +201,6 @@ var minCost7 = function (colors, neededTime) {
 
 // 面试练习
 // Two Pointer
-// I
 function minCost(s, cost) {
   let totalCost = 0; // 总删除成本
   let n = s.length;
