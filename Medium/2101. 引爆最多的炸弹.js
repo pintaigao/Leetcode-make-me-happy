@@ -4,6 +4,7 @@
  */
 var maximumDetonation = function (bombs) {
   let res = 0, queue = [];
+  // 不是从单一一个炸弹 bfs，而是每一个炸弹都bfs 一遍
   for (let i = 0; i < bombs.length; i++) {
     let visited = new Array(bombs.length).fill(false), tempRes = 0;
     visited[i] = true;

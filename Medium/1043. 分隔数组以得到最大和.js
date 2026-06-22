@@ -18,7 +18,7 @@ var maxSumAfterPartitioning = function (arr, k) {
     let max = 0; // 当前子数组的最大值
 
     // j 代表的是末尾子数组的数字个数，最多为k，最少为1
-    // 遍历子数组的长度，从1到k,i-j+1 为末尾子数组的起始位置，确保起始位置不越界
+    // 遍历子数组的长度，从1到k,  i-j+1 为末尾子数组的起始位置，确保起始位置不越界
     for (let j = 1; j <= k && i - j + 1 >= 0; j++) {
       max = Math.max(max, arr[i - j + 1]); // 更新当前子数组的最大值
       dp[i] = Math.max(dp[i], (i >= j ? dp[i - j] : 0) + max * j); // 更新dp[i]的值

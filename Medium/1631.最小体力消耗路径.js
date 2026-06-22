@@ -1,5 +1,6 @@
 import { PriorityQueue } from "../../Algorithm/priority-queue.js";
 
+// 一条路径耗费的 体力值 是路径上相邻格子之间 高度差绝对值 的 最大值 决定的。
 var minimumEffortPath = function (heights) {
   // Dijkstra 算法，计算 (0, 0) 到 (m - 1, n - 1) 的最小体力消耗
   return dijkstra(heights);
@@ -14,7 +15,7 @@ var minimumEffortPath = function (heights) {
   // Dijkstra 算法模板 https://labuladong.online/algo/data-structure/dijkstra/
   function dijkstra(matrix) {
     // 记录从起点 (0, 0) 到每个节点的最小体力消耗
-    const m = matrix.length, n = matrix[0].length, distTo = Array.from({ length: m }, () => Array(n).fill(Infinity));
+    const m = matrix.length, n = matrix[0].length, distTo = Array.from({ length: m }, () => Array(n).fill(Infinity)), dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]]
 
     let pq = new PriorityQueue((a, b) => a.effortFromStart - b.effortFromStart);
     // 从起点 (0, 0) 开始进行 dijkstra 算法
@@ -30,46 +31,30 @@ var minimumEffortPath = function (heights) {
         continue;
       }
 
-      // 判断是否已经到达目标点
-      if (curRow === m - 1 && curCol === n - 1) {
-        return distTo[curRow][curCol];
-      }
+      // // 判断是否已经到达目标点 
+      // // 按照 BFS 逐层向外扩散搜索的逻辑，第一次到达节点 i 时，就等于找到了最短路径。
+      // if (curRow === m - 1 && curCol === n - 1) {
+      //   return distTo[curRow][curCol];
+      // }
 
-      for (const neighbor of adj(matrix, curRow, curCol)) {
-        const nextRow = neighbor[0], nextCol = neighbor[1]
+      // For Next One
+      for (const [nx, ny] of dirs) {
+        const nextRow = curRow + nx, nextCol = curCol + ny;
         // 从起点到下一个节点的体力消耗 = 从起点到当前节点的体力消耗 和 当前节点到下一个节点的体力消耗 的较大值
         // 体力消耗 = 当前节点到下一个节点的高度差
         // Math.max的原因是因为题目要求的是路径上每一步的体力消耗的最大值，而不是所有步骤的体力消耗之和。
+        if (nextRow >= m || nextRow < 0 || nextCol >= n || nextCol < 0) { continue }// 索引越界
+        // 按照题意这个位置路径保留最大的
         let nextEffortFromStart = Math.max(curEffortFromStart, Math.abs(matrix[nextRow][nextCol] - matrix[curRow][curCol]));
-        // let nextEffortFromStart = curEffortFromStart + Math.abs(matrix[nextRow][nextCol] - matrix[curRow][curCol]);
         // 存在更优路径，则更新 distTo 数组和优先级队列
         if (distTo[nextRow][nextCol] > nextEffortFromStart) {
           distTo[nextRow][nextCol] = nextEffortFromStart;
           pq.push(new State(nextRow, nextCol, nextEffortFromStart));
         }
       }
-      console.log(pq._data);
-      console.log(d);
     }
 
-
-
-    return -1;
-  }
-
-  // 返回坐标 (x, y) 的上下左右相邻坐标
-  function adj(matrix, x, y) {
-    // 方向数组，上下左右的坐标偏移量 
-    const dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]], m = matrix.length, n = matrix[0].length, neighbors = [];
-    for (const dir of dirs) {
-      const nx = x + dir[0], ny = y + dir[1];
-      if (nx >= m || nx < 0 || ny >= n || ny < 0) {
-        // 索引越界
-        continue;
-      }
-      neighbors.push([nx, ny]);
-    }
-    return neighbors;
+    return distTo[m - 1][n - 1] >= 0 ? distTo[m - 1][n - 1] : -1
   }
 };
 

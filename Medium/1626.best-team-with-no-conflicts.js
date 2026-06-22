@@ -22,12 +22,13 @@ var bestTeamScore = function (scores, ages) {
   dp[0] = persons[0][0];
   let ans = dp[0];
 
-  /* 原理： 这个array已经按照年龄升序了，所以从第二个人开始，往前看，看看前面这些人的分数是不是小于等于这个人的分数，如果是：max更新为（max和dp[j]的最大值） */
+  /* 原理： 这个array已经按照年龄升序了，所以从第二个人开始，从头开始对比，看看前面这些人的分数是不是小于等于这个人的分数，如果是：max更新为（max和dp[j]的最大值） */
   for (let i = 1; i < scores.length; i++) {
     let max = 0;
     for (let j = 0; j < i; j++) {
       // 从头看，先保证了年龄绝对小于等于现在停的位置
       // 找到分数比当前队员低的队员，并记录它们中的最大值
+      // 每个位置上的值一定是之前已经对比好了的
       if (persons[j][0] <= persons[i][0]) {
         max = Math.max(max, dp[j]);
       }
@@ -36,7 +37,6 @@ var bestTeamScore = function (scores, ages) {
     dp[i] = persons[i][0] + max;
     ans = Math.max(ans, dp[i]);
   }
-  console.log(ans);
   return ans;
 };
 
