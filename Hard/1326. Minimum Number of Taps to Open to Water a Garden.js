@@ -6,22 +6,25 @@
 
 // 动态规划
 function minTaps(n, ranges) {
-  // 初始化dp数组，表示在位置i上的花园所需的最少水龙头数量
+  // 初始化dp数组，表示在位置i上的花园所需的最少水龙头数量，dp[i]中的 i 表示的是花园长度
   const dp = new Array(n + 1).fill(Infinity);
 
-  // 初始时，在位置0上不需要水龙头
+  // 初始时，在位置0上不需要水龙头（花园长度为 0 的时候不需要水龙头）
   dp[0] = 0;
 
   // 遍历水龙头的位置和覆盖范围
   for (let i = 0; i <= n; i++) {
     // 为了确保每个水龙头的覆盖范围始终在花园的有效边界内
-    // 当前水龙头的位置
+    // 当前水龙头的位置，左边最远能覆盖到的位置index（包括最左边这个 index）
     const left = Math.max(0, i - ranges[i]);
-    // 当前水龙头的覆盖范围
+    // 当前水龙头的位置，右边最远能覆盖到的位置index（包括最右边这个 index）
     const right = Math.min(n, i + ranges[i]);
 
-    // 更新dp数组，使得在覆盖范围内所需的水龙头数量最小
+
+    // 现在获得的是覆盖范围[left, right]，dp[left] 是起点（按理讲dp[left]已经有值了）
+    // 更新dp数组，使得在覆盖范围内所需的水龙头数量最小，dp[i] 这个 i 和水龙头的位置index无直接关系，而是通过 left 来确定覆盖范围的起点
     for (let j = left; j <= right; j++) {
+      // 不是 dp[j-1]+1 的原因，假设当前 tap 覆盖：[2, 5]，意思是现在这个水龙头已经能覆盖到 2，我打开这个 tap，就可以直接覆盖到 5。即这个区间内的每个位置所需的最少水龙头数量都可以通过 dp[left] + 1 来更新
       dp[j] = Math.min(dp[j], dp[left] + 1);
     }
   }
@@ -53,7 +56,8 @@ var minTaps2 = function (n, ranges) {
     rightMost[start] = Math.max(rightMost[start], end);
   }
 
-  // 初始化 'last' 为当前能覆盖到的最远距离，'ret' 为所需的水龙头数量，'pre' 为前一个水龙头的最远覆盖距离
+  // 初始化 'last' 为当前能覆盖到的最远距离，'ret' 为所需的水龙头数量，'pre' 为前一个水龙头的最远覆盖距离，
+  // 选择能把右边界推得最远的那个
   let last = 0, ret = 0, pre = 0;
 
   // 遍历每个点来确定所需的最少水龙头数量

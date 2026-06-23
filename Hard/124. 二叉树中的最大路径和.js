@@ -33,15 +33,11 @@ var maxPathSum10 = function (root) {
     if (root === null) {
       return 0;
     }
-    let leftMaxSum = oneSideMax(root.left), rightMaxSum = oneSideMax(root.right);
+    let leftMaxSum = oneSideMax(root.left), rightMaxSum = oneSideMax(root.right); // 后续遍历
     // 然后做的过程中就会发现root.val + leftMaxSum + rightMaxSum， 如果leftMax 或者 rightMax 是负数的话，反而会降低路径和，所以我们在计算 leftMaxSum 和 rightMaxSum 的时候就把负数的情况排除掉了
     // 就不走负数的路径了
-    if (leftMaxSum < 0) {
-      leftMaxSum = 0;
-    }
-    if (rightMaxSum < 0) {
-      rightMaxSum = 0;
-    }
+    if (leftMaxSum < 0) { leftMaxSum = 0; }
+    if (rightMaxSum < 0) { rightMaxSum = 0; }
     // 后序遍历位置，顺便更新最大路径和
     let pathMaxSum = root.val + leftMaxSum + rightMaxSum;
 
@@ -55,6 +51,7 @@ var maxPathSum10 = function (root) {
   if (root === null) {
     return 0;
   }
+
   oneSideMax(root);
   return res;
 };
