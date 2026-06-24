@@ -27,8 +27,7 @@ var subArrayRanges = function (nums) {
 /* 单调栈 */
 var subArrayRanges = function (nums) {
   const n = nums.length;
-  let stack = new Array(),
-    ans = 0n;
+  let stack = new Array(), ans = 0n;
   for (let i = 0; i <= n; i++) {
     while (stack.length > 0 && (i == n || nums[stack[stack.length - 1]] < nums[i])) {
       const j = BigInt(stack.pop());

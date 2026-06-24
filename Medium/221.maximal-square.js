@@ -11,24 +11,36 @@
  */
 /* 基本DP */
 var maximalSquare = function (matrix) {
-  // base condition
-  if (matrix == null || matrix.length < 1 || matrix[0].length < 1) return 0;
+  // 定义：以 matrix[i][j] 为右下角元素的全为 1 正方形矩阵的最大边长为 dp[i][j]。
+  let m = matrix.length, n = matrix[0].length, dp = Array.from({ length: m }, () => Array(n).fill(0)), len = 0;
 
-  let [height, width, maxSide] = [matrix.length, matrix[0].length, 0];
-
-  // 相当于已经预处理新增第一行、第一列均为0
-  let dp = new Array(height + 1).fill(0).map(() => new Array(width + 1).fill(0));
-
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
-      // 如果当前位置为1，则说明当前位置potentially是一个正方形的边长
-      if (matrix[row][col] == "1") {
-        dp[row + 1][col + 1] = Math.min(dp[row + 1][col], dp[row][col + 1], dp[row][col]) + 1;
-        maxSide = Math.max(maxSide, dp[row + 1][col + 1]);
-      }
+  // base case，第一行和第一列的正方形边长
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      dp[i][0] = matrix[i][0] - '0';
+      dp[0][j] = matrix[0][j] - '0';
     }
   }
-  return maxSide * maxSide;
+
+
+  // 进行状态转移
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      if (matrix[i][j] == '0') {
+        // 值为 0 不可能是正方形的右下角
+        continue;
+      }
+      dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;
+    }
+  }
+
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      len = Math.max(len, dp[i][j]);
+    }
+  }
+  return len * len;
 };
 
 /* DP 2 */
