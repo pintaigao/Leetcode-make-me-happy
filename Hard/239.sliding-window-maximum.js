@@ -16,19 +16,22 @@ var maxSlidingWindow = function (nums, k) {
   let len = nums.length, res = new Array(nums.length - k + 1).fill(0), que = [];
   // 初始化首个窗口[0,k-1]
   for (let i = 0; i < k; i++) {
-    // 新进来的元素>队尾,队尾就要弹出
+    // 新进来的元素>队尾,队尾就要弹出，直到新元素<=队尾为止，最终队列保持队头到队尾递减
     while (que.length && nums[i] > que[que.length - 1]) que.pop();
     // 直至新元素<=队尾可以加入
     que.push(nums[i]);
   }
-  // 第一个窗口最大元素已经找到
+
+  // 第一个窗口最大元素已经找到(队列队头)
   let index = 0; res[index] = que[0]; index += 1;
+
   // 继续求解接下来的窗口
   for (let i = k; i < len; i++) {
-    // nums[i]即将要加入窗口;nums[i-k]即将退出窗口
+    // nums[i]即将要加入窗口 & nums[i-k]即将退出窗口
     while (que.length && nums[i] > que[que.length - 1]) que.pop();
-    // 当前元素入队
+    // 先 pop 然后当前元素入队
     que.push(nums[i]);
+    // 然后窗口向前滑动，可能有元素要退出窗口
     // 退出窗口的元素如果和队头相等,那么队头也要出队
     if (nums[i - k] == que[0]) que.shift();
     // 更新当前窗口最大值

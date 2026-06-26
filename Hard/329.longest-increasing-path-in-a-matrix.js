@@ -10,18 +10,10 @@
  * @return {number}
  */
 
-// 扩散的方向，上下左右
-let dirs = [
-  [1, 0],
-  [-1, 0],
-  [0, 1],
-  [0, -1],
-];
-
 /* 1. BFS 超时 */
 var longestIncreasingPath = function (matrix) {
   // 从每个点出发，看它能扩散多远
-  let [m, n, queue, ans] = [matrix.length, matrix[0].length, [], 0];
+  let [m, n, queue, ans, dirs] = [matrix.length, matrix[0].length, [], 0, [[1, 0], [-1, 0], [0, 1], [0, -1]]];
 
   // BFS开始，需要将所有节点都加入初始队列
   for (let i = 0; i < m; i++) {
@@ -54,7 +46,7 @@ var longestIncreasingPath = function (matrix) {
 var longestIncreasingPath = function (matrix) {
   // 把符合题目要求的点连起来就是有一张有向无环图
   // 所以我们可以使用多源BFS拓扑排序寻找最短路径的思想在这里寻找最长路径
-  let [m, n, queue, ans] = [matrix.length, matrix[0].length, [], 0];
+  let [m, n, queue, ans, dirs] = [matrix.length, matrix[0].length, [], 0, [[1, 0], [-1, 0], [0, 1], [0, -1]]];
   // BFS记录每个节点的出度
   let outDegree = new Array(m).fill(null).map(() => new Array(n).fill(0));
   for (let i = 0; i < m; i++) {
@@ -103,3 +95,207 @@ var longestIncreasingPath = function (matrix) {
   return ans;
 };
 // @lc code=end
+
+// DFS 拓扑排序
+var longestIncreasingPath = function (matrix) {
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  const dirs = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1]
+  ];
+
+  const visited = Array.from({ length: m }, () => Array(n).fill(false));
+  const order = [];
+
+  function dfs(row, col) {
+    visited[row][col] = true;
+
+    for (const [dr, dc] of dirs) {
+      const nextRow = row + dr;
+      const nextCol = col + dc;
+
+      if (
+        nextRow < 0 ||
+        nextRow >= m ||
+        nextCol < 0 ||
+        nextCol >= n
+      ) {
+        continue;
+      }
+
+      // edge: current cell -> larger neighbor
+      if (matrix[nextRow][nextCol] > matrix[row][col]) {
+        if (!visited[nextRow][nextCol]) {
+          dfs(nextRow, nextCol);
+        }
+      }
+    }
+
+    // postorder
+    order.push([row, col]);
+  }
+
+  // 1. Run DFS from every cell to get topological order
+  for (let row = 0; row < m; row++) {
+    for (let col = 0; col < n; col++) {
+      if (!visited[row][col]) {
+        dfs(row, col);
+      }
+    }
+  }
+
+  // postorder gives reverse topological order
+  order.reverse();
+
+  // 2. DP on topological order
+  const dp = Array.from({ length: m }, () => Array(n).fill(1));
+
+  let answer = 1;
+
+  for (const [row, col] of order) {
+    for (const [dr, dc] of dirs) {
+      const nextRow = row + dr;
+      const nextCol = col + dc;
+
+      if (
+        nextRow < 0 ||
+        nextRow >= m ||
+        nextCol < 0 ||
+        nextCol >= n
+      ) {
+        continue;
+      }
+
+      if (matrix[nextRow][nextCol] > matrix[row][col]) {
+        dp[nextRow][nextCol] = Math.max(
+          dp[nextRow][nextCol],
+          dp[row][col] + 1
+        );
+
+        answer = Math.max(answer, dp[nextRow][nextCol]);
+      }
+    }
+  }
+
+  return answer;
+};
+
+
+// 练习: 基础 DFS
+var longestIncreasingPath10 = function (matrix) {
+  let direction = [[1, 0], [-1, 0], [0, 1], [0, -1]], res = 0
+
+
+  function traveler(i, j, step) {
+    res = Math.max(res, step);
+
+    for (let [x, y] of direction) {
+      let nx = x + i, ny = y + j
+
+      if ((nx >= 0 && nx < matrix.length && ny >= 0 && ny < matrix[0].length) && matrix[nx][ny] > matrix[i][j]) {
+        traveler(nx, ny, step + 1);
+      }
+    }
+  }
+
+
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[0].length; j++) {
+      traveler(i, j, 1);
+    }
+  }
+
+  return res
+}
+
+// 以上会超时，现在 DFS 带 Memo
+var longestIncreasingPath = function (matrix) {
+  let m = matrix.length, n = matrix[0].length, memo = Array.from({ length: m }, () => Array(n).fill(0)), dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]], answer = 0;
+
+  function dfs(row, col) {
+    let best = 1;
+
+    if (memo[row][col] !== 0) {
+      return memo[row][col];
+    }
+
+    for (const [dr, dc] of dirs) {
+      const nextRow = row + dr, nextCol = col + dc;
+
+      if (nextRow >= 0 && nextRow < m && nextCol >= 0 && nextCol < n && matrix[nextRow][nextCol] > matrix[row][col]) {
+        best = Math.max(best, 1 + dfs(nextRow, nextCol));
+      }
+    }
+
+    // 这个位置上的最长递增路径长度
+    memo[row][col] = best;
+    return best;
+  }
+
+  for (let row = 0; row < m; row++) {
+    for (let col = 0; col < n; col++) {
+      answer = Math.max(answer, dfs(row, col));
+    }
+  }
+
+  return answer;
+};
+
+// Bottom up 的 DP
+var longestIncreasingPath = function (matrix) {
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  const cells = [];
+
+  for (let row = 0; row < m; row++) {
+    for (let col = 0; col < n; col++) {
+      cells.push([matrix[row][col], row, col]);
+    }
+  }
+
+  cells.sort((a, b) => a[0] - b[0]);
+
+  const dp = Array.from({ length: m }, () => Array(n).fill(1));
+
+  const dirs = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1]
+  ];
+
+  let answer = 1;
+
+  for (const [value, row, col] of cells) {
+    for (const [dr, dc] of dirs) {
+      const nextRow = row + dr;
+      const nextCol = col + dc;
+
+      if (
+        nextRow < 0 ||
+        nextRow >= m ||
+        nextCol < 0 ||
+        nextCol >= n
+      ) {
+        continue;
+      }
+
+      if (matrix[nextRow][nextCol] > value) {
+        dp[nextRow][nextCol] = Math.max(
+          dp[nextRow][nextCol],
+          dp[row][col] + 1
+        );
+
+        answer = Math.max(answer, dp[nextRow][nextCol]);
+      }
+    }
+  }
+
+  return answer;
+};
+

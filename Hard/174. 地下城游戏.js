@@ -29,9 +29,9 @@ var calculateMinimumHP = function (grid) {
 };
 
 
-// 逆着推上去
+// 从结果推导到开始的 DP
 var calculateMinimumHP10 = function (grid) {
-  let m = grid.length, n = grid[0].length, result = Array.from({ length: m }, () => Array(n).fill(1));
+  let m = grid.length, n = grid[0].length, result = Array.from({ length: m }, () => Array(n).fill(1)); // 到达每个格子所需的最小初始血量为 1
 
   function caculateMin(num, i, j) {
     if (grid[i][j] > 0 && grid[i][j] >= num) {

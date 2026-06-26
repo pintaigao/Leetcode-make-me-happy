@@ -58,3 +58,27 @@ var findItinerary = function (tickets) {
   return res;
 };
 // @lc code=end
+
+
+// 练习
+var findItinerary = function (tickets) {
+  let graph = {}, path = [];
+  // build graph
+  for (const [from, to] of tickets) { graph[from] = graph[from] ? [...graph[from], to] : [to]; }
+  // sort destinations in reverse lexical order so we can pop the smallest one
+  // 这里 reverse 只是为了将来用 pop
+  for (const from in graph) { graph[from].sort().reverse(); }
+
+  function dfs(airport) {
+    while (graph[airport] && graph[airport].length > 0) {
+      const next = graph[airport].pop();
+      dfs(next);
+    }
+
+    path.push(airport);
+  }
+
+  dfs("JFK");
+
+  return path.reverse();
+};
