@@ -1,5 +1,5 @@
 function minStepsToSort(arr) {
-  const target = [...arr].sort((a, b) => a - b), startKey = arr.join(","), targetKey = target.join(","), queue = [[arr, 0]], visited = new Set([startKey]);
+  let target = [...arr].sort((a, b) => a - b), startKey = arr.join(","), targetKey = target.join(","), queue = [[arr, 0]], visited = new Set([startKey]);
   if (startKey === targetKey) return 0;
 
   while (queue.length > 0) {
