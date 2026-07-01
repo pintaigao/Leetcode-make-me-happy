@@ -9,13 +9,17 @@ var maxEnvelopes = function (envelopes) {
   let dp = new Array(envelopes.length).fill(1);
 
   for (let i = 0; i < envelopes.length; i++) {
+    // 重头开始看
     for (let j = 0; j < i; j++) {
+      // 如果新来的（末尾这个）可以放进 envelopes[j] 里
       if (envelopes[i][0] > envelopes[j][0] && envelopes[i][1] > envelopes[j][1]) {
+        // 如果 envelopes[i] 可以放进 envelopes[j]，更新 dp[i]
         dp[i] = Math.max(dp[i], dp[j] + 1);
       }
     }
   }
 
+  // 理论上直接返回 return Math.max(...dp) 也可以，但是会超时，所以用lengthOfLIS二分查找 dp 中最大的
   return lengthOfLIS(dp);
 };
 
