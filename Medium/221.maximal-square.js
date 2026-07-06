@@ -14,14 +14,13 @@ var maximalSquare = function (matrix) {
   // 定义：以 matrix[i][j] 为右下角元素的全为 1 正方形矩阵的最大边长为 dp[i][j]。
   let m = matrix.length, n = matrix[0].length, dp = Array.from({ length: m }, () => Array(n).fill(0)), len = 0;
 
-  // base case，第一行和第一列的正方形边长
+  // base case，第一行和第一列的正方形边长, 初始值
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
       dp[i][0] = matrix[i][0] - '0';
       dp[0][j] = matrix[0][j] - '0';
     }
   }
-
 
   // 进行状态转移
   for (let i = 1; i < m; i++) {

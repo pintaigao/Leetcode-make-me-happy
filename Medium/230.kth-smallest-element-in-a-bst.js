@@ -69,15 +69,13 @@ var kthSmallest3 = function (root, k) {
 };
 // @lc code=end
 
+// BST 的中序遍历结果是有序的（升序），所以用一个外部变量记录中序遍历结果第 k 个元素即是第 k 小的元素。
 var kthSmallest = function (root, k) {
   // 记录结果
-  let res = 0;
   // 记录当前元素的排名
-  let rank = 0;
+  let res = 0, rank = 0;
   var traverse = function (root) {
-    if (root === null) {
-      return;
-    }
+    if (root === null) { return; }
     traverse(root.left);
 
     // 中序代码位置
