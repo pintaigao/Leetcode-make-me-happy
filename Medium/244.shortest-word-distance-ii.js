@@ -25,8 +25,7 @@ var WordDistance = function (wordsDict) {
 WordDistance.prototype.shortest = function (word1, word2) {
   // Location lists for both the words
   // the indices will be in SORTED order by default
-  let [loc1, loc2] = [this.locations[word1], this.locations[word2]];
-  let [l1, l2, minDiff] = [0, 0, Number.MAX_VALUE];
+  let loc1 = this.locations[word1], loc2 = this.locations[word2], l1 = 0, l2 = 0, minDiff = Number.MAX_VALUE;
   // 得到的是loc1和loc2两个array，里面是word1和word2的所有index
   while (l1 < loc1.length && l2 < loc2.length) {
     // 然后就是找出两个array里面的最小的diff
