@@ -41,6 +41,40 @@ var maxSlidingWindow = function (nums, k) {
   return res;
 };
 
+/* 单调队列 + 看到划窗就想到的双指针*/
+var maxSlidingWindow = function (nums, k) {
+  /* 单调双端队列:队尾->队头递增  头[3,2,1]尾*/
+  let len = nums.length, res = new Array(nums.length - k + 1).fill(0), que = [];
+  // 初始化首个窗口[0,k-1]
+  for (let i = 0; i < k; i++) {
+    // 新进来的元素>队尾,队尾就要弹出，直到新元素<=队尾为止，最终队列保持队头到队尾递减
+    while (que.length && nums[i] > que[que.length - 1]) que.pop();
+    // 直至新元素<=队尾可以加入
+    que.push(nums[i]);
+  }
+
+  // 第一个窗口最大元素已经找到(队列队头)
+  let index = 0; res[index] = que[0]; index += 1; let l = 0, r = k - 1;
+
+  // 继续求解接下来的窗口
+  while (r < len - 1) {
+    r += 1;
+    // nums[i]即将要加入窗口 & nums[i-k]即将退出窗口
+    while (que.length && nums[r] > que[que.length - 1]) que.pop();
+    // 先 pop 然后当前元素入队
+    que.push(nums[r]);
+    // 然后窗口向前滑动，可能有元素要退出窗口
+    // 退出窗口的元素如果和队头相等,那么队头也要出队
+    if (nums[l] == que[0]) que.shift();
+    // 更新当前窗口最大值
+    res[index] = que[0];
+    index += 1;
+    l += 1;
+  }
+
+  return res;
+};
+
 /* 单调队列 */
 let maxSlidingWindow = function (nums, k) {
   if (nums == null || nums.length < 2) return nums;
