@@ -19,7 +19,7 @@ var hasPath = function (maze, start, destination) {
     if (visited[start[0]][start[1]]) return false;
     if (start[0] == destination[0] && start[1] == destination[1]) return true;
     visited[start[0]][start[1]] = true;
-    let [r, l, u, d] = [start[1] + 1, start[1] - 1, start[0] - 1, start[0] + 1];
+    let r = start[1] + 1, l = start[1] - 1, u = start[0] - 1, d = start[0] + 1;
     // 从现在这个点一直到右面
     while (r < maze[0].length && maze[start[0]][r] == 0) r++;
     // 看看是不是终点，如果是，return true，不是，继续从新的点开始dfs
