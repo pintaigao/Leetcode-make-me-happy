@@ -12,53 +12,75 @@
 
 /* 1. DFS */
 var findItinerary = function (tickets) {
-  const [res, map] = ["JFK", {}]; // 初始放入起点'JFK' 和 邻接表
+  // 邻接表形式的图，key 是机场名字，value 是从该机场出发能够到达的机场列表
+  let graph = new Map();
+  // 和 graph 对应，记录每张机票是否被使用过
+  // 比如 graph["JFK"][2] = true 说明从机场 JFK 出发的第 3 张机票已经用过了
+  let used = new Map();
 
-  for (const ticket of tickets) {
-    // 遍历tickets，建表
-    const [from, to] = ticket; // 每一张机票，读出起点和终点
+  // 回溯算法使用的数据结构
+  let track = [];
+  // 回溯算法记录结果
+  let res = null;
 
-    map[from] = map[from] ? [] : [...map[from], to]; // 初始化 或者 建立映射
-  }
-
-  for (const city in map) {
-    // 按照字母顺序，小的在前
-    map[city].sort();
-  }
-
-  let dfs = (city, used) => {
-    // city是当前访问的城市、used是已用掉的机票数
-    if (used == tickets.length) {
-      // 用光了所有机票，路径找到了
-      return true;
+  // 1. 用机场的名字构建邻接表
+  for (let ticket of tickets) {
+    let from = ticket[0];
+    let to = ticket[1];
+    if (!graph.has(from)) {
+      graph.set(from, []);
     }
+    graph.get(from).push(to);
+  }
+  // 2. 对邻接表的每一行进行排序，保证字典序最小
+  for (let list of graph.values()) {
+    list.sort();
+  }
+  // 3. 初始化 used 结构，初始值都为 false
+  for (let [key, list] of graph.entries()) {
+    used.set(key, new Array(list.length).fill(false));
+  }
+  // 4. 从起点 "JFK" 开始启动 DFS 算法递归遍历
+  track.push("JFK");
 
-    const nextCities = map[city]; // 获取下一站能去的城市list
-    if (!nextCities || nextCities.length == 0) {
-      // 没有邻接城市了
-      return false; // 还没用光机票，就没有下一站了，返回false
+  function backtrack(airport) {
+    if (res !== null) {
+      // 已经找到答案了，不用再计算了
+      return;
     }
-
-    for (let i = 0; i < nextCities.length; i++) {
-      // 设置出各种选项（递归分支）
-      const next = nextCities[i]; // 当前选择的下一站
-      nextCities.splice(i, 1); // 飞出地的list中删掉这一站
-      res.push(next); // 将该选择推入res
-      if (dfs(next, used + 1)) {
-        // 在该递归分支中能找到一个用完所有机票的路径
-        return true;
-      } else {
-        nextCities.splice(i, 0, next); // 将删掉的这一站重新插回去
-        res.pop(); // 推入res的选择，也撤销
+    if (track.length === tickets.length + 1) {
+      // track 里面包含了所有的机票，即得到了一个合法的结果
+      // 注意 tickets.size() 要加一，因为 track 里面额外包含了起点 "JFK"
+      res = Array.from(track);
+      return;
+    }
+    if (!graph.has(airport)) {
+      // 没有从 s 出发的边
+      return;
+    }
+    // 遍历当前机场所有能够到达的机场
+    let nextAirports = graph.get(airport);
+    let usedList = used.get(airport);
+    for (let nextIndex = 0; nextIndex < nextAirports.length; nextIndex++) {
+      let nextAirport = nextAirports[nextIndex];
+      if (usedList[nextIndex]) {
+        // 如果这张机票被使用过，跳过
+        continue;
       }
+      // 做选择
+      usedList[nextIndex] = true;
+      track.push(nextAirport);
+      // 递归
+      backtrack(nextAirport);
+      // 撤销选择
+      usedList[nextIndex] = false;
+      track.pop();
     }
-  };
+  }
 
-  dfs("JFK", 0); // 从'JFK'城市开始遍历，当前用掉0张机票(出度？)
+  backtrack("JFK");
   return res;
 };
-// @lc code=end
-
 
 // 练习
 var findItinerary = function (tickets) {
@@ -81,4 +103,39 @@ var findItinerary = function (tickets) {
   dfs("JFK");
 
   return path.reverse();
+};
+
+// 欧拉算法
+var findItinerary = function (tickets) {
+  // 构建邻接表
+  const graph = new Map();
+  for (const [from, to] of tickets) {
+    if (!graph.has(from)) graph.set(from, []);
+    graph.get(from).push(to);
+  }
+  // 对每个出发点的目的地进行排序，确保字典序
+  for (const [from, tos] of graph.entries()) {
+    tos.sort();
+  }
+  // Hierholzer 算法寻找以 JFK 为起点的欧拉路径
+  // 计算以 JFK 为起点的后序遍历结果
+  const postOrder = [];
+  const traverse = function (graph, node, postOrder) {
+    if (!graph.has(node)) {
+      postOrder.push(node);
+      return;
+    }
+    // 复制节点列表，避免在遍历过程中修改原列表
+    while (graph.get(node).length > 0) {
+      const v = graph.get(node)[0];
+      graph.get(node).splice(0, 1);
+      traverse(graph, v, postOrder);
+    }
+    // 获取后序遍历结果
+    postOrder.push(node);
+  };
+  traverse(graph, "JFK", postOrder);
+  // 反转后序遍历结果，得到欧拉路径
+  postOrder.reverse();
+  return postOrder;
 };
