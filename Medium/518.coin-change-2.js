@@ -59,16 +59,15 @@ let change2 = function (amount, coins) {
 var change = function (amount, coins) {
   let n = coins.length, dp = Array.from({ length: coins.length + 1 }, () => Array(amount + 1).fill(0));
 
-  // base case
+  // base case, 背包容量为 0 时，只有一种组合方式，即不放任何硬币，所以 dp[i][0] = 1
   for (let i = 0; i <= n; i++) dp[i][0] = 1;
 
   // dp[i][j],i 表示前 i 个物品，j 表示背包容量 （i 表示 coins 里面的数，j 表示目标金额）
   for (let i = 1; i <= n; i++) {
     for (let j = 1; j <= amount; j++)
       if (j - coins[i - 1] >= 0)
-        // 如果背包容量足够装入第 i 个物品（即当前的 coin），则 dp[i][j] 等于不装入第 i 个物品的情况（dp[i - 1][j]）加上装入第 i 个物品的情况（dp[i][j - coins[i - 1]]）。
-        // dp[i - 1][j] 表示不用当前的 coin，则
-        // 这里 dp[i][j - coins[i - 1]] 是因为如果我们装入了当前的 coin，那么我们需要看看在剩余金额 j - coins[i - 1] 的情况下，有多少种组合方式。
+        // 1. 题目问的是凑成总金额的组合数，所以我们需要考虑两种情况：不使用当前硬币和使用当前硬币。
+        // 所以 dp[i][j] = dp[i - 1][j] （即不使用当前硬币的组合数，即前 i-1 个硬币凑成金额 j 的组合数）加上 dp[i][j - coins[i - 1]] （即使用当前硬币的组合数, 即在金额 j - coins[i - 1] 的情况下,（加上当前硬币,正好等于j），有多少种组合方式）。
         dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
       else
         dp[i][j] = dp[i - 1][j];
